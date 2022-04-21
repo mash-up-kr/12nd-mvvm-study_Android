@@ -18,7 +18,7 @@ MVVM &amp; Coroutine Study Repository
 학습기술 :  MVVM, DI, Coroutine
 
 ---
-### **스터디 방식**
+### **스터디 방식**awda
 
 - 4월 21일 목요일에 세미나 끝나고 모집합니다.
 - 주마다 과제를 수행하여 PR을 올립니다.
