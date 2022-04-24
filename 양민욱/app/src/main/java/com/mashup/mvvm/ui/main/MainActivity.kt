@@ -3,7 +3,9 @@ package com.mashup.mvvm.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import com.mashup.mvvm.ServiceLocator
 import com.mashup.mvvm.databinding.ActivityMainBinding
+import com.mashup.mvvm.network.GithubApi
 import com.mashup.mvvm.ui.main.adapter.RepositoryAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -13,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         )
     }
     private val repositoryAdapter: RepositoryAdapter by lazy { RepositoryAdapter() }
+
+    private val githubApi: GithubApi by lazy { ServiceLocator.getGithubApi() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
