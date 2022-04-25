@@ -7,8 +7,11 @@ import okhttp3.Response
 object GithubInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.proceed(
-            Request.Builder()
-                .addHeader("accept", "application/vnd.github.v3+json")
+            chain.request()
+                .newBuilder()
+                .apply {
+                    header("accept", "application/vnd.github.v3+json")
+                }
                 .build()
         )
     }
