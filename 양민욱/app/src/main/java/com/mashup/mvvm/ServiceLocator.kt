@@ -34,7 +34,8 @@ object ServiceLocator {
             .baseUrl(GITHUB_HOST_URL)
             .client(okHttpClientBuilder.build())
             .addConverterFactory(
-                json.asConverterFactory(contentType))
+                json.asConverterFactory(contentType)
+            )
             .build()
     }
 
