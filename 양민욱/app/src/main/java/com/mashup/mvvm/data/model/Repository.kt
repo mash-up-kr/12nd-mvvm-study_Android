@@ -1,5 +1,12 @@
 package com.mashup.mvvm.data.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Repository(
-    val id: Int
+    val id: Int,
+    val name: String,
+    val owner: Owner,
+    val description: String,
+    val language: String
 )
