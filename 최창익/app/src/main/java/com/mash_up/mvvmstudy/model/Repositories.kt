@@ -19,7 +19,9 @@ data class Repository(
     @SerializedName("full_name")
     val fullName: String,
     @SerializedName("owner")
-    val owner: Owner
+    val owner: Owner,
+    @SerializedName("language")
+    val language: String
 )
 
 data class Owner(
@@ -28,6 +30,5 @@ data class Owner(
     @SerializedName("id")
     val id: Long,
     @SerializedName("avatar_url")
-    val avatarUrl: String,
-
+    val avatarUrl: String
 )
