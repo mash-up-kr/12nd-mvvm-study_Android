@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.mashup.mvvm.data.model.Repository
 import com.mashup.mvvm.databinding.ItemRepositoryBinding
 import com.mashup.mvvm.extensions.loadImage
