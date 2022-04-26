@@ -1,13 +1,13 @@
 package com.mash_up.mvvmstudy.controller
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import com.mash_up.mvvmstudy.view.MainAdapter
 import com.mash_up.mvvmstudy.databinding.ActivityMainBinding
 import com.mash_up.mvvmstudy.model.MainModel
-import com.mash_up.mvvmstudy.model.MainUiModel
-import com.orhanobut.logger.Logger
+import com.mash_up.mvvmstudy.view.MainAdapter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -33,11 +33,24 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query.isNullOrEmpty()) return false
 
-                model.fetchGithubData(query) { response ->
-                    if (response != null) {
-                        adapter.submitList(response.repositories)
-                    }
-                }
+                binding.pbMain.visibility = View.VISIBLE
+
+                model.fetchGithubData(query,
+                    onSuccess = { response ->
+                        if (response != null) {
+                            adapter.submitList(response.repositories)
+                        }
+
+                        binding.pbMain.visibility = View.INVISIBLE
+                    },
+                    onFailure = { errorMessage ->
+                        binding.pbMain.visibility = View.INVISIBLE
+                        Toast.makeText(
+                            this@MainActivity,
+                            "다음과 같은 이유로 문제가 발생했습니다. $errorMessage",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    })
 
                 return true
             }

@@ -8,17 +8,22 @@ import retrofit2.Response
 class MainModel {
     private val service = ClientFactory.createService(GitService::class.java)
 
-    fun fetchGithubData(query: String, refreshUi: (Repositories?) -> Unit) {
+    fun fetchGithubData(
+        query: String,
+        onSuccess: (Repositories?) -> Unit,
+        onFailure: (String) -> Unit
+    ) {
         service.getRepositories(
             query = query
         ).enqueue(object : Callback<Repositories> {
             override fun onResponse(call: Call<Repositories>, response: Response<Repositories>) {
-                Logger.i("response : ${response.body()}")
-                refreshUi(response.body())
+                Logger.i("responseBody is ${response.body()}")
+                onSuccess(response.body())
             }
 
             override fun onFailure(call: Call<Repositories>, t: Throwable) {
-                Logger.e("error : $t")
+                Logger.e("onFailure is $t")
+                onFailure(t.localizedMessage ?: "알 수 없는 오류")
             }
         })
     }

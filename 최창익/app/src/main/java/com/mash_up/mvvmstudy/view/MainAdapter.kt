@@ -9,10 +9,10 @@ import com.mash_up.mvvmstudy.model.Repository
 class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items: MutableList<Repository> = mutableListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MainViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        MainViewHolder(
+            ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as MainViewHolder).bind(items[position])
