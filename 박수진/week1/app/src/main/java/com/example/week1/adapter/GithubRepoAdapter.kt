@@ -2,22 +2,24 @@ package com.example.week1.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.week1.databinding.RepoItemBinding
 import com.example.week1.model.GithubRepo
 
-class GithubRepoAdapter(
-    private var repoList: List<GithubRepo>
-    ): RecyclerView.Adapter<GithubRepoAdapter.RepoViewHolder>() {
+class GithubRepoAdapter : ListAdapter<GithubRepo, GithubRepoAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
 
-    inner class RepoViewHolder(private val binding: RepoItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class RepoViewHolder(private val binding: RepoItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: GithubRepo) {
-            Glide.with(binding.root)
-                .load(repo.owner.avatar_url)
-                .into(binding.repoImg)
-            binding.repoName.text = repo.name
-            binding.repoLang.text = repo.language
+            with(binding) {
+                Glide.with(root)
+                    .load(repo.owner.avatar_url)
+                    .into(repoImg)
+                repoName.text = repo.name
+                repoLang.text = repo.language
+            }
         }
     }
 
@@ -26,9 +28,18 @@ class GithubRepoAdapter(
         return RepoViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = repoList.size
-
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        holder.bind(repoList[position])
+        holder.bind(getItem(position))
     }
+
+    object GithubRepoDiffUtil : DiffUtil.ItemCallback<GithubRepo>() {
+        override fun areItemsTheSame(oldItem: GithubRepo, newItem: GithubRepo): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: GithubRepo, newItem: GithubRepo): Boolean {
+            return oldItem.id == newItem.id
+        }
+    }
+
 }
