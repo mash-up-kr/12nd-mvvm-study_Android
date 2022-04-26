@@ -9,9 +9,11 @@ import com.bumptech.glide.Glide
 import com.example.week1.databinding.RepoItemBinding
 import com.example.week1.model.GithubRepo
 
-class GithubRepoAdapter : ListAdapter<GithubRepo, GithubRepoAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
+class GithubRepoAdapter :
+    ListAdapter<GithubRepo, GithubRepoAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
 
-    inner class RepoViewHolder(private val binding: RepoItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class RepoViewHolder(private val binding: RepoItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: GithubRepo) {
             with(binding) {
                 Glide.with(root)

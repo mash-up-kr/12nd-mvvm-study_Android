@@ -14,9 +14,7 @@ class ProgressApplication : Application() {
     private lateinit var baseApplication: ProgressApplication
     private lateinit var progressDialog: AppCompatDialog
 
-    fun getInstance(): ProgressApplication {
-        return baseApplication
-    }
+    fun getInstance(): ProgressApplication = baseApplication
 
     override fun onCreate() {
         super.onCreate()
@@ -26,11 +24,12 @@ class ProgressApplication : Application() {
     fun progressON(activity: Activity?) {
         val binding = DialogProgressBinding.inflate(LayoutInflater.from(this))
 
-        progressDialog = AppCompatDialog(activity)
-        progressDialog.setCancelable(false)
-        progressDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        progressDialog.setContentView(binding.root)
-        progressDialog.show()
+        progressDialog = AppCompatDialog(activity).apply {
+            setCancelable(false)
+            window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setContentView(binding.root)
+            show()
+        }
 
         with(binding) {
             Glide.with(root)

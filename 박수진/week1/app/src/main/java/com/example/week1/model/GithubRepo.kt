@@ -7,4 +7,4 @@ data class GithubRepo(
     val name: String,
     val language: String,
     val owner: GithubRepoOwner
-): Serializable
+) : Serializable

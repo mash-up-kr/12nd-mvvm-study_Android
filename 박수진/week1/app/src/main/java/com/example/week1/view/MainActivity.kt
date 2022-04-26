@@ -19,11 +19,11 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    private var backWaitTime: Long = 0
     private lateinit var binding: ActivityMainBinding
     private val githubRepoAdapter: GithubRepoAdapter by lazy {
         GithubRepoAdapter()
     }
-    private var backWaitTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity() {
             var handled = false
             if (action == EditorInfo.IME_ACTION_SEARCH) {
                 downKeyBoard()
+
                 val query = binding.searchEt.text.toString()
                 if (query == "") {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
@@ -98,7 +99,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun downKeyBoard() {
-        val imm: InputMethodManager = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm: InputMethodManager =
+            getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.searchRecyclerview.windowToken, 0)
     }
 

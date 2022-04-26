@@ -5,4 +5,4 @@ import java.io.Serializable
 data class GithubRepoOwner(
     val id: Long,
     val avatar_url: String
-): Serializable
+) : Serializable
