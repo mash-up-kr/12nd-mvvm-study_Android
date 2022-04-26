@@ -5,5 +5,6 @@ import java.io.Serializable
 data class GithubRepo(
     val id: Long,
     val name: String,
-    val language: String
+    val language: String,
+    val owner: GithubRepoOwner
 ): Serializable

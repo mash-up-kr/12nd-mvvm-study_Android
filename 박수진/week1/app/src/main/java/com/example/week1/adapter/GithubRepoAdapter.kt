@@ -3,6 +3,7 @@ package com.example.week1.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.week1.databinding.RepoItemBinding
 import com.example.week1.model.GithubRepo
 
@@ -12,6 +13,9 @@ class GithubRepoAdapter(
 
     inner class RepoViewHolder(private val binding: RepoItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: GithubRepo) {
+            Glide.with(binding.root)
+                .load(repo.owner.avatar_url)
+                .into(binding.repoImg)
             binding.repoName.text = repo.name
             binding.repoLang.text = repo.language
         }
@@ -22,9 +26,7 @@ class GithubRepoAdapter(
         return RepoViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return repoList.size
-    }
+    override fun getItemCount(): Int = repoList.size
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
         holder.bind(repoList[position])
