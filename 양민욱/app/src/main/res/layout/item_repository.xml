@@ -24,7 +24,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         tools:text="repository 이름"
-        app:layout_constraintStart_toEndOf="@+id/imgProfile"
+        app:layout_constraintStart_toEndOf="@id/imgProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
