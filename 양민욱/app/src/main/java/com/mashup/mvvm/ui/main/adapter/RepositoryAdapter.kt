@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mashup.mvvm.data.model.Repository
 import com.mashup.mvvm.databinding.ItemRepositoryBinding
+import com.mashup.mvvm.extensions.loadImage
 
 class RepositoryAdapter : ListAdapter<Repository, RepositoryViewHolder>(repositoryDiffCallback) {
 
@@ -40,10 +41,7 @@ class RepositoryViewHolder(
     private val viewBinding: ItemRepositoryBinding
 ) : RecyclerView.ViewHolder(viewBinding.root) {
     fun onBindRepository(repository: Repository) = viewBinding.apply {
-        Glide.with(root.context)
-            .load(repository.owner.avatarUrl)
-            .into(viewBinding.imgProfile)
-
+        viewBinding.imgProfile.loadImage(repository.owner.avatarUrl)
         viewBinding.tvRepositoryName.text = repository.name
         viewBinding.tvRepositoryLanguage.text = repository.language
     }
