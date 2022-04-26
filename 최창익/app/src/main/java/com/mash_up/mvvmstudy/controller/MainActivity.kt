@@ -1,7 +1,8 @@
-package com.mash_up.mvvmstudy
+package com.mash_up.mvvmstudy.controller
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.mash_up.mvvmstudy.view.MainAdapter
 import com.mash_up.mvvmstudy.databinding.ActivityMainBinding
 import com.mash_up.mvvmstudy.model.MainUiModel
 
