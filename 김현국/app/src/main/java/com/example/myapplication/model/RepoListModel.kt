@@ -36,4 +36,22 @@ class RepoListModel : SearchContract.Model {
             }
         })
     }
+
+    override fun getRepoList(onFinishedListener: SearchContract.Model.OnFinishedListener) {
+        val service: ApiInterface? = ApiClient().getInstance()?.create(ApiInterface::class.java)
+        val call: Call<List<Repository>>? = service?.getRepositories()
+
+        call?.enqueue(object : Callback<List<Repository>> {
+            override fun onResponse(call: Call<List<Repository>>, response: Response<List<Repository>>) {
+                if (!response.isSuccessful)
+                    return
+                val repoList: List<Repository> = response.body()!!
+                onFinishedListener.onFinished(repos = repoList)
+            }
+
+            override fun onFailure(call: Call<List<Repository>>, t: Throwable) {
+                onFinishedListener.onFailure(t)
+            }
+        })
+    }
 }

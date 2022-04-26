@@ -20,6 +20,7 @@ interface SearchContract {
 
         // Presenter - Model  데이터 요청
         fun getRepoList(onFinishedListener: OnFinishedListener, q: String)
+        fun getRepoList(onFinishedListener: OnFinishedListener)
     }
 
     // View - Presenter 연결 인터페이스 , View 구현 & Presenter 호출
@@ -33,6 +34,7 @@ interface SearchContract {
     // View - Presenter 호출, Presenter 구현 / View 호출
     interface Presenter : BasePresenter<FragmentView> {
         fun getRepoList(q: String)
+        fun getRepoList()
         fun setRepoAdapterModel(model: SearchAdapterContract.Model)
         fun setRepoAdapterView(view: SearchAdapterContract.View)
     }

@@ -34,6 +34,10 @@ class SearchPresenter :
         searchModel?.getRepoList(onFinishedListener = this, q = q)
     }
 
+    override fun getRepoList() {
+        searchModel?.getRepoList(onFinishedListener = this)
+    }
+
     override fun setRepoAdapterModel(model: SearchAdapterContract.Model) {
         adapterModel = model
     }

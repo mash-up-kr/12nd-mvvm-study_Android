@@ -1,6 +1,7 @@
 package com.example.myapplication.network
 
 import com.example.myapplication.model.RepoResponse
+import com.example.myapplication.model.Repository
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -15,4 +16,7 @@ interface ApiInterface {
     fun getRepositories(
         @Query("q") q: String?
     ): Call<RepoResponse>
+
+    @GET("repositories")
+    fun getRepositories(): Call<List<Repository>>
 }

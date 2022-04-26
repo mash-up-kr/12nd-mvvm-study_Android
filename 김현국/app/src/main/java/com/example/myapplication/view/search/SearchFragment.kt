@@ -25,6 +25,7 @@ class SearchFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         searchPresenter.takeView(this)
         initUI(this.requireContext())
         arguments?.let {
@@ -43,6 +44,8 @@ class SearchFragment :
 
         searchPresenter.setRepoAdapterModel(repoAdapter)
         searchPresenter.setRepoAdapterView(repoAdapter)
+
+        searchPresenter.getRepoList()
     }
 
     override fun initPresenter() {
