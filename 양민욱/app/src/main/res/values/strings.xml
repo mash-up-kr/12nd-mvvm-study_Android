@@ -1,7 +1,4 @@
 <resources>
     <string name="app_name">mvvm</string>
     <string name="hint_search_repository">저장소 이름을 입력해주세요</string>
-
-    <!--    ERROR_CASE-->
-    <string name="error_service_not_available">현재 api 서버가 불안정합니다.</string>
 </resources>
