@@ -4,11 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.week1.adapter.GithubRepoAdapter
 import com.example.week1.databinding.ActivityMainBinding
@@ -30,29 +28,35 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.searchBar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        initSettings()
 
         Handler(Looper.getMainLooper()).postDelayed({
             getGithubRepoList("kotlin")
-            textWatcher()
+            updateQuery()
         }, 200)
+    }
+
+    private fun initSettings() {
+        setSupportActionBar(binding.searchBar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        downKeyBoard()
+        binding.searchEt.text = null
+        binding.searchRecyclerview.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = githubRepoAdapter
+        }
     }
 
     private fun getGithubRepoList(query: String) {
         RetrofitService.client.getRepoList(query)
             .enqueue(object : Callback<GithubRepoList> {
-
                 override fun onResponse(
                     call: Call<GithubRepoList>,
                     response: Response<GithubRepoList>
                 ) {
                     if (response.isSuccessful) {
                         val repoList = response.body()!!.items
-                        binding.searchRecyclerview.apply {
-                            layoutManager = LinearLayoutManager(this@MainActivity)
-                            adapter = githubRepoAdapter
-                        }
                         githubRepoAdapter.submitList(repoList)
                     }
                 }
@@ -63,21 +67,26 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    fun textWatcher() {
-        binding.searchEt.addTextChangedListener (object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun afterTextChanged(p0: Editable?) {
-                val query = binding.searchEt.toString()
+    private fun updateQuery() {
+        binding.searchEt.setOnEditorActionListener { _, action, _ ->
+            var handled = false
+            if (action == EditorInfo.IME_ACTION_SEARCH) {
+                downKeyBoard()
+                val query = binding.searchEt.text.toString()
                 if (query == "") {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
-                    return
+                } else {
+                    getGithubRepoList(query)
                 }
-                getGithubRepoList(query)
+                handled = true
             }
-        })
+            handled
+        }
+    }
+
+    private fun downKeyBoard() {
+        val imm: InputMethodManager = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.searchRecyclerview.windowToken, 0)
     }
 
 }
