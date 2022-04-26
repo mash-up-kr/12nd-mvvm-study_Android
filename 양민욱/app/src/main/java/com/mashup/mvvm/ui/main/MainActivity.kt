@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.mashup.mvvm.R
 import com.mashup.mvvm.ServiceLocator
+import com.mashup.mvvm.data.error.CODE_SERVICE_NOT_AVAILABLE
 import com.mashup.mvvm.databinding.ActivityMainBinding
 import com.mashup.mvvm.dto.RepositoriesDto
 import com.mashup.mvvm.extensions.showToast
@@ -23,13 +24,11 @@ class MainActivity : AppCompatActivity() {
         )
     }
     private val repositoryAdapter: RepositoryAdapter by lazy { RepositoryAdapter() }
-
-    private val githubApi: GithubApi by lazy { ServiceLocator.getGithubApi() }
+    private val githubApi: GithubApi by lazy { ServiceLocator.injectGithubApi() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
-
         setUi()
     }
 
@@ -52,7 +51,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUiOfRepositoryRecyclerView() {
-        viewBinding.rvRepository.adapter = repositoryAdapter
+        viewBinding.rvRepository.apply {
+            setHasFixedSize(true)
+            adapter = repositoryAdapter
+        }
     }
 
     private fun fetchGithubRepository(query: String) {
@@ -83,7 +85,5 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
-
-        private const val CODE_SERVICE_NOT_AVAILABLE = 503
     }
 }

@@ -8,9 +8,7 @@ object GithubInterceptor : Interceptor {
         return chain.proceed(
             chain.request()
                 .newBuilder()
-                .apply {
-                    header("accept", "application/vnd.github.v3+json")
-                }
+                .apply { header("accept", "application/vnd.github.v3+json") }
                 .build()
         )
     }

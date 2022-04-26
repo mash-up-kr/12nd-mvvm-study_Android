@@ -18,6 +18,13 @@ object ServiceLocator {
         ignoreUnknownKeys = true
     }
 
+    private val retrofit: Retrofit by lazy {
+        getGithubRetrofitClient()
+    }
+    private val githubApi: GithubApi by lazy {
+        retrofit.create(GithubApi::class.java)
+    }
+
     private fun getGithubRetrofitClient(): Retrofit {
         val contentType = "application/json".toMediaType()
         val okHttpClientBuilder = OkHttpClient.Builder()
@@ -39,7 +46,5 @@ object ServiceLocator {
             .build()
     }
 
-    fun getGithubApi(): GithubApi {
-        return getGithubRetrofitClient().create(GithubApi::class.java)
-    }
+    fun injectGithubApi(): GithubApi = githubApi
 }
