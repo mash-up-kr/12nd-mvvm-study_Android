@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="data"
-            type="com.mash_up.mvvmstudy.model.MainUiModel" />
+            name="repository"
+            type="com.mash_up.mvvmstudy.model.Repository" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
             android:id="@+id/tv_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{data.title}"
+            android:text="@{repository.fullName}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="title"/>

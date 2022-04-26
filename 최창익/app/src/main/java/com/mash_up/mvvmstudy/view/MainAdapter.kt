@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mash_up.mvvmstudy.databinding.ItemListBinding
-import com.mash_up.mvvmstudy.model.MainUiModel
+import com.mash_up.mvvmstudy.model.Repository
 
 class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val items: MutableList<MainUiModel> = mutableListOf()
+    private val items: MutableList<Repository> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,13 +21,14 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int =
         items.size
 
-    fun submitList(items: List<MainUiModel>) {
+    fun submitList(items: List<Repository>) {
         this.items.addAll(items)
+        notifyDataSetChanged()
     }
 
     class MainViewHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: MainUiModel) {
-            binding.data = item
+        fun bind(repository: Repository) {
+            binding.repository = repository
         }
     }
 }
