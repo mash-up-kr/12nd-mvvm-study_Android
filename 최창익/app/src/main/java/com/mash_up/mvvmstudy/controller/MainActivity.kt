@@ -7,11 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.mash_up.mvvmstudy.databinding.ActivityMainBinding
 import com.mash_up.mvvmstudy.model.MainModel
-import com.mash_up.mvvmstudy.view.MainAdapter
+import com.mash_up.mvvmstudy.view.RepositoryAdapter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val adapter = MainAdapter()
+    private val adapter = RepositoryAdapter()
     private val model = MainModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
