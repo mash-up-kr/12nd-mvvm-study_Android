@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val githubRepoAdapter: GithubRepoAdapter by lazy {
         GithubRepoAdapter()
     }
+    private var backWaitTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +88,15 @@ class MainActivity : AppCompatActivity() {
     private fun downKeyBoard() {
         val imm: InputMethodManager = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.searchRecyclerview.windowToken, 0)
+    }
+
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - backWaitTime >= 2000 ) {
+            backWaitTime = System.currentTimeMillis()
+            Toast.makeText(this@MainActivity, "뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show()
+        } else {
+            finish()
+        }
     }
 
 }
