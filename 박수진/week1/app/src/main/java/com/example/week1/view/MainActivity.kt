@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.week1.application.ProgressApplication
 import com.example.week1.adapter.GithubRepoAdapter
 import com.example.week1.databinding.ActivityMainBinding
 import com.example.week1.model.GithubRepoList
@@ -77,12 +78,23 @@ class MainActivity : AppCompatActivity() {
                 if (query == "") {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
-                    getGithubRepoList(query)
+                    progress(query)
                 }
                 handled = true
             }
             handled
         }
+    }
+
+    private fun progress(query: String) {
+        val instance = (application as ProgressApplication).getInstance()
+        instance.progressON(this)
+
+        getGithubRepoList(query)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            instance.progressOFF()
+        }, 2000)
     }
 
     private fun downKeyBoard() {
