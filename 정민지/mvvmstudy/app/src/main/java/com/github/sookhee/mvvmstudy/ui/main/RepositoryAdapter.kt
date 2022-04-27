@@ -1,22 +1,23 @@
 package com.github.sookhee.mvvmstudy.ui.main
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.sookhee.mvvmstudy.databinding.ItemGithubRepositoryBinding
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
 
 /**
- *  MainAdapter.kt
+ *  RepositoryAdapter.kt
  *
  *  Created by Minji Jeong on 2022/04/25
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-class MainAdapter : RecyclerView.Adapter<MainAdapter.RepositoryViewHolder>() {
-    private var githubRepositoryList: List<GithubRepositoryModel> = listOf()
+class RepositoryAdapter :
+    ListAdapter<GithubRepositoryModel, RepositoryAdapter.RepositoryViewHolder>(DiffCallback()) {
     var onItemClick: ((GithubRepositoryModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
@@ -29,15 +30,11 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.RepositoryViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
-        holder.onBind(githubRepositoryList[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = githubRepositoryList.size
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setItems(newItems: List<GithubRepositoryModel>) {
-        githubRepositoryList = newItems
-        notifyDataSetChanged()
+    override fun getItemCount(): Int {
+        return currentList.size
     }
 
     inner class RepositoryViewHolder(
@@ -45,7 +42,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.RepositoryViewHolder>() {
         private val onItemClick: ((GithubRepositoryModel) -> Unit)?,
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(item: GithubRepositoryModel) {
+        fun bind(item: GithubRepositoryModel) {
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)
             }
@@ -56,6 +53,22 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.RepositoryViewHolder>() {
             Glide.with(binding.root)
                 .load(item.profileImage)
                 .into(binding.ownerProfileImage)
+        }
+    }
+
+    private class DiffCallback : DiffUtil.ItemCallback<GithubRepositoryModel>() {
+        override fun areItemsTheSame(
+            oldItem: GithubRepositoryModel,
+            newItem: GithubRepositoryModel,
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: GithubRepositoryModel,
+            newItem: GithubRepositoryModel,
+        ): Boolean {
+            return oldItem == newItem
         }
     }
 }

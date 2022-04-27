@@ -11,8 +11,6 @@ import com.github.sookhee.mvvmstudy.databinding.ActivityMainBinding
 import com.github.sookhee.mvvmstudy.interactor.MainInteractor
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
 import com.github.sookhee.mvvmstudy.ui.detail.DetailActivity
-import kotlin.concurrent.timer
-import kotlin.concurrent.timerTask
 
 /**
  *  MainActivity.kt
@@ -26,6 +24,16 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private val interactor by lazy { MainInteractor() }
     private val presenter by lazy { MainPresenter(this, interactor) }
+    private val repositoryAdapter by lazy {
+        RepositoryAdapter().apply {
+            onItemClick = {
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra(EXTRA_REPOSITORY_ID, it.id)
+
+                startActivity(intent)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +46,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun setDataToRecyclerView(list: List<GithubRepositoryModel>) {
-        (binding.repositoryRecyclerView.adapter as MainAdapter).setItems(list)
+        repositoryAdapter.submitList(list)
     }
 
     override fun showErrorMessageToast(message: String) {
@@ -55,16 +63,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private fun initView() {
         with(binding) {
-            repositoryRecyclerView.apply {
-                adapter = MainAdapter().apply {
-                    onItemClick = {
-                        val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                        intent.putExtra(EXTRA_REPOSITORY_ID, it.id)
-
-                        startActivity(intent)
-                    }
-                }
-            }
+            repositoryRecyclerView.adapter = repositoryAdapter
 
             searchButton.setOnClickListener {
                 val keyword = binding.searchEditText.text.toString()
