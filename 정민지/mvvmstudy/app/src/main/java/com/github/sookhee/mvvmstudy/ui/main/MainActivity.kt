@@ -10,6 +10,8 @@ import androidx.core.widget.addTextChangedListener
 import com.github.sookhee.mvvmstudy.databinding.ActivityMainBinding
 import com.github.sookhee.mvvmstudy.interactor.MainInteractor
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
+import com.github.sookhee.mvvmstudy.network.GithubAPI
+import com.github.sookhee.mvvmstudy.network.RetrofitClient
 import com.github.sookhee.mvvmstudy.ui.detail.DetailActivity
 
 /**
@@ -22,7 +24,8 @@ import com.github.sookhee.mvvmstudy.ui.detail.DetailActivity
 class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var binding: ActivityMainBinding
 
-    private val interactor by lazy { MainInteractor() }
+    private val request by lazy { RetrofitClient.buildService(GithubAPI::class.java) }
+    private val interactor by lazy { MainInteractor(request) }
     private val presenter by lazy { MainPresenter(this, interactor) }
     private val repositoryAdapter by lazy {
         RepositoryAdapter().apply {

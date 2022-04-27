@@ -1,10 +1,10 @@
 package com.github.sookhee.mvvmstudy.interactor
 
 import android.util.Log
-import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryResponse
 import com.github.sookhee.mvvmstudy.network.GithubAPI
 import com.github.sookhee.mvvmstudy.network.RetrofitClient
 import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryListResponse
+import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryResponse
 import com.github.sookhee.mvvmstudy.ui.main.MainContract
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,9 +17,8 @@ import retrofit2.Response
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-class MainInteractor : MainContract.Interactor {
+class MainInteractor(private val request: GithubAPI) : MainContract.Interactor {
     override fun getGithubRepositoryList(onNetworkCallbackListener: MainContract.Interactor.OnNetworkCallbackListener) {
-        val request = RetrofitClient.buildService(GithubAPI::class.java)
         val call = request.getRepository()
 
         call.enqueue(object : Callback<List<GithubRepositoryResponse>> {
@@ -34,7 +33,7 @@ class MainInteractor : MainContract.Interactor {
                     response.body()?.let {
                         onNetworkCallbackListener.onSuccess(it)
                     }
-                } else if (response.code() != 200) {
+                } else {
                     onNetworkCallbackListener.onFailure(Throwable("${response.code()}"))
                 }
             }

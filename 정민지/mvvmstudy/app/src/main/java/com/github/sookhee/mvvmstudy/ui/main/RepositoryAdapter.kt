@@ -17,7 +17,7 @@ import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
  */
 
 class RepositoryAdapter :
-    ListAdapter<GithubRepositoryModel, RepositoryAdapter.RepositoryViewHolder>(DiffCallback()) {
+    ListAdapter<GithubRepositoryModel, RepositoryAdapter.RepositoryViewHolder>(diffUtil) {
     var onItemClick: ((GithubRepositoryModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
@@ -37,7 +37,7 @@ class RepositoryAdapter :
         return currentList.size
     }
 
-    inner class RepositoryViewHolder(
+    class RepositoryViewHolder(
         private val binding: ItemGithubRepositoryBinding,
         private val onItemClick: ((GithubRepositoryModel) -> Unit)?,
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -56,19 +56,21 @@ class RepositoryAdapter :
         }
     }
 
-    private class DiffCallback : DiffUtil.ItemCallback<GithubRepositoryModel>() {
-        override fun areItemsTheSame(
-            oldItem: GithubRepositoryModel,
-            newItem: GithubRepositoryModel,
-        ): Boolean {
-            return oldItem.id == newItem.id
-        }
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<GithubRepositoryModel>() {
+            override fun areItemsTheSame(
+                oldItem: GithubRepositoryModel,
+                newItem: GithubRepositoryModel,
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-        override fun areContentsTheSame(
-            oldItem: GithubRepositoryModel,
-            newItem: GithubRepositoryModel,
-        ): Boolean {
-            return oldItem == newItem
+            override fun areContentsTheSame(
+                oldItem: GithubRepositoryModel,
+                newItem: GithubRepositoryModel,
+            ): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }
