@@ -1,15 +1,15 @@
 package com.example.week1.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.week1.application.ProgressApplication
 import com.example.week1.adapter.GithubRepoAdapter
+import com.example.week1.base.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
 import com.example.week1.model.GithubRepoList
 import com.example.week1.network.RetrofitService
@@ -17,7 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private var backWaitTime: Long = 0
     private lateinit var binding: ActivityMainBinding
@@ -30,7 +30,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initSettings()
+        initActionBar()
+        initRecyclerView()
+        hideKeyBoard()
+        initEditText()
 
         Handler(Looper.getMainLooper()).postDelayed({
             getGithubRepoList("kotlin")
@@ -38,16 +41,20 @@ class MainActivity : AppCompatActivity() {
         }, 200)
     }
 
-    private fun initSettings() {
+    private fun initActionBar() {
         setSupportActionBar(binding.searchBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
-        downKeyBoard()
-        binding.searchEt.text = null
+    private fun initRecyclerView() {
         binding.searchRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = githubRepoAdapter
         }
+    }
+
+    private fun initEditText() {
+        binding.searchEt.text = null
     }
 
     private fun getGithubRepoList(query: String) {
@@ -58,13 +65,12 @@ class MainActivity : AppCompatActivity() {
                     response: Response<GithubRepoList>
                 ) {
                     if (response.isSuccessful) {
-                        val repoList = response.body()!!.items
-                        githubRepoAdapter.submitList(repoList)
+                        response.body()?.items.let { githubRepoAdapter.submitList(it) }
                     }
                 }
 
                 override fun onFailure(call: Call<GithubRepoList>, t: Throwable) {
-                    // do nothing
+                    Log.e("retrofit", t.toString())
                 }
             })
     }
@@ -73,13 +79,13 @@ class MainActivity : AppCompatActivity() {
         binding.searchEt.setOnEditorActionListener { _, action, _ ->
             var handled = false
             if (action == EditorInfo.IME_ACTION_SEARCH) {
-                downKeyBoard()
+                hideKeyBoard()
 
                 val query = binding.searchEt.text.toString()
-                if (query == "") {
+                if (query.isEmpty()) {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
-                    progress(query)
+                    startProgress(query)
                 }
                 handled = true
             }
@@ -87,18 +93,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun progress(query: String) {
-        val instance = (application as ProgressApplication).getInstance()
-        instance.progressON(this)
-
+    private fun startProgress(query: String) {
+        onProgress()
         getGithubRepoList(query)
-
         Handler(Looper.getMainLooper()).postDelayed({
-            instance.progressOFF()
+            offProgress()
         }, 2000)
     }
 
-    private fun downKeyBoard() {
+    private fun hideKeyBoard() {
         val imm: InputMethodManager =
             getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.searchRecyclerview.windowToken, 0)

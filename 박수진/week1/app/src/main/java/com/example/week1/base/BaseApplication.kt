@@ -1,4 +1,4 @@
-package com.example.week1.application
+package com.example.week1.base
 
 import android.app.Activity
 import android.app.Application
@@ -10,18 +10,18 @@ import com.bumptech.glide.Glide
 import com.example.week1.R
 import com.example.week1.databinding.DialogProgressBinding
 
-class ProgressApplication : Application() {
-    private lateinit var baseApplication: ProgressApplication
+class BaseApplication : Application() {
+    private lateinit var baseApplication: BaseApplication
     private lateinit var progressDialog: AppCompatDialog
 
-    fun getInstance(): ProgressApplication = baseApplication
+    fun getInstance(): BaseApplication = baseApplication
 
     override fun onCreate() {
         super.onCreate()
         baseApplication = this
     }
 
-    fun progressON(activity: Activity?) {
+    fun onProgress(activity: Activity?) {
         val binding = DialogProgressBinding.inflate(LayoutInflater.from(this))
 
         progressDialog = AppCompatDialog(activity).apply {
@@ -38,7 +38,7 @@ class ProgressApplication : Application() {
         }
     }
 
-    fun progressOFF() {
+    fun offProgress() {
         if (progressDialog.isShowing) {
             progressDialog.dismiss()
         }

@@ -12,7 +12,11 @@ import com.example.week1.model.GithubRepo
 class GithubRepoAdapter :
     ListAdapter<GithubRepo, GithubRepoAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
 
-    inner class RepoViewHolder(private val binding: RepoItemBinding) :
+    init {
+        setHasStableIds(true)
+    }
+
+    class RepoViewHolder(private val binding: RepoItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: GithubRepo) {
             with(binding) {
@@ -26,21 +30,26 @@ class GithubRepoAdapter :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
-        val binding = RepoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return RepoViewHolder(binding)
+        return RepoViewHolder(
+            RepoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    object GithubRepoDiffUtil : DiffUtil.ItemCallback<GithubRepo>() {
+    override fun getItemId(position: Int): Long {
+        return getItem(position).id
+    }
+
+    private companion object GithubRepoDiffUtil : DiffUtil.ItemCallback<GithubRepo>() {
         override fun areItemsTheSame(oldItem: GithubRepo, newItem: GithubRepo): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: GithubRepo, newItem: GithubRepo): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
     }
 
