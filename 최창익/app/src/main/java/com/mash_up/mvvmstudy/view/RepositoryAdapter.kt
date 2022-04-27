@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mash_up.mvvmstudy.databinding.ItemListBinding
 import com.mash_up.mvvmstudy.model.Repository
 
-class RepositoryAdapter : ListAdapter<Repository, RecyclerView.ViewHolder>(RepositoryDiffUtil()) {
+class RepositoryAdapter : ListAdapter<Repository, RecyclerView.ViewHolder>(repositoryDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         RepositoryViewHolder(
             ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,11 +25,13 @@ class RepositoryAdapter : ListAdapter<Repository, RecyclerView.ViewHolder>(Repos
         }
     }
 
-    class RepositoryDiffUtil : DiffUtil.ItemCallback<Repository>() {
-        override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean =
-            oldItem == newItem
+    companion object {
+        private val repositoryDiffCallback = object : DiffUtil.ItemCallback<Repository>() {
+            override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean =
+                oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: Repository, newItem: Repository): Boolean =
-            oldItem.id == newItem.id
+            override fun areContentsTheSame(oldItem: Repository, newItem: Repository): Boolean =
+                oldItem == newItem
+        }
     }
 }
