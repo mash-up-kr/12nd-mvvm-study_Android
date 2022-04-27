@@ -11,19 +11,28 @@ class MainModel {
     fun fetchGithubData(
         query: String,
         onSuccess: (Repositories?) -> Unit,
-        onFailure: (String) -> Unit
+        onError: (String) -> Unit
     ) {
         service.getRepositories(
             query = query
         ).enqueue(object : Callback<Repositories> {
             override fun onResponse(call: Call<Repositories>, response: Response<Repositories>) {
                 Logger.i("responseBody is ${response.body()}")
-                onSuccess(response.body())
+
+                if (response.isSuccessful) {
+                    onSuccess(response.body())
+                } else {
+                    onError(
+                        "Code Number: ${response.code()} Error Body: ${
+                            response.errorBody().toString()
+                        }"
+                    )
+                }
             }
 
             override fun onFailure(call: Call<Repositories>, t: Throwable) {
                 Logger.e("onFailure is $t")
-                onFailure(t.localizedMessage ?: "알 수 없는 오류")
+                onError(t.localizedMessage ?: "알 수 없는 오류")
             }
         })
     }

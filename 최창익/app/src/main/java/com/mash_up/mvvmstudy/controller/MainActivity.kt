@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
                         binding.pbMain.visibility = View.INVISIBLE
                     },
-                    onFailure = { errorMessage ->
+                    onError = { errorMessage ->
                         binding.pbMain.visibility = View.INVISIBLE
                         Toast.makeText(
                             this@MainActivity,
