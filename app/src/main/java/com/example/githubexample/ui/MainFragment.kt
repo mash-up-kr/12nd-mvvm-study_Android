@@ -1,6 +1,5 @@
 package com.example.githubexample.ui
 
-import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.util.Log
@@ -24,11 +23,6 @@ class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
     private val mainPresenter = MainPresenter(this, RemoteDataSourceImpl())
     private lateinit var callback: OnBackPressedCallback
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        setSearchViewBackButtonListener()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
@@ -36,6 +30,8 @@ class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setSearchViewBackButtonListener()
         initView()
     }
 
@@ -81,7 +77,7 @@ class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
                 }
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     override fun onDestroyView() {
