@@ -15,7 +15,7 @@ class RemoteDataSourceImpl : RemoteDataSource {
         call.enqueue(object : Callback<GithubResult> {
             override fun onResponse(call: Call<GithubResult>, response: Response<GithubResult>) {
                 if (response.isSuccessful) {
-                    modelResult.onSuccess(response.body()!!.items)
+                    response.body()?.items?.let { modelResult.onSuccess(it) }
                 } else {
                     modelResult.onFailure(IllegalStateException("code is not 200 ~ 300"))
                 }
