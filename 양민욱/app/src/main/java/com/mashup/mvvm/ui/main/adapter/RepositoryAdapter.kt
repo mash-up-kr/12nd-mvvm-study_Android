@@ -40,8 +40,8 @@ class RepositoryViewHolder(
     private val viewBinding: ItemRepositoryBinding
 ) : RecyclerView.ViewHolder(viewBinding.root) {
     fun onBindRepository(repository: Repository) = viewBinding.apply {
-        viewBinding.imgProfile.loadImage(repository.owner.avatarUrl)
-        viewBinding.tvRepositoryName.text = repository.name
-        viewBinding.tvRepositoryLanguage.text = repository.language
+        imgProfile.loadImage(repository.owner.avatarUrl)
+        tvRepositoryName.text = repository.name
+        tvRepositoryLanguage.text = repository.language
     }
 }
