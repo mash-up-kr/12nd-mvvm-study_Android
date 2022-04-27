@@ -1,6 +1,9 @@
 package com.github.sookhee.mvvmstudy.network
 
+import com.github.sookhee.mvvmstudy.BuildConfig
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -12,15 +15,24 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 
 object RetrofitClient {
-    private val client = OkHttpClient.Builder().build()
+    private const val BASE_URL = "https://api.github.com/"
+
+    private val levelType: Level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE
+    private val logging = HttpLoggingInterceptor().apply {
+        setLevel(levelType)
+    }
+
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(logging)
+        .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.github.com/")
+        .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
 
-    fun<T> buildService(service: Class<T>): T{
+    fun <T> buildService(service: Class<T>): T {
         return retrofit.create(service)
     }
 }
