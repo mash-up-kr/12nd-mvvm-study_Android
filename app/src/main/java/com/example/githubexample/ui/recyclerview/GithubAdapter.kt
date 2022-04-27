@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.githubexample.entities.GithubResult
 import com.example.githubexample.databinding.RecyclerviewItemBinding
+import com.example.githubexample.entities.GithubResult
 
-class GithubAdapter : ListAdapter<GithubResult.Item, GithubAdapter.GithubViewHolder>(GithubDiffUtil) {
+class GithubAdapter : ListAdapter<GithubResult.Item, GithubAdapter.GithubViewHolder>(githubDiffUtil) {
     init {
         setHasStableIds(true)
     }
@@ -41,15 +41,17 @@ class GithubAdapter : ListAdapter<GithubResult.Item, GithubAdapter.GithubViewHol
 
     }
 
-    object GithubDiffUtil : DiffUtil.ItemCallback<GithubResult.Item>() {
-        override fun areItemsTheSame(oldItem: GithubResult.Item, newItem: GithubResult.Item): Boolean {
-            return oldItem.id == newItem.id
-        }
+    companion object {
+        private val githubDiffUtil = object : DiffUtil.ItemCallback<GithubResult.Item>() {
+            override fun areItemsTheSame(oldItem: GithubResult.Item, newItem: GithubResult.Item): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-        override fun areContentsTheSame(oldItem: GithubResult.Item, newItem: GithubResult.Item): Boolean {
-            return oldItem == newItem
-        }
+            override fun areContentsTheSame(oldItem: GithubResult.Item, newItem: GithubResult.Item): Boolean {
+                return oldItem == newItem
+            }
 
+        }
     }
 
 }
