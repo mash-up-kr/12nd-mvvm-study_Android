@@ -3,6 +3,8 @@ package com.example.myapplication.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemSearchBinding
@@ -15,31 +17,48 @@ import com.example.myapplication.presenter.search.SearchAdapterContract
  * @created 2022/04/25
  */
 class RepoAdapter() :
-    RecyclerView.Adapter<RepoAdapter.ViewHolder>(),
+    ListAdapter<Repository, RepoAdapter.RepoViewHolder>(diffUtil),
     SearchAdapterContract.View,
     SearchAdapterContract.Model {
 
-    private var repos: List<Repository>? = emptyList()
-    private var onItemClick: OnItemClick? = null
+    lateinit var onItemClick: OnItemClick
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
-    }
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<Repository>() {
+            override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(repos!![position])
-        holder.itemView.setOnClickListener {
-            onItemClick!!.onItemClick(position)
+            override fun areContentsTheSame(oldItem: Repository, newItem: Repository): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 
-    override fun getItemCount(): Int {
-        return repos!!.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
+
+        return RepoViewHolder(
+            ItemSearchBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ),
+            onItemClick
+        )
     }
 
-    class ViewHolder(private val binding: ItemSearchBinding) :
+    override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    class RepoViewHolder(private val binding: ItemSearchBinding, itemClick: OnItemClick) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            this.itemView.setOnClickListener {
+                itemClick.onItemClick(layoutPosition)
+            }
+        }
+
         fun bind(repo: Repository) {
             binding.tvMainName.text = repo.name
             if (repo.language != null) {
@@ -50,15 +69,11 @@ class RepoAdapter() :
         }
     }
 
-    override fun notifyAdapter() {
-        notifyDataSetChanged()
-    }
-
     override fun setOnClickListener(clickListener: OnItemClick) {
         onItemClick = clickListener
     }
 
     override fun setData(repos: List<Repository>) {
-        this.repos = repos
+        submitList(repos.toMutableList())
     }
 }
