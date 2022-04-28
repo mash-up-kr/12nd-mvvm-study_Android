@@ -12,30 +12,22 @@ class SearchPresenter :
     SearchContract.Model.OnFinishedListener,
     OnItemClick {
 
-    private var searchView: SearchContract.FragmentView? = null
-    private var searchModel: SearchContract.Model? = null
-    private var adapterModel: SearchAdapterContract.Model? = null
-    private var adapterView: SearchAdapterContract.View? = null
-
-    init {
-        searchModel = RepoListModel()
-    }
+    private lateinit var searchView: SearchContract.FragmentView
+    private val searchModel: SearchContract.Model = RepoListModel()
+    private lateinit var adapterModel: SearchAdapterContract.Model
+    private lateinit var adapterView: SearchAdapterContract.View
 
     override fun takeView(view: SearchContract.FragmentView) {
         searchView = view
     }
 
-    override fun dropView() {
-        searchView = null
-    }
-
     override fun getRepoList(q: String) {
-        searchView?.showLoading()
-        searchModel?.getRepoList(onFinishedListener = this, q = q)
+        searchView.showLoading()
+        searchModel.getRepoList(onFinishedListener = this, q = q)
     }
 
     override fun getRepoList() {
-        searchModel?.getRepoList(onFinishedListener = this)
+        searchModel.getRepoList(onFinishedListener = this)
     }
 
     override fun setRepoAdapterModel(model: SearchAdapterContract.Model) {
@@ -44,24 +36,19 @@ class SearchPresenter :
 
     override fun setRepoAdapterView(view: SearchAdapterContract.View) {
         adapterView = view
-        adapterView!!.setOnClickListener(this)
+        adapterView.setOnClickListener(this)
     }
 
     override fun onFinished(repos: List<Repository>) {
-        if (searchView != null) {
-            searchView!!.hideLoading()
-            adapterModel?.setData(repos)
-            adapterView?.notifyAdapter()
-        }
+        adapterModel.setData(repos)
+         searchView.hideLoading()
     }
 
     override fun onFailure(t: Throwable) {
-        if (searchView != null) {
-            searchView!!.hideLoading()
-        }
+        searchView.hideLoading()
     }
 
     override fun onItemClick(position: Int) {
-        searchView!!.navigateFragment()
+        searchView.navigateFragment()
     }
 }
