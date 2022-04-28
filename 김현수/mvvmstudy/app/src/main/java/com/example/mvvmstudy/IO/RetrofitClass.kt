@@ -10,9 +10,9 @@ object RetrofitClass {
     var retrofitService : IGithubService
 
     init {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
-        val logger = OkHttpClient.Builder().addInterceptor(interceptor)
+          val okHttpClient = OkHttpClient.Builder().addInterceptor(
+                 HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+        )
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .build()
