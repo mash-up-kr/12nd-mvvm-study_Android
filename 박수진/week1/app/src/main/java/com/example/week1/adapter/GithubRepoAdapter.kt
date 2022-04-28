@@ -29,19 +29,16 @@ class GithubRepoAdapter :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
-        return RepoViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder =
+        RepoViewHolder(
             RepoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
-    }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    override fun getItemId(position: Int): Long {
-        return getItem(position).id
-    }
+    override fun getItemId(position: Int): Long = getItem(position).id
 
     private companion object GithubRepoDiffUtil : DiffUtil.ItemCallback<GithubRepo>() {
         override fun areItemsTheSame(oldItem: GithubRepo, newItem: GithubRepo): Boolean {

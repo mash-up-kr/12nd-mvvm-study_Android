@@ -47,10 +47,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
-        binding.searchRecyclerview.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = githubRepoAdapter
-        }
+        binding.searchRecyclerview.adapter = githubRepoAdapter
     }
 
     private fun initEditText() {
