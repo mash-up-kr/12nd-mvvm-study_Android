@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.week1.adapter.GithubRepoAdapter
 import com.example.week1.base.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
@@ -33,9 +32,9 @@ class MainActivity : BaseActivity() {
         initActionBar()
         initRecyclerView()
         hideKeyBoard()
-        initEditText()
 
         Handler(Looper.getMainLooper()).postDelayed({
+            onProgress()
             getGithubRepoList("kotlin")
             updateQuery()
         }, 200)
@@ -50,10 +49,6 @@ class MainActivity : BaseActivity() {
         binding.searchRecyclerview.adapter = githubRepoAdapter
     }
 
-    private fun initEditText() {
-        binding.searchEt.text = null
-    }
-
     private fun getGithubRepoList(query: String) {
         RetrofitService.client.getRepoList(query)
             .enqueue(object : Callback<GithubRepoList> {
@@ -63,6 +58,7 @@ class MainActivity : BaseActivity() {
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.items.let { githubRepoAdapter.submitList(it) }
+                        offProgress()
                     }
                 }
 
@@ -82,20 +78,13 @@ class MainActivity : BaseActivity() {
                 if (query.isEmpty()) {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
-                    startProgress(query)
+                    onProgress()
+                    getGithubRepoList(query)
                 }
                 handled = true
             }
             handled
         }
-    }
-
-    private fun startProgress(query: String) {
-        onProgress()
-        getGithubRepoList(query)
-        Handler(Looper.getMainLooper()).postDelayed({
-            offProgress()
-        }, 2000)
     }
 
     private fun hideKeyBoard() {

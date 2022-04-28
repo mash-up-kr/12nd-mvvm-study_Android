@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="Search"
+            android:freezesText="false"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:textColor="@color/white"
