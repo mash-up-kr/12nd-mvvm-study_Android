@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+
 }
 
 android {
@@ -45,6 +46,7 @@ dependencies {
     //glide
     def glide_version = "4.13.0"
     implementation "com.github.bumptech.glide:glide:$glide_version"
+
     //navigation
     def nav_version = "2.4.2"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"

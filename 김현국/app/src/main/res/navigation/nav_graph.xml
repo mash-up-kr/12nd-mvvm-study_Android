@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.myapplication.view.detail.DetailFragment"
+        android:name="com.example.myapplication.view.detail."
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" />
 </navigation>
