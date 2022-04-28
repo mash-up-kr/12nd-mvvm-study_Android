@@ -9,7 +9,7 @@ interface IGithubService {
     @GET("search/repositories")
     fun searchRepositories(
         @Query("q") query: String,
-        @Query("page") page:Int,
-        @Query("per_page") per_page:Int
+        @Query("page") page: Int,
+        @Query("per_page") per_page: Int
         ): Call<Repositories>
 }
