@@ -14,7 +14,7 @@ interface ApiInterface {
 
     @GET("search/repositories")
     fun getRepositories(
-        @Query("q") q: String?
+        @Query("q") q: String
     ): Call<RepoResponse>
 
     @GET("repositories")

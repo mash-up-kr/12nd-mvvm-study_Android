@@ -3,7 +3,6 @@ package com.example.myapplication.network
 import com.example.myapplication.util.addHeader
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.io.IOException
 
 /**
  * @author 김현국
@@ -18,7 +17,7 @@ class NetworkInterceptor : Interceptor {
 
         try {
             response = chain.proceed(request)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             print(e)
         }
         return response
