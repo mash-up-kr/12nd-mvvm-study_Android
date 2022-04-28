@@ -18,8 +18,9 @@ class RepositoryAdapter(private val context: Context) : RecyclerView.Adapter<Rep
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_repository,parent,false)
-        return ViewHolder(view)
+        return ViewHolder(
+                 LayoutInflater.from(parent.context).inflate(R.layout.item_repository, parent , false)
+        )
     }
 
     fun setRepository(repo : List<Repository>){
