@@ -1,17 +1,16 @@
 package com.example.myapplication.view.search
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.adapter.RepoAdapter
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.databinding.FragmentSearchBinding
 import com.example.myapplication.presenter.search.SearchContract
 import com.example.myapplication.presenter.search.SearchPresenter
+
 /**
  * @author 김현국
  * @created 2022/04/25
@@ -23,29 +22,27 @@ class SearchFragment :
     private lateinit var searchPresenter: SearchPresenter
     private lateinit var repoAdapter: RepoAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        searchPresenter.getRepoList()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         searchPresenter.takeView(this)
-        initUI(this.requireContext())
-        arguments?.let {
-            if (it.getSerializable("q") != null) {
-                val q = it.getString("q")
-                if (!q.isNullOrBlank())
-                    searchPresenter.getRepoList(q)
-            }
-        }
+        initUI()
     }
 
-    private fun initUI(context: Context) {
+    private fun initUI() {
         repoAdapter = RepoAdapter()
-        binding.rvSearch.layoutManager = LinearLayoutManager(context)
         binding.rvSearch.adapter = repoAdapter
+        binding.rvSearch.itemAnimator = null
 
         searchPresenter.setRepoAdapterModel(repoAdapter)
         searchPresenter.setRepoAdapterView(repoAdapter)
+    }
 
-        searchPresenter.getRepoList()
+    fun passData(query: String) {
+        searchPresenter.getRepoList(query)
     }
 
     override fun initPresenter() {
