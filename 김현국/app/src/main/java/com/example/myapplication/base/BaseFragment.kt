@@ -19,12 +19,16 @@ abstract class BaseFragment<VB : ViewBinding>(
     private var _binding: VB? = null
     val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initPresenter()
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initPresenter()
+
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
     }

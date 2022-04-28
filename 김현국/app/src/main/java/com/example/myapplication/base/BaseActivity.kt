@@ -14,12 +14,12 @@ abstract class BaseActivity<VB : ViewBinding>(
     val bindingFactory: (LayoutInflater) -> VB
 ) : AppCompatActivity() {
 
-    private var _binding: VB? = null
-    val binding get() = _binding!!
+    protected lateinit var binding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = bindingFactory(layoutInflater)
+
+        binding = bindingFactory(layoutInflater)
         setContentView(binding.root)
         initPresenter()
     }

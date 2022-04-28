@@ -6,5 +6,4 @@ package com.example.myapplication.base
  */
 interface BasePresenter<T> {
     fun takeView(view: T)
-    fun dropView()
 }
