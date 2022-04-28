@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     response: Response<Repositories>
                 ) {
                     progress.show()
-                    when(response!!.code()){
+                    when(response?.code() ?: 0){
                         200->{
                             val body = response.body() as Repositories
                             adapter.setRepository(body.repositories)
