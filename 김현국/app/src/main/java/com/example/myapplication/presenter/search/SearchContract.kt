@@ -23,7 +23,7 @@ interface SearchContract {
         fun getRepoList(onFinishedListener: OnFinishedListener)
     }
 
-    // View - Presenter 연결 인터페이스 , View 구현 & Presenter 호출
+    // View - BaseView 연결 인터페이스 , View 구현 & Presenter 호출
     interface FragmentView : BaseFragmentView {
         override fun showLoading()
         override fun hideLoading()
@@ -31,7 +31,7 @@ interface SearchContract {
         fun navigateFragment()
     }
 
-    // View - Presenter 호출, Presenter 구현 / View 호출
+    // View - Presenter 연결 인터페이스, Presenter 구현 / View 호출
     interface Presenter : BasePresenter<FragmentView> {
         fun getRepoList(q: String)
         fun getRepoList()

@@ -16,10 +16,10 @@ class RepoListModel : SearchContract.Model {
         onFinishedListener: SearchContract.Model.OnFinishedListener,
         q: String
     ) {
-        val service: ApiInterface? = ApiClient().getInstance()?.create(ApiInterface::class.java)
-        val call: Call<RepoResponse>? = service?.getRepositories(q = q)
+        val service: ApiInterface = ApiClient.buildApi(ApiInterface::class.java)
+        val call: Call<RepoResponse> = service.getRepositories(q = q)
 
-        call?.enqueue(object : Callback<RepoResponse> {
+        call.enqueue(object : Callback<RepoResponse> {
             override fun onResponse(
                 call: Call<RepoResponse>,
                 response: Response<RepoResponse>
@@ -38,10 +38,10 @@ class RepoListModel : SearchContract.Model {
     }
 
     override fun getRepoList(onFinishedListener: SearchContract.Model.OnFinishedListener) {
-        val service: ApiInterface? = ApiClient().getInstance()?.create(ApiInterface::class.java)
-        val call: Call<List<Repository>>? = service?.getRepositories()
+        val service: ApiInterface = ApiClient.buildApi(ApiInterface::class.java)
+        val call: Call<List<Repository>> = service.getRepositories()
 
-        call?.enqueue(object : Callback<List<Repository>> {
+        call.enqueue(object : Callback<List<Repository>> {
             override fun onResponse(call: Call<List<Repository>>, response: Response<List<Repository>>) {
                 if (!response.isSuccessful)
                     return

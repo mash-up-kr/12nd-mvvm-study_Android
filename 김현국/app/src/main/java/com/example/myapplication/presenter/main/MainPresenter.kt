@@ -9,8 +9,4 @@ class MainPresenter : MainContract.Presenter {
     override fun takeView(view: MainContract.View) {
         mainView = view
     }
-
-    override fun dropView() {
-        mainView = null
-    }
 }
