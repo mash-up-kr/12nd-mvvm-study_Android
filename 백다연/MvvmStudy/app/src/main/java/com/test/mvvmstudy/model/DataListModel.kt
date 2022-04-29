@@ -29,6 +29,4 @@ class DataListModel : SearchContract.Presenter.Model {
 
         })
     }
-
-
 }

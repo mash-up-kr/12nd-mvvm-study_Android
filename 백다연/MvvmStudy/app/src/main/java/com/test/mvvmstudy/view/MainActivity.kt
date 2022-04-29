@@ -62,7 +62,8 @@ class MainActivity : AppCompatActivity(), SearchContract.View {
     }
 
     override fun showResult(result: List<ResultDetail>) {
-        adapter.submitList(result)
-        progressbarVisible(false)
+        adapter.submitList(result) {
+            progressbarVisible(false)
+        }
     }
 }
