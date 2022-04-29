@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            tools:src="@drawable/mashup" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -34,7 +34,7 @@
             app:layout_constraintStart_toEndOf="@+id/iv_item"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/tv_language"
-            tools:text="title"/>
+            tools:text="제목입니다"/>
 
         <TextView
             android:id="@+id/tv_language"

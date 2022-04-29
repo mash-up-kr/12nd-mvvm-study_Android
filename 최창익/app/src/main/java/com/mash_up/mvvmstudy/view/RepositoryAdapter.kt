@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mash_up.mvvmstudy.databinding.ItemListBinding
 import com.mash_up.mvvmstudy.model.Repository
 
-class RepositoryAdapter : ListAdapter<Repository, RecyclerView.ViewHolder>(repositoryDiffCallback) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+class RepositoryAdapter :
+    ListAdapter<Repository, RepositoryAdapter.RepositoryViewHolder>(repositoryDiffCallback) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder =
         RepositoryViewHolder(
             ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as RepositoryViewHolder).bind(getItem(position))
+    override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    class RepositoryViewHolder(val binding: ItemListBinding) :
+    class RepositoryViewHolder(private val binding: ItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(repository: Repository) {
             binding.repository = repository
