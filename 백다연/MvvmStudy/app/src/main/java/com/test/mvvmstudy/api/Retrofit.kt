@@ -1,17 +1,17 @@
 package com.test.mvvmstudy.api
 
-import com.test.mvvmstudy.util.Constants
+import com.test.mvvmstudy.util.GITHUB_DOMAIN
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 object Retrofit {
-    private val retrofit: Retrofit.Builder by lazy {
-        Retrofit.Builder()
-            .baseUrl(Constants.GITHUB_DOMAIN)
-            .addConverterFactory(GsonConverterFactory.create())
-    }
 
-    val githubApi : GithubApi by lazy {
-        retrofit.build().create(GithubApi::class.java)
-    }
+    private val retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(GITHUB_DOMAIN)
+        .build()
+
+    val githubApi : GithubApi = retrofit.create()
+
 }

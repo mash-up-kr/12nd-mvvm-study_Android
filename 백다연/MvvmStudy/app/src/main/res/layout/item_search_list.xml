@@ -6,7 +6,7 @@
     <data>
         <variable
             name="searchData"
-            type="com.test.mvvmstudy.data.ResultDetail" />
+            type="com.test.mvvmstudy.model.ResultDetail" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,9 +32,9 @@
             android:layout_marginStart="16dp"
             android:text="@{searchData.name}"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/language"
-            app:layout_constraintStart_toEndOf="@+id/profile_img"
-            app:layout_constraintTop_toTopOf="@+id/profile_img" />
+            app:layout_constraintBottom_toTopOf="@id/language"
+            app:layout_constraintStart_toEndOf="@id/profile_img"
+            app:layout_constraintTop_toTopOf="@id/profile_img" />
 
         <TextView
             android:id="@+id/language"
@@ -44,9 +44,9 @@
             android:layout_marginTop="4dp"
             android:text="@{searchData.language}"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_img"
-            app:layout_constraintStart_toEndOf="@+id/profile_img"
-            app:layout_constraintTop_toBottomOf="@+id/repository_name" />
+            app:layout_constraintBottom_toBottomOf="@id/profile_img"
+            app:layout_constraintStart_toEndOf="@id/profile_img"
+            app:layout_constraintTop_toBottomOf="@id/repository_name" />
 
         <View
             android:id="@+id/view"
@@ -59,7 +59,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_img" />
+            app:layout_constraintTop_toBottomOf="@id/profile_img" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

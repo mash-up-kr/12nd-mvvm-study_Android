@@ -7,15 +7,15 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import com.test.mvvmstudy.R
 import com.test.mvvmstudy.adapter.SearchResultAdapter
-import com.test.mvvmstudy.data.ResultDetail
+import com.test.mvvmstudy.model.ResultDetail
 import com.test.mvvmstudy.databinding.ActivityMainBinding
 import com.test.mvvmstudy.presenter.SearchContract
 import com.test.mvvmstudy.presenter.SearchPresenter
 
 class MainActivity : AppCompatActivity(), SearchContract.View {
     private lateinit var searchPresenter: SearchPresenter
-    private lateinit var binding : ActivityMainBinding
-    private val adapter : SearchResultAdapter by lazy {
+    private lateinit var binding: ActivityMainBinding
+    private val adapter: SearchResultAdapter by lazy {
         SearchResultAdapter()
     }
 
@@ -40,9 +40,10 @@ class MainActivity : AppCompatActivity(), SearchContract.View {
         val searchView = menu?.findItem(R.id.search)?.actionView as SearchView
         searchView.queryHint = getString(R.string.search)
 
-        searchView.setOnQueryTextListener(object  : SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
+                    progressbarVisible(true)
                     searchPresenter.getSearchResult(query)
                 }
                 return false
@@ -55,17 +56,13 @@ class MainActivity : AppCompatActivity(), SearchContract.View {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun progressbarVisible(visible: Boolean) {
+        if (visible) binding.progressBar.visibility = View.VISIBLE
+        else binding.progressBar.visibility = View.INVISIBLE
+    }
+
     override fun showResult(result: List<ResultDetail>) {
         adapter.submitList(result)
+        progressbarVisible(false)
     }
-
-    override fun showLoading() {
-        binding.progressBar.visibility = View.VISIBLE
-    }
-
-    override fun hideLoading() {
-        binding.progressBar.visibility = View.INVISIBLE
-    }
-
-
 }
