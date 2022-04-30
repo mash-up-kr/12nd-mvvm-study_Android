@@ -8,8 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ClientFactory {
-    private val okHttpClient = createOkHttpClient()
-    private val retrofit = createRetrofit()
+    private val okHttpClient by lazy { createOkHttpClient() }
+    private val retrofit by lazy { createRetrofit() }
 
     private fun createOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder().apply {

@@ -7,7 +7,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-@BindingAdapter("imageUrl")
+@BindingAdapter("imageUrl", "errorImageRes", "placeHolderImageRes", requireAll = false)
 fun loadImage(
     imageView: ImageView,
     url: String,
