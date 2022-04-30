@@ -34,7 +34,6 @@ class MainActivity : BaseActivity() {
         hideKeyBoard()
 
         Handler(Looper.getMainLooper()).postDelayed({
-            onProgress()
             getGithubRepoList("kotlin")
             updateQuery()
         }, 200)
@@ -50,6 +49,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun getGithubRepoList(query: String) {
+        onProgress()
         RetrofitService.client.getRepoList(query)
             .enqueue(object : Callback<GithubRepoList> {
                 override fun onResponse(
@@ -78,7 +78,6 @@ class MainActivity : BaseActivity() {
                 if (query.isEmpty()) {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
-                    onProgress()
                     getGithubRepoList(query)
                 }
                 handled = true
