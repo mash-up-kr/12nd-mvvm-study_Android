@@ -2,14 +2,15 @@ package com.example.githubexample.ui
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -32,13 +33,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         ViewModelProvider(this, GithubViewModelFactory(RemoteDataSourceImpl(), this)).get(GithubViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = DataBindingUtil.bind(view) ?: throw IllegalStateException("fail to bind")
 
         setSearchViewBackButtonListener()
         initView()
@@ -56,7 +53,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun onItemClick(item: GithubResult.Item) {
-        Log.d("TAG", "onItemClick: $item")
+        parentFragmentManager.commit {
+            replace<DetailFragment>(R.id.fragment_container_view_tag, args = bundleOf("githubData" to item))
+            addToBackStack("MainFragment")
+            setReorderingAllowed(true)
+        }
     }
 
     private fun initView() {
@@ -97,7 +98,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
+        binding.unbind()
         _binding = null
+        super.onDestroyView()
     }
 }

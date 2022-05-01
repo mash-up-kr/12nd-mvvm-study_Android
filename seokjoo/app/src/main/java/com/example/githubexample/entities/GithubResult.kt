@@ -1,6 +1,9 @@
 package com.example.githubexample.entities
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 data class GithubResult(
     @SerializedName("incomplete_results")
@@ -10,6 +13,7 @@ data class GithubResult(
     @SerializedName("total_count")
     val totalCount: Int = 0
 ) {
+    @Parcelize
     data class Item(
         @SerializedName("archive_url")
         val archiveUrl: String,
@@ -100,7 +104,7 @@ data class GithubResult(
         @SerializedName("languages_url")
         val languagesUrl: String,
         @SerializedName("license")
-        val license: License,
+        val license: @RawValue License,
         @SerializedName("master_branch")
         val masterBranch: String,
         @SerializedName("merges_url")
@@ -120,7 +124,7 @@ data class GithubResult(
         @SerializedName("open_issues_count")
         val openIssuesCount: Int,
         @SerializedName("owner")
-        val owner: Owner,
+        val owner: @RawValue Owner,
         @SerializedName("private")
         val `private`: Boolean,
         @SerializedName("pulls_url")
@@ -163,7 +167,7 @@ data class GithubResult(
         val watchers: Int,
         @SerializedName("watchers_count")
         val watchersCount: Int
-    ) {
+    ) : Parcelable {
         data class License(
             @SerializedName("html_url")
             val htmlUrl: String,
