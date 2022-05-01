@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/searchFragment">
-
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.test.mvvmstudy.SearchFragment"
+        android:name="com.test.mvvmstudy.view.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -16,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchDetailFragment"
-        android:name="com.test.mvvmstudy.SearchDetailFragment"
+        android:name="com.test.mvvmstudy.view.SearchDetailFragment"
         android:label="fragment_search_detail"
         tools:layout="@layout/fragment_search_detail" />
 </navigation>
