@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mash_up.mvvmstudy.databinding.ItemListBinding
-import com.mash_up.mvvmstudy.model.Repository
+import com.mash_up.mvvmstudy.repository.model.Repository
 
 class RepositoryAdapter :
     ListAdapter<Repository, RepositoryAdapter.RepositoryViewHolder>(repositoryDiffCallback) {

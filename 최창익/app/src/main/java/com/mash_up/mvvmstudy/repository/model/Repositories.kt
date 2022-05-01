@@ -1,4 +1,4 @@
-package com.mash_up.mvvmstudy.model
+package com.mash_up.mvvmstudy.repository.model
 
 import com.google.gson.annotations.SerializedName
 

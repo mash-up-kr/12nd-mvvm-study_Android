@@ -7,7 +7,7 @@
 
         <variable
             name="repository"
-            type="com.mash_up.mvvmstudy.model.Repository" />
+            type="com.mash_up.mvvmstudy.repository.model.Repository" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

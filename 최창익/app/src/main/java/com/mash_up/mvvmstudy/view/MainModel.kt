@@ -1,5 +1,8 @@
-package com.mash_up.mvvmstudy.model
+package com.mash_up.mvvmstudy.view
 
+import com.mash_up.mvvmstudy.repository.model.Repositories
+import com.mash_up.mvvmstudy.repository.remote.ClientFactory
+import com.mash_up.mvvmstudy.repository.remote.GitService
 import com.orhanobut.logger.Logger
 import retrofit2.Call
 import retrofit2.Callback

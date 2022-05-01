@@ -1,4 +1,4 @@
-package com.mash_up.mvvmstudy.model
+package com.mash_up.mvvmstudy.repository.remote
 
 import com.mash_up.mvvmstudy.BASE_URL
 import com.orhanobut.logger.Logger
