@@ -10,18 +10,27 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.githubexample.R
 import com.example.githubexample.databinding.FragmentMainBinding
 import com.example.githubexample.entities.GithubResult
 import com.example.githubexample.model.remote.RemoteDataSourceImpl
 import com.example.githubexample.ui.recyclerview.GithubAdapter
+import com.example.githubexample.viewmodel.GithubViewModel
+import com.example.githubexample.viewmodel.GithubViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
 
-class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
+class MainFragment : Fragment(R.layout.fragment_main) {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val githubAdapter by lazy { GithubAdapter(::onItemClick) }
-    private val mainPresenter = MainPresenter(this, RemoteDataSourceImpl())
     private lateinit var callback: OnBackPressedCallback
+    private val githubViewModel: GithubViewModel by lazy {
+        ViewModelProvider(this, GithubViewModelFactory(RemoteDataSourceImpl(), this)).get(GithubViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -33,15 +42,24 @@ class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
 
         setSearchViewBackButtonListener()
         initView()
+        submitRecyclerViewList()
+    }
+
+    private fun submitRecyclerViewList() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                githubViewModel.uiState.collectLatest {
+                    githubAdapter.submitList(it.items)
+                }
+            }
+        }
     }
 
     private fun onItemClick(item: GithubResult.Item) {
         Log.d("TAG", "onItemClick: $item")
     }
 
-    override fun initView() {
-        activeProgressbar(false)
-
+    private fun initView() {
         binding.apply {
             recylcerview.adapter = githubAdapter
             lifecycleOwner = viewLifecycleOwner
@@ -49,7 +67,7 @@ class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                mainPresenter.getRepositoryList(query)
+                githubViewModel.getRepositoryList(query)
                 hideKeyboard()
                 return true
             }
@@ -60,23 +78,12 @@ class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
         })
     }
 
-    override fun hideKeyboard() {
+    private fun hideKeyboard() {
         val imm: InputMethodManager = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
     }
 
-    override fun submitList(list: List<GithubResult.Item>) {
-        githubAdapter.submitList(list)
-    }
-
-    override fun showError(t: Throwable) {
-        Log.d("TAG", "showError: $t")
-    }
-
-    override fun activeProgressbar(active: Boolean) =
-        if (active) binding.progressbar.visibility = View.VISIBLE else binding.progressbar.visibility = View.GONE
-
-    override fun setSearchViewBackButtonListener() {
+    private fun setSearchViewBackButtonListener() {
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.searchView.isIconified) {

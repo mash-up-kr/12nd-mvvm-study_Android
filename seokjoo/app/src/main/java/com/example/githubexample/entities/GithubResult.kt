@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class GithubResult(
     @SerializedName("incomplete_results")
-    val incompleteResults: Boolean,
+    val incompleteResults: Boolean = false,
     @SerializedName("items")
-    val items: List<Item>,
+    val items: List<Item> = emptyList(),
     @SerializedName("total_count")
-    val totalCount: Int
+    val totalCount: Int = 0
 ) {
     data class Item(
         @SerializedName("archive_url")

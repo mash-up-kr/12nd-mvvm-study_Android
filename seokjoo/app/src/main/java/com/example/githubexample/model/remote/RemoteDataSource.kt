@@ -1,7 +1,8 @@
 package com.example.githubexample.model.remote
 
-import com.example.githubexample.ui.MainContract
+import com.example.githubexample.entities.GithubResult
+import retrofit2.Response
 
 interface RemoteDataSource {
-    fun getRepositoryList(query: String, modelResult: MainContract.Presenter.ModelResult)
+    suspend fun getRepositoryList(query: String): Response<GithubResult>
 }
