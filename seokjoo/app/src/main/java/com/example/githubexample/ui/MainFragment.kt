@@ -19,7 +19,7 @@ import com.example.githubexample.ui.recyclerview.GithubAdapter
 class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-    private val githubAdapter = GithubAdapter(::onItemClick)
+    private val githubAdapter by lazy { GithubAdapter(::onItemClick) }
     private val mainPresenter = MainPresenter(this, RemoteDataSourceImpl())
     private lateinit var callback: OnBackPressedCallback
 
@@ -41,7 +41,12 @@ class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
 
     override fun initView() {
         activeProgressbar(false)
-        binding.recylcerview.adapter = githubAdapter
+
+        binding.apply {
+            recylcerview.adapter = githubAdapter
+            lifecycleOwner = viewLifecycleOwner
+        }
+
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 mainPresenter.getRepositoryList(query)
