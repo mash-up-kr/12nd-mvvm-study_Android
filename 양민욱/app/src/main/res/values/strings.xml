@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">mvvm</string>
+    <string name="hint_search_repository">저장소 이름을 입력해주세요</string>
+</resources>
