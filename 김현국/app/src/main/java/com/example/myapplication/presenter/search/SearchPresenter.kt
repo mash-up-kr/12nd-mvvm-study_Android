@@ -41,7 +41,7 @@ class SearchPresenter :
 
     override fun onFinished(repos: List<Repository>) {
         adapterModel.setData(repos)
-         searchView.hideLoading()
+        searchView.hideLoading()
     }
 
     override fun onFailure(t: Throwable) {

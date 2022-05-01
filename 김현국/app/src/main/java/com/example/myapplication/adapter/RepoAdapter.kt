@@ -1,7 +1,6 @@
 package com.example.myapplication.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -18,13 +17,13 @@ import com.example.myapplication.presenter.search.SearchAdapterContract
  */
 class RepoAdapter() :
     ListAdapter<Repository, RepoAdapter.RepoViewHolder>(diffUtil),
-    SearchAdapterContract.View,
-    SearchAdapterContract.Model {
+    SearchAdapterContract.Model,
+    SearchAdapterContract.View {
 
     lateinit var onItemClick: OnItemClick
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Repository>() {
+        private val diffUtil = object : DiffUtil.ItemCallback<Repository>() {
             override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean {
                 return oldItem.id == newItem.id
             }
@@ -69,11 +68,11 @@ class RepoAdapter() :
         }
     }
 
-    override fun setOnClickListener(clickListener: OnItemClick) {
-        onItemClick = clickListener
-    }
-
     override fun setData(repos: List<Repository>) {
         submitList(repos.toMutableList())
+    }
+
+    override fun setOnClickListener(clickListener: OnItemClick) {
+        this.onItemClick = clickListener
     }
 }
