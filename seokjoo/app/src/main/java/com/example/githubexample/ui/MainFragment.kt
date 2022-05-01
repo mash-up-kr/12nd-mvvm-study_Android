@@ -19,7 +19,7 @@ import com.example.githubexample.ui.recyclerview.GithubAdapter
 class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-    private val githubAdapter = GithubAdapter()
+    private val githubAdapter = GithubAdapter(::onItemClick)
     private val mainPresenter = MainPresenter(this, RemoteDataSourceImpl())
     private lateinit var callback: OnBackPressedCallback
 
@@ -33,6 +33,10 @@ class MainFragment : Fragment(R.layout.fragment_main), MainContract.View {
 
         setSearchViewBackButtonListener()
         initView()
+    }
+
+    private fun onItemClick(item: GithubResult.Item) {
+        Log.d("TAG", "onItemClick: $item")
     }
 
     override fun initView() {

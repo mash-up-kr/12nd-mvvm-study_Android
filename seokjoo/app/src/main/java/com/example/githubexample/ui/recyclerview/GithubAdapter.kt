@@ -9,13 +9,15 @@ import com.bumptech.glide.Glide
 import com.example.githubexample.databinding.RecyclerviewItemBinding
 import com.example.githubexample.entities.GithubResult
 
-class GithubAdapter : ListAdapter<GithubResult.Item, GithubAdapter.GithubViewHolder>(githubDiffUtil) {
+class GithubAdapter(
+    private val itemClick: (GithubResult.Item) -> Unit
+) : ListAdapter<GithubResult.Item, GithubAdapter.GithubViewHolder>(githubDiffUtil) {
     init {
         setHasStableIds(true)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubViewHolder {
-        return GithubViewHolder(parent)
+        return GithubViewHolder(parent, itemClick)
     }
 
     override fun onBindViewHolder(holder: GithubViewHolder, position: Int) {
@@ -26,12 +28,15 @@ class GithubAdapter : ListAdapter<GithubResult.Item, GithubAdapter.GithubViewHol
         return getItem(position).id.toLong()
     }
 
-    class GithubViewHolder(private val parent: ViewGroup) : RecyclerView.ViewHolder(
+    class GithubViewHolder(private val parent: ViewGroup, private val itemClick: (GithubResult.Item) -> Unit) : RecyclerView.ViewHolder(
         RecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
     ) {
         private val binding: RecyclerviewItemBinding = RecyclerviewItemBinding.bind(itemView)
 
         fun bind(item: GithubResult.Item) {
+            itemView.setOnClickListener {
+                itemClick(item)
+            }
             binding.tvRepositoryName.text = item.name
             binding.tvRepositoryLanguage.text = item.language
             Glide.with(itemView.context)
