@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MashUp MVVM Study</string>
+    <string name="search_hint">Search…</string>
+</resources>
