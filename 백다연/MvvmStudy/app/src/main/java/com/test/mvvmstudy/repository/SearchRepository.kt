@@ -1,16 +1,17 @@
-package com.test.mvvmstudy.model
+package com.test.mvvmstudy.repository
 
 import android.util.Log
 import com.test.mvvmstudy.api.Retrofit
-import com.test.mvvmstudy.presenter.SearchContract
+import com.test.mvvmstudy.data.Result
+import com.test.mvvmstudy.data.ResultDetail
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DataListModel : SearchContract.Presenter.Model {
-    override fun getSearchResult(
-        query: String,
-        onSuccess: (List<ResultDetail>) -> Unit,
+class SearchRepository {
+
+    fun searchRepository(
+        query: String, onSuccess: (List<ResultDetail>) -> Unit,
         onFailure: (String) -> Unit
     ) {
         val searchApiCall = Retrofit.githubApi.getSearchList(query)
@@ -19,12 +20,12 @@ class DataListModel : SearchContract.Presenter.Model {
                 if (response.isSuccessful) {
                     response.body()?.let { onSuccess(it.items) }
                 }
-                onFailure("error")
+                onFailure(response.message())
             }
 
             override fun onFailure(call: Call<Result>, t: Throwable) {
                 Log.d("fail", t.message.toString())
-                onFailure("error${t.message}")
+                onFailure(t.message.toString())
             }
 
         })

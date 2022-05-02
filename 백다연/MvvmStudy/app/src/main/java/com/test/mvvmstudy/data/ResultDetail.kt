@@ -1,4 +1,4 @@
-package com.test.mvvmstudy.model
+package com.test.mvvmstudy.data
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

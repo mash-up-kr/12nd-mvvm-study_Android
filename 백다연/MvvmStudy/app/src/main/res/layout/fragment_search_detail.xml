@@ -7,7 +7,7 @@
     <data>
         <variable
             name="searchData"
-            type="com.test.mvvmstudy.model.ResultDetail" />
+            type="com.test.mvvmstudy.data.ResultDetail" />
     </data>
 
 
@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/profile_img"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,8 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="@{@string/star(searchData.starCount.toString())}"
             android:textColor="@color/black"
-            android:text="@{searchData.starCount.toString()}"
             app:layout_constraintBottom_toBottomOf="@id/profile_img"
             app:layout_constraintStart_toEndOf="@id/profile_img"
             app:layout_constraintTop_toBottomOf="@id/user_name" />
@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@{searchData.name}"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@id/star_count"
             app:layout_constraintStart_toEndOf="@id/profile_img"
             app:layout_constraintTop_toTopOf="parent" />
@@ -61,32 +62,32 @@
             layout="@layout/item_detail_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:content="@{searchData.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/line"
-            app:title="@{@string/description}"
-            app:content="@{searchData.description}"/>
+            app:title="@{@string/description}" />
 
         <include
             android:id="@+id/include_language"
             layout="@layout/item_detail_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:content="@{searchData.language}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/include_description"
-            app:title="@{@string/language}"
-            app:content="@{searchData.language}"/>
+            app:title="@{@string/language}" />
 
         <include
             android:id="@+id/include_update"
             layout="@layout/item_detail_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:content="@{searchData.updateAt}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/include_language"
-            app:title="@{@string/last_update}"
-            app:content="@{searchData.updateAt}"/>
+            app:title="@{@string/last_update}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

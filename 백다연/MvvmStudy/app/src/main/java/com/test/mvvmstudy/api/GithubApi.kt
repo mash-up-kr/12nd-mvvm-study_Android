@@ -1,5 +1,5 @@
 package com.test.mvvmstudy.api
-import com.test.mvvmstudy.model.Result
+import com.test.mvvmstudy.data.Result
 
 import retrofit2.Call
 import retrofit2.http.GET
