@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initRecycler()
         getRepository(GithubRetrofit.githubRetrofit.searchRepositories())
-        initSearchView()
+        initSearchViewss()
         supportActionBar?.hide()
     }
 
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun initSearchView() {
+    private fun initSearchViewss() {
         var request: Call<RepositoriesResponse>
         binding.searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
