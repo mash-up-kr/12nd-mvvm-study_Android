@@ -1,6 +1,7 @@
 package com.mashup.mvvm
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.mashup.mvvm.data.repository.GithubRepository
 import com.mashup.mvvm.network.GithubApi
 import com.mashup.mvvm.network.GithubInterceptor
 import kotlinx.serialization.json.Json
@@ -25,6 +26,10 @@ object ServiceLocator {
         retrofit.create(GithubApi::class.java)
     }
 
+    private val githubRepository: GithubRepository by lazy {
+        GithubRepository(githubApi)
+    }
+
     private fun getGithubRetrofitClient(): Retrofit {
         val contentType = "application/json".toMediaType()
         val okHttpClientBuilder = OkHttpClient.Builder()
@@ -46,5 +51,6 @@ object ServiceLocator {
             .build()
     }
 
-    fun injectGithubApi(): GithubApi = githubApi
+    fun injectGithubRepository(): GithubRepository = githubRepository
+
 }
