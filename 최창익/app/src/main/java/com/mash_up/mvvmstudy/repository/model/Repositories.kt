@@ -1,19 +1,20 @@
 package com.mash_up.mvvmstudy.repository.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Repositories(
     @SerializedName("total_count")
-    val totalCount : Int,
+    val totalCount: Int,
     @SerializedName("incomplete_results")
-    val incompleteResult : Boolean,
+    val incompleteResult: Boolean,
     @SerializedName("items")
     val repositories: List<Repository>
 )
 
 data class Repository(
     @SerializedName("id")
-    val id : Long,
+    val id: Long,
     @SerializedName("name")
     val name: String,
     @SerializedName("full_name")
@@ -21,8 +22,14 @@ data class Repository(
     @SerializedName("owner")
     val owner: Owner,
     @SerializedName("language")
-    val language: String
-)
+    val language: String,
+    @SerializedName("stargazers_count")
+    val stargazersCount: Int,
+    @SerializedName("description")
+    val description: String,
+    @SerializedName("updated_at")
+    val updatedAt: String,
+): Serializable
 
 data class Owner(
     @SerializedName("login")
@@ -31,4 +38,15 @@ data class Owner(
     val id: Long,
     @SerializedName("avatar_url")
     val avatarUrl: String
-)
+): Serializable
+
+fun Repository.toDetailUiModel() =
+    DetailUiModel(
+        userName = owner.login,
+        repositoryName = name,
+        stargazerCount = stargazersCount.toString(),
+        description = description,
+        language = language,
+        lastUpdated = updatedAt,
+        avatarUrl = owner.avatarUrl
+    )
