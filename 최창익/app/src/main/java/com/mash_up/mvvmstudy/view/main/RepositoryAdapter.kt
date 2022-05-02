@@ -1,4 +1,4 @@
-package com.mash_up.mvvmstudy.view
+package com.mash_up.mvvmstudy.view.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
