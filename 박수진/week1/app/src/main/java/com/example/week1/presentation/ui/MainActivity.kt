@@ -1,17 +1,16 @@
-package com.example.week1.view
+package com.example.week1.presentation.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.example.week1.adapter.GithubRepoAdapter
-import com.example.week1.base.BaseActivity
+import com.example.week1.data.dataclass.GithubRepoList
+import com.example.week1.data.network.RetrofitService
+import com.example.week1.presentation.adapter.GithubRepoAdapter
+import com.example.week1.presentation.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
-import com.example.week1.model.GithubRepoList
-import com.example.week1.network.RetrofitService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +20,11 @@ class MainActivity : BaseActivity() {
     private var backWaitTime: Long = 0
     private lateinit var binding: ActivityMainBinding
     private val githubRepoAdapter: GithubRepoAdapter by lazy {
-        GithubRepoAdapter()
+        GithubRepoAdapter { repo ->
+            val intent = Intent(this, RepoDetailActivity::class.java)
+            intent.putExtra("username", repo.owner.login)
+            startActivity(intent)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +36,8 @@ class MainActivity : BaseActivity() {
         initRecyclerView()
         hideKeyBoard()
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            getGithubRepoList("kotlin")
-            updateQuery()
-        }, 200)
+        updateQuery()
+
     }
 
     private fun initActionBar() {
@@ -50,7 +51,7 @@ class MainActivity : BaseActivity() {
 
     private fun getGithubRepoList(query: String) {
         onProgress()
-        RetrofitService.client.getRepoList(query)
+        RetrofitService.client.getGithubRepoList(query)
             .enqueue(object : Callback<GithubRepoList> {
                 override fun onResponse(
                     call: Call<GithubRepoList>,
