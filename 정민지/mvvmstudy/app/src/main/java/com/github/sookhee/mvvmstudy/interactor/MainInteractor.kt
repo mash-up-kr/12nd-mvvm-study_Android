@@ -5,7 +5,6 @@ import com.github.sookhee.mvvmstudy.network.GithubAPI
 import com.github.sookhee.mvvmstudy.network.RetrofitClient
 import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryListResponse
 import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryResponse
-import com.github.sookhee.mvvmstudy.ui.main.MainContract
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,8 +16,8 @@ import retrofit2.Response
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-class MainInteractor(private val request: GithubAPI) : MainContract.Interactor {
-    override fun getGithubRepositoryList(onNetworkCallbackListener: MainContract.Interactor.OnNetworkCallbackListener) {
+class MainInteractor(private val request: GithubAPI) {
+    fun getGithubRepositoryList() {
         val call = request.getRepository()
 
         call.enqueue(object : Callback<List<GithubRepositoryResponse>> {
@@ -31,24 +30,21 @@ class MainInteractor(private val request: GithubAPI) : MainContract.Interactor {
                 if (response.isSuccessful) {
                     Log.d(TAG, "onResponse: ${response.body()}")
                     response.body()?.let {
-                        onNetworkCallbackListener.onSuccess(it)
+                        // TODO: STATUS SUCCESS
                     }
                 } else {
-                    onNetworkCallbackListener.onFailure(Throwable("${response.code()}"))
+                    // TODO: STATUS FAIL
                 }
             }
 
             override fun onFailure(call: Call<List<GithubRepositoryResponse>>, t: Throwable) {
                 Log.d(TAG, "onFailure: ${t.message}")
-                onNetworkCallbackListener.onFailure(t)
+                // TODO: STATUS FAIL
             }
         })
     }
 
-    override fun getGithubRepositoryListWithQuery(
-        onNetworkCallbackListener: MainContract.Interactor.OnNetworkCallbackListener,
-        keyword: String
-    ) {
+    fun getGithubRepositoryListWithQuery(keyword: String) {
         val request = RetrofitClient.buildService(GithubAPI::class.java)
         val call = request.getRepositoryListWithQuery(keyword)
 
@@ -62,14 +58,16 @@ class MainInteractor(private val request: GithubAPI) : MainContract.Interactor {
                 if (response.isSuccessful) {
                     Log.d(TAG, "onResponse: ${response.body()?.items}")
                     response.body()?.items?.let {
-                        onNetworkCallbackListener.onSuccess(it)
+                        // TODO: STATUS SUCCESS
                     }
+                } else {
+                    // TODO: STATUS FAIL
                 }
             }
 
             override fun onFailure(call: Call<GithubRepositoryListResponse>, t: Throwable) {
                 Log.d(TAG, "onFailure: ${t.message}")
-                onNetworkCallbackListener.onFailure(t)
+                // TODO: STATUS FAIL
             }
         })
     }

@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.github.sookhee.mvvmstudy.databinding.ActivityMainBinding
-import com.github.sookhee.mvvmstudy.interactor.MainInteractor
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
 import com.github.sookhee.mvvmstudy.network.GithubAPI
 import com.github.sookhee.mvvmstudy.network.RetrofitClient
@@ -21,12 +21,12 @@ import com.github.sookhee.mvvmstudy.ui.detail.DetailActivity
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-class MainActivity : AppCompatActivity(), MainContract.View {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    private val viewModel: MainViewModel by viewModels()
     private val request by lazy { RetrofitClient.buildService(GithubAPI::class.java) }
-    private val interactor by lazy { MainInteractor(request) }
-    private val presenter by lazy { MainPresenter(this, interactor) }
+
     private val repositoryAdapter by lazy {
         RepositoryAdapter().apply {
             onItemClick = {
@@ -45,22 +45,22 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         setContentView(binding.root)
 
         initView()
-        presenter.requestDataToGithubAPI(EMPTY_STRING)
+        viewModel.requestDataToGithubAPI(EMPTY_STRING)
     }
 
-    override fun setDataToRecyclerView(list: List<GithubRepositoryModel>) {
+    private fun setDataToRecyclerView(list: List<GithubRepositoryModel>) {
         repositoryAdapter.submitList(list)
     }
 
-    override fun showErrorMessageToast(message: String) {
+    private fun showErrorMessageToast(message: String) {
         Toast.makeText(this, "error: $message", Toast.LENGTH_SHORT).show()
     }
 
-    override fun showProgress() {
+    private fun showProgress() {
         binding.progress.visibility = View.VISIBLE
     }
 
-    override fun hideProgress() {
+    private fun hideProgress() {
         binding.progress.visibility = View.GONE
     }
 
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
             searchButton.setOnClickListener {
                 val keyword = binding.searchEditText.text.toString()
-                presenter.requestDataToGithubAPI(keyword)
+                viewModel.requestDataToGithubAPI(keyword)
             }
 
             clearTextButton.setOnClickListener {
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             searchEditText.setOnEditorActionListener { _, action, _ ->
                 if (action == EditorInfo.IME_ACTION_SEARCH) {
                     val keyword = binding.searchEditText.text.toString()
-                    presenter.requestDataToGithubAPI(keyword)
+                    viewModel.requestDataToGithubAPI(keyword)
 
                     return@setOnEditorActionListener true
                 }
