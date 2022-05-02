@@ -1,5 +1,6 @@
 package com.mash_up.mvvmstudy.view.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -7,12 +8,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.mash_up.mvvmstudy.databinding.ActivityMainBinding
+import com.mash_up.mvvmstudy.view.detail.DetailActivity
+import com.mash_up.mvvmstudy.view.detail.DetailViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val adapter = RepositoryAdapter()
+    private lateinit var adapter: RepositoryAdapter
 
-    private val viewModel : MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
+        this.adapter = RepositoryAdapter { repository ->
+            val intent = Intent(this, DetailActivity::class.java).apply {
+                putExtra(DetailViewModel.REPOSITORY, repository)
+            }
+
+            startActivity(intent)
+        }
         binding.rvMain.adapter = this.adapter
     }
 
