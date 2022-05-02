@@ -16,7 +16,10 @@ import retrofit2.Response
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-class GithubRepository(private val request: GithubAPI) {
+class GithubRepository(
+    private val request: GithubAPI,
+    private val onNetworkCallbackListener: OnNetworkCallbackListener,
+) {
     fun getGithubRepositoryList() {
         val call = request.getRepository()
 
@@ -30,16 +33,16 @@ class GithubRepository(private val request: GithubAPI) {
                 if (response.isSuccessful) {
                     Log.d(TAG, "onResponse: ${response.body()}")
                     response.body()?.let {
-                        // TODO: STATUS SUCCESS
+                        onNetworkCallbackListener.onSuccess(it)
                     }
                 } else {
-                    // TODO: STATUS FAIL
+                    onNetworkCallbackListener.onFailure(Throwable(response.message()))
                 }
             }
 
             override fun onFailure(call: Call<List<GithubRepositoryResponse>>, t: Throwable) {
                 Log.d(TAG, "onFailure: ${t.message}")
-                // TODO: STATUS FAIL
+                onNetworkCallbackListener.onFailure(t)
             }
         })
     }
@@ -58,16 +61,16 @@ class GithubRepository(private val request: GithubAPI) {
                 if (response.isSuccessful) {
                     Log.d(TAG, "onResponse: ${response.body()?.items}")
                     response.body()?.items?.let {
-                        // TODO: STATUS SUCCESS
+                        onNetworkCallbackListener.onSuccess(it)
                     }
                 } else {
-                    // TODO: STATUS FAIL
+                    onNetworkCallbackListener.onFailure(Throwable(response.message()))
                 }
             }
 
             override fun onFailure(call: Call<GithubRepositoryListResponse>, t: Throwable) {
                 Log.d(TAG, "onFailure: ${t.message}")
-                // TODO: STATUS FAIL
+                onNetworkCallbackListener.onFailure(t)
             }
         })
     }

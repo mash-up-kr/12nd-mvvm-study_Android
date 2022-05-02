@@ -2,16 +2,16 @@ package com.github.sookhee.mvvmstudy.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.github.sookhee.mvvmstudy.ResultState
 import com.github.sookhee.mvvmstudy.databinding.ActivityMainBinding
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
-import com.github.sookhee.mvvmstudy.network.GithubAPI
-import com.github.sookhee.mvvmstudy.network.RetrofitClient
 import com.github.sookhee.mvvmstudy.ui.detail.DetailActivity
 
 /**
@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initView()
+        observeData()
+
         viewModel.requestDataToGithubAPI(EMPTY_STRING)
     }
 
@@ -93,7 +95,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun observeData() {
+        viewModel.repositoryState.observe(this) {
+            when (it) {
+                is ResultState.Loading -> showProgress()
+                is ResultState.Success<*> -> {
+                    try {
+                        hideProgress()
+                        setDataToRecyclerView(it.data as List<GithubRepositoryModel>)
+                    } catch (e: Exception) {
+                        Log.e(TAG, e.message.toString())
+                    }
+                }
+                is ResultState.Error -> {
+                    hideProgress()
+                    showErrorMessageToast(it.message)
+                }
+            }
+        }
+    }
+
     companion object {
+        private val TAG = MainActivity::class.simpleName
+
         const val EXTRA_REPOSITORY_ID = "EXTRA_REPOSITORY_ID"
         const val EMPTY_STRING = ""
     }
