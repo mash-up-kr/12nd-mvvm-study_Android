@@ -2,7 +2,10 @@ package com.github.sookhee.mvvmstudy.ui.main
 
 import androidx.lifecycle.ViewModel
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
+import com.github.sookhee.mvvmstudy.network.GithubAPI
+import com.github.sookhee.mvvmstudy.network.RetrofitClient
 import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryResponse
+import com.github.sookhee.mvvmstudy.repository.GithubRepository
 
 /**
  *  MainViewModel.kt
@@ -12,13 +15,15 @@ import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryResponse
  */
 
 class MainViewModel: ViewModel() {
+    private val request by lazy { RetrofitClient.buildService(GithubAPI::class.java) }
+    private val githubRepository = GithubRepository(request)
 
     fun requestDataToGithubAPI(keyword: String) {
         // TODO: STATUS LOADING
         if (keyword.isNotEmpty()) {
-//            interactor.getGithubRepositoryListWithQuery(keyword)
+            githubRepository.getGithubRepositoryListWithQuery(keyword)
         } else {
-//            interactor.getGithubRepositoryList()
+            githubRepository.getGithubRepositoryList()
         }
     }
 

@@ -23,9 +23,7 @@ import com.github.sookhee.mvvmstudy.ui.detail.DetailActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     private val viewModel: MainViewModel by viewModels()
-    private val request by lazy { RetrofitClient.buildService(GithubAPI::class.java) }
 
     private val repositoryAdapter by lazy {
         RepositoryAdapter().apply {

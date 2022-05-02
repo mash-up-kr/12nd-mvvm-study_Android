@@ -1,4 +1,4 @@
-package com.github.sookhee.mvvmstudy.interactor
+package com.github.sookhee.mvvmstudy.repository
 
 import android.util.Log
 import com.github.sookhee.mvvmstudy.network.GithubAPI
@@ -10,13 +10,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /**
- *  MainInteractor.kt
+ *  GithubRepository.kt
  *
  *  Created by Minji Jeong on 2022/04/25
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-class MainInteractor(private val request: GithubAPI) {
+class GithubRepository(private val request: GithubAPI) {
     fun getGithubRepositoryList() {
         val call = request.getRepository()
 
@@ -73,6 +73,6 @@ class MainInteractor(private val request: GithubAPI) {
     }
 
     companion object {
-        private val TAG = MainInteractor::class.simpleName
+        private val TAG = GithubRepository::class.simpleName
     }
 }
