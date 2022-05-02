@@ -1,20 +1,18 @@
 package com.example.githubexample.ui
 
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.githubexample.R
 import com.example.githubexample.databinding.FragmentMainBinding
 import com.example.githubexample.entities.GithubResult
@@ -30,15 +28,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val githubAdapter by lazy { GithubAdapter(::onItemClick) }
     private lateinit var callback: OnBackPressedCallback
     private val githubViewModel: GithubViewModel by lazy {
-        ViewModelProvider(this, GithubViewModelFactory(RemoteDataSourceImpl(), this)).get(GithubViewModel::class.java)
+        ViewModelProvider(requireActivity(), GithubViewModelFactory(RemoteDataSourceImpl(), this)).get(GithubViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = DataBindingUtil.bind(view) ?: throw IllegalStateException("fail to bind")
 
-        setSearchViewBackButtonListener()
         initView()
+        setSearchViewBackButtonListener()
         submitRecyclerViewList()
     }
 
@@ -53,17 +51,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun onItemClick(item: GithubResult.Item) {
-        parentFragmentManager.commit {
-            replace<DetailFragment>(R.id.fragment_container_view_tag, args = bundleOf("githubData" to item))
-            addToBackStack("MainFragment")
-            setReorderingAllowed(true)
-        }
+        val action = MainFragmentDirections.actionMainFragmentToDetailFragment(item)
+        findNavController().navigate(action)
     }
 
     private fun initView() {
         binding.apply {
             recylcerview.adapter = githubAdapter
-            lifecycleOwner = viewLifecycleOwner
         }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -80,7 +74,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun hideKeyboard() {
-        val imm: InputMethodManager = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm: InputMethodManager = requireActivity().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.searchView.windowToken, 0)
     }
 
