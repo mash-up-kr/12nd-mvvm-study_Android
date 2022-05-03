@@ -1,0 +1,59 @@
+package com.example.myapplication.ui.adapter
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myapplication.databinding.ItemFollowBinding
+import com.example.myapplication.ui.model.PresenterOwner
+
+/**
+ * @author 김현국
+ * @created 2022/05/03
+ */
+class DetailUserFollowingAdapter : ListAdapter<PresenterOwner, DetailUserFollowingAdapter.UserFollowingViewHolder>(diffUtil) {
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<PresenterOwner>() {
+            override fun areItemsTheSame(
+                oldItem: PresenterOwner,
+                newItem: PresenterOwner
+            ): Boolean {
+                return oldItem.login == newItem.login
+            }
+
+            override fun areContentsTheSame(
+                oldItem: PresenterOwner,
+                newItem: PresenterOwner
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): UserFollowingViewHolder {
+        return UserFollowingViewHolder(
+            ItemFollowBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent, false
+            )
+        )
+    }
+
+    override fun onBindViewHolder(holder: UserFollowingViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    inner class UserFollowingViewHolder(private val binding: ItemFollowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(user: PresenterOwner) {
+            Glide.with(binding.ivDetailFollowImage)
+                .load(user.image).into(binding.ivDetailFollowImage)
+            binding.tvDetailFollowName.text = user.login
+        }
+    }
+}
