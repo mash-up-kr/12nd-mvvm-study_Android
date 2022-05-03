@@ -2,18 +2,14 @@ package com.example.week1.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.week1.data.network.NetworkState
 import com.example.week1.presentation.adapter.GithubRepoAdapter
 import com.example.week1.presentation.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
-import com.example.week1.domain.repository.RepoListRepository
 import com.example.week1.presentation.viewmodel.RepoListViewModel
 
 class MainActivity : BaseActivity() {
@@ -24,8 +20,7 @@ class MainActivity : BaseActivity() {
     private val githubRepoAdapter: GithubRepoAdapter by lazy {
         GithubRepoAdapter { repo ->
             val intent = Intent(this, RepoDetailActivity::class.java)
-            intent.putExtra("owner", repo.owner.login)
-            intent.putExtra("repo", repo.name)
+            intent.putExtra("repo", repo)
             startActivity(intent)
         }
     }
@@ -38,7 +33,6 @@ class MainActivity : BaseActivity() {
         initActionBar()
         initRecyclerView()
         hideKeyBoard()
-
         updateQuery()
 
         viewModel = getViewModel()
@@ -62,9 +56,8 @@ class MainActivity : BaseActivity() {
         binding.searchRecyclerview.adapter = githubRepoAdapter
     }
 
-    private fun getViewModel(): RepoListViewModel {
-        return ViewModelProviders.of(this).get(RepoListViewModel::class.java)
-    }
+    private fun getViewModel(): RepoListViewModel =
+        ViewModelProviders.of(this).get(RepoListViewModel::class.java)
 
     private fun updateQuery() {
         binding.searchEt.setOnEditorActionListener { _, action, _ ->

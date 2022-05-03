@@ -1,6 +1,7 @@
 package com.example.week1.data.dataclass
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class GithubRepoList(
     @SerializedName("total_count")
@@ -24,7 +25,7 @@ data class GithubRepo(
     val updatedAt: String,
     @SerializedName("owner")
     val owner: GithubRepoOwner
-)
+) : Serializable
 
 data class GithubRepoOwner(
     @SerializedName("id")
@@ -33,4 +34,4 @@ data class GithubRepoOwner(
     val login: String,
     @SerializedName("avatar_url")
     val avatarUrl: String
-)
+) : Serializable

@@ -1,10 +1,8 @@
 package com.example.week1.data.api
 
-import com.example.week1.data.dataclass.GithubRepo
 import com.example.week1.data.dataclass.GithubRepoList
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GithubApi {
@@ -12,10 +10,4 @@ interface GithubApi {
     fun getGithubRepoList(
         @Query("q") query: String
     ): Call<GithubRepoList>
-
-    @GET("repos/{owner}/{repo}")
-    fun getGithubRepoDetail(
-        @Path("owner") owner: String,
-        @Path("repo") repo: String
-    ): Call<GithubRepo>
 }
