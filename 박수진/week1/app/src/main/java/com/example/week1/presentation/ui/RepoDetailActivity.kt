@@ -67,6 +67,7 @@ class RepoDetailActivity : BaseActivity() {
                 .load(it.avatarUrl)
                 .into(detailImg)
             detailName.text = it.login
+            detailUpdated.text = it.updatedAt
         }
     }
 }
