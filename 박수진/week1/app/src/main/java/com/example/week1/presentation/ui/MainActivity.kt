@@ -6,19 +6,21 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.example.week1.data.dataclass.GithubRepoList
-import com.example.week1.data.network.RetrofitService
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.example.week1.data.network.NetworkState
 import com.example.week1.presentation.adapter.GithubRepoAdapter
 import com.example.week1.presentation.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.week1.domain.repository.RepoListRepository
+import com.example.week1.presentation.viewmodel.RepoListViewModel
 
 class MainActivity : BaseActivity() {
 
     private var backWaitTime: Long = 0
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: RepoListViewModel
     private val githubRepoAdapter: GithubRepoAdapter by lazy {
         GithubRepoAdapter { repo ->
             val intent = Intent(this, RepoDetailActivity::class.java)
@@ -39,6 +41,16 @@ class MainActivity : BaseActivity() {
 
         updateQuery()
 
+        viewModel = getViewModel()
+        viewModel.repoList.observe(this) {
+            githubRepoAdapter.submitList(it)
+        }
+
+        viewModel.networkState.observe(this) {
+            if (it == NetworkState.LOADING) onProgress()
+            else offProgress()
+        }
+
     }
 
     private fun initActionBar() {
@@ -50,24 +62,8 @@ class MainActivity : BaseActivity() {
         binding.searchRecyclerview.adapter = githubRepoAdapter
     }
 
-    private fun getGithubRepoList(query: String) {
-        onProgress()
-        RetrofitService.client.getGithubRepoList(query)
-            .enqueue(object : Callback<GithubRepoList> {
-                override fun onResponse(
-                    call: Call<GithubRepoList>,
-                    response: Response<GithubRepoList>
-                ) {
-                    if (response.isSuccessful) {
-                        response.body()?.items.let { githubRepoAdapter.submitList(it) }
-                        offProgress()
-                    }
-                }
-
-                override fun onFailure(call: Call<GithubRepoList>, t: Throwable) {
-                    Log.e("retrofit", t.toString())
-                }
-            })
+    private fun getViewModel(): RepoListViewModel {
+        return ViewModelProviders.of(this).get(RepoListViewModel::class.java)
     }
 
     private fun updateQuery() {
@@ -80,7 +76,7 @@ class MainActivity : BaseActivity() {
                 if (query.isEmpty()) {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
-                    getGithubRepoList(query)
+                    viewModel.getQueryData(query)
                 }
                 handled = true
             }

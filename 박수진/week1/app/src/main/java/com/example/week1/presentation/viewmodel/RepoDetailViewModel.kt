@@ -12,8 +12,8 @@ class RepoDetailViewModel(
     private val repo: String
 ): ViewModel() {
 
-    val githubRepoUser: LiveData<GithubRepo> by lazy {
-        repoDetailRepository.fetchGithubUser(owner, repo)
+    val repoDetail: LiveData<GithubRepo> by lazy {
+        repoDetailRepository.fetchRepoDetail(owner, repo)
     }
 
     val networkState: LiveData<NetworkState> by lazy {

@@ -39,7 +39,7 @@ class RepoDetailActivity : BaseActivity() {
         repoDetailRepository = RepoDetailRepository()
 
         viewModel = getViewModel(owner, repo)
-        viewModel.githubRepoUser.observe(this) {
+        viewModel.repoDetail.observe(this) {
             bindUI(it)
         }
 

@@ -8,9 +8,9 @@ import com.example.week1.data.source.RepoDetailDataSource
 class RepoDetailRepository {
     lateinit var repoDetailDataSource: RepoDetailDataSource
 
-    fun fetchGithubUser(owner: String, repo: String): LiveData<GithubRepo> {
+    fun fetchRepoDetail(owner: String, repo: String): LiveData<GithubRepo> {
         repoDetailDataSource = RepoDetailDataSource()
-        repoDetailDataSource.fetchGithubUser(owner, repo)
+        repoDetailDataSource.fetchRepoDetail(owner, repo)
 
         return repoDetailDataSource.repoDetailResponse
     }
