@@ -18,4 +18,6 @@ data class GithubRepositoryResponse(
     val language: String?,
     @SerializedName("owner")
     val owner: GithubUserResponse,
+    @SerializedName("updated_at")
+    val lastUpdate: String?,
 )

@@ -47,7 +47,7 @@ class RepositoryAdapter :
                 onItemClick?.invoke(item)
             }
 
-            binding.repositoryName.text = item.name
+            binding.repositoryName.text = item.repoName
             binding.repositoryLanguage.text = item.language
 
             Glide.with(binding.root)

@@ -1,5 +1,8 @@
 package com.github.sookhee.mvvmstudy.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 /**
  *  GithubRepositoryModel.kt
  *
@@ -7,9 +10,12 @@ package com.github.sookhee.mvvmstudy.model
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
+@Parcelize
 data class GithubRepositoryModel(
     val id: Int,
-    val name: String,
+    val repoName: String,
+    val repoLastUpdate: String,
     val language: String,
+    val ownerName: String,
     val profileImage: String,
-)
+) : Parcelable

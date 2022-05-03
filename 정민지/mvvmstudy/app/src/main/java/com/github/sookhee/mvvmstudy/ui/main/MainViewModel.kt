@@ -48,8 +48,10 @@ class MainViewModel : ViewModel(), OnNetworkCallbackListener {
             list.add(
                 GithubRepositoryModel(
                     id = it.id,
-                    name = it.name,
+                    repoName = it.name,
+                    repoLastUpdate = it.lastUpdate ?: "",
                     language = it.language ?: "",
+                    ownerName = it.owner.name,
                     profileImage = it.owner.profileImage
                 )
             )

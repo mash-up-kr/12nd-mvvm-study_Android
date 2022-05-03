@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         RepositoryAdapter().apply {
             onItemClick = {
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra(EXTRA_REPOSITORY_ID, it.id)
+                intent.putExtra(EXTRA_REPOSITORY_KEY, it)
 
                 startActivity(intent)
             }
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private val TAG = MainActivity::class.simpleName
 
-        const val EXTRA_REPOSITORY_ID = "EXTRA_REPOSITORY_ID"
+        const val EXTRA_REPOSITORY_KEY = "EXTRA_REPOSITORY_KEY"
         const val EMPTY_STRING = ""
     }
 }
