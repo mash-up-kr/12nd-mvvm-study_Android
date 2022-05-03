@@ -3,7 +3,7 @@ package com.example.week1.data.source
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.week1.data.dataclass.GithubUser
+import com.example.week1.data.dataclass.GithubRepo
 import com.example.week1.data.network.NetworkState
 import com.example.week1.data.network.RetrofitService
 import retrofit2.Call
@@ -15,17 +15,17 @@ class RepoDetailDataSource {
     val networkState: LiveData<NetworkState>
         get() = _networkState
 
-    private val _repoDetailResponse = MutableLiveData<GithubUser>()
-    val repoDetailResponse: LiveData<GithubUser>
+    private val _repoDetailResponse = MutableLiveData<GithubRepo>()
+    val repoDetailResponse: LiveData<GithubRepo>
         get() = _repoDetailResponse
 
-    fun fetchGithubUser(username: String) {
+    fun fetchGithubUser(owner: String, repo: String) {
         _networkState.postValue(NetworkState.LOADING)
-        RetrofitService.client.getGithubUser(username)
-            .enqueue(object : Callback<GithubUser> {
+        RetrofitService.client.getGithubRepoDetail(owner, repo)
+            .enqueue(object : Callback<GithubRepo> {
                 override fun onResponse(
-                    call: Call<GithubUser>,
-                    response: Response<GithubUser>
+                    call: Call<GithubRepo>,
+                    response: Response<GithubRepo>
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.let { _repoDetailResponse.postValue(it) }
@@ -36,7 +36,7 @@ class RepoDetailDataSource {
                     }
                 }
 
-                override fun onFailure(call: Call<GithubUser>, t: Throwable) {
+                override fun onFailure(call: Call<GithubRepo>, t: Throwable) {
                     Log.e("Error", t.message.toString())
                 }
             })

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
-import com.example.week1.data.dataclass.GithubUser
+import com.example.week1.data.dataclass.GithubRepo
 import com.example.week1.data.network.NetworkState
 import com.example.week1.databinding.ActivityRepoDetailBinding
 import com.example.week1.domain.repository.RepoDetailRepository
@@ -18,7 +18,8 @@ class RepoDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityRepoDetailBinding
     private lateinit var viewModel: RepoDetailViewModel
     private lateinit var repoDetailRepository: RepoDetailRepository
-    private lateinit var username: String
+    private lateinit var owner: String
+    private lateinit var repo: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +28,9 @@ class RepoDetailActivity : BaseActivity() {
 
         initActionBar()
 
-        if (intent.hasExtra("username")) {
-            username = intent.getStringExtra("username").toString()
+        if (intent.hasExtra("owner")) {
+            owner = intent.getStringExtra("owner").toString()
+            repo = intent.getStringExtra("repo").toString()
         } else {
             Log.d("Error", "intent has no extra")
             finish()
@@ -36,7 +38,7 @@ class RepoDetailActivity : BaseActivity() {
 
         repoDetailRepository = RepoDetailRepository()
 
-        viewModel = getViewModel(username)
+        viewModel = getViewModel(owner, repo)
         viewModel.githubRepoUser.observe(this) {
             bindUI(it)
         }
@@ -53,20 +55,23 @@ class RepoDetailActivity : BaseActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
-    private fun getViewModel(username: String): RepoDetailViewModel {
+    private fun getViewModel(owner: String, repo: String): RepoDetailViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return RepoDetailViewModel(repoDetailRepository, username) as T
+                return RepoDetailViewModel(repoDetailRepository, owner, repo) as T
             }
         })[RepoDetailViewModel::class.java]
     }
 
-    private fun bindUI(it: GithubUser) {
+    private fun bindUI(it: GithubRepo) {
         with(binding) {
             Glide.with(root)
-                .load(it.avatarUrl)
+                .load(it.owner.avatarUrl)
                 .into(detailImg)
-            detailName.text = it.login
+            detailName.text = it.name
+            detailStarCnt.text = it.stargazersCount.toString()
+            detailDescription.text = it.description
+            detailLang.text = it.language
             detailUpdated.text = it.updatedAt
         }
     }

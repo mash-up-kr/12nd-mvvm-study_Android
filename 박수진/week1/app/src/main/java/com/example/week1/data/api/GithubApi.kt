@@ -1,7 +1,7 @@
 package com.example.week1.data.api
 
+import com.example.week1.data.dataclass.GithubRepo
 import com.example.week1.data.dataclass.GithubRepoList
-import com.example.week1.data.dataclass.GithubUser
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,8 +13,9 @@ interface GithubApi {
         @Query("q") query: String
     ): Call<GithubRepoList>
 
-    @GET("users/{username}")
-    fun getGithubUser(
-        @Path("username") username: String
-    ): Call<GithubUser>
+    @GET("repos/{owner}/{repo}")
+    fun getGithubRepoDetail(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Call<GithubRepo>
 }

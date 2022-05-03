@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GithubRepoList(
     @SerializedName("total_count")
-    val total_count: Int,
+    val totalCount: Int,
     @SerializedName("items")
     val items: List<GithubRepo>
 )
@@ -14,8 +14,14 @@ data class GithubRepo(
     val id: Long,
     @SerializedName("name")
     val name: String,
+    @SerializedName("description")
+    val description: String,
     @SerializedName("language")
     val language: String,
+    @SerializedName("stargazers_count")
+    val stargazersCount: Int,
+    @SerializedName("updated_at")
+    val updatedAt: String,
     @SerializedName("owner")
     val owner: GithubRepoOwner
 )
@@ -26,5 +32,5 @@ data class GithubRepoOwner(
     @SerializedName("login")
     val login: String,
     @SerializedName("avatar_url")
-    val avatar_url: String
+    val avatarUrl: String
 )

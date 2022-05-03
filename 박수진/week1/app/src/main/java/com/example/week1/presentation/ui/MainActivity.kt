@@ -22,7 +22,8 @@ class MainActivity : BaseActivity() {
     private val githubRepoAdapter: GithubRepoAdapter by lazy {
         GithubRepoAdapter { repo ->
             val intent = Intent(this, RepoDetailActivity::class.java)
-            intent.putExtra("username", repo.owner.login)
+            intent.putExtra("owner", repo.owner.login)
+            intent.putExtra("repo", repo.name)
             startActivity(intent)
         }
     }

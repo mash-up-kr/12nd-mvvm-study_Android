@@ -24,7 +24,7 @@ class GithubRepoAdapter (
         fun bind(repo: GithubRepo) {
             with(binding) {
                 Glide.with(root)
-                    .load(repo.owner.avatar_url)
+                    .load(repo.owner.avatarUrl)
                     .into(repoImg)
                 repoName.text = repo.name
                 repoLang.text = repo.language
