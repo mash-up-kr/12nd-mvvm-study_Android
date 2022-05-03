@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.example.week1.data.dataclass.GithubUser
 import com.example.week1.data.network.NetworkState
 import com.example.week1.domain.repository.RepoDetailRepository
-import io.reactivex.disposables.CompositeDisposable
 
 class RepoDetailViewModel(
     private val repoDetailRepository: RepoDetailRepository,
