@@ -2,11 +2,11 @@ package com.joocoding.android.app.githubsearch.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class RepositoryResponse(
+data class Repository(
     @SerializedName("name")
     val name: String,
     @SerializedName("owner")
-    val owner: OwnerResponse,
+    val owner: Owner,
     @SerializedName("private")
     val private: Boolean,
     @SerializedName("description")
