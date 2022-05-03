@@ -16,7 +16,7 @@ class RepoListViewModel : ViewModel() {
         repoListRepository.getNetworkState()
     }
 
-    fun getQueryData(query: String) {
+    fun updateRepoList(query: String) {
         repoList = repoListRepository.getRepoList(query)
     }
 }

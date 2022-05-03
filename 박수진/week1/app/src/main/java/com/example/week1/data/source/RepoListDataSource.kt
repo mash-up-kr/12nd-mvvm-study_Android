@@ -33,8 +33,8 @@ class RepoListDataSource {
                         response.body()?.let { _repoListResponse.postValue(it.items) }
                         _networkState.postValue(NetworkState.LOADED)
                     } else {
-                        _networkState.postValue(NetworkState.ERROR)
                         Log.e("Error", response.message())
+                        _networkState.postValue(NetworkState.ERROR)
                     }
                 }
 

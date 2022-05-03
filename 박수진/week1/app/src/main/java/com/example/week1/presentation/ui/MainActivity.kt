@@ -7,7 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.example.week1.data.network.NetworkState
-import com.example.week1.presentation.adapter.GithubRepoAdapter
+import com.example.week1.presentation.adapter.RepoAdapter
 import com.example.week1.presentation.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
 import com.example.week1.presentation.viewmodel.RepoListViewModel
@@ -17,8 +17,8 @@ class MainActivity : BaseActivity() {
     private var backWaitTime: Long = 0
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: RepoListViewModel
-    private val githubRepoAdapter: GithubRepoAdapter by lazy {
-        GithubRepoAdapter { repo ->
+    private val repoAdapter: RepoAdapter by lazy {
+        RepoAdapter { repo ->
             val intent = Intent(this, RepoDetailActivity::class.java)
             intent.putExtra("repo", repo)
             startActivity(intent)
@@ -33,11 +33,10 @@ class MainActivity : BaseActivity() {
         initActionBar()
         initRecyclerView()
         hideKeyBoard()
-        updateQuery()
 
         viewModel = getViewModel()
         viewModel.repoList.observe(this) {
-            githubRepoAdapter.submitList(it)
+            repoAdapter.submitList(it)
         }
 
         viewModel.networkState.observe(this) {
@@ -45,6 +44,7 @@ class MainActivity : BaseActivity() {
             else offProgress()
         }
 
+        updateQuery()
     }
 
     private fun initActionBar() {
@@ -53,7 +53,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
-        binding.searchRecyclerview.adapter = githubRepoAdapter
+        binding.searchRecyclerview.adapter = repoAdapter
     }
 
     private fun getViewModel(): RepoListViewModel =
@@ -69,7 +69,7 @@ class MainActivity : BaseActivity() {
                 if (query.isEmpty()) {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
-                    viewModel.getQueryData(query)
+                    viewModel.updateRepoList(query)
                 }
                 handled = true
             }

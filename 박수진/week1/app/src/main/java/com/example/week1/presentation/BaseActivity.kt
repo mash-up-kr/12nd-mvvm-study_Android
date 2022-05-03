@@ -10,6 +10,7 @@ import com.example.week1.R
 import com.example.week1.databinding.DialogProgressBinding
 
 open class BaseActivity : AppCompatActivity() {
+
     private lateinit var progressDialog: AppCompatDialog
 
     fun onProgress() {

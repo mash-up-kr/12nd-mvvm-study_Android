@@ -9,9 +9,9 @@ import com.bumptech.glide.Glide
 import com.example.week1.data.dataclass.GithubRepo
 import com.example.week1.databinding.RepoItemBinding
 
-class GithubRepoAdapter (
+class RepoAdapter (
     private val itemClick: (GithubRepo) -> Unit
-) : ListAdapter<GithubRepo, GithubRepoAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
+) : ListAdapter<GithubRepo, RepoAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
 
     init {
         setHasStableIds(true)
