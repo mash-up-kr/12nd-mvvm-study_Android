@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.repositoryState.observe(this) {
+        viewModel.repositoryResultState.observe(this) {
             when (it) {
                 is ResultState.Loading -> showProgress()
                 is ResultState.Success<*> -> {

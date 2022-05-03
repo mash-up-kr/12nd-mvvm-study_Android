@@ -19,22 +19,22 @@ import com.github.sookhee.mvvmstudy.repository.OnNetworkCallbackListener
  */
 
 class MainViewModel : ViewModel(), OnNetworkCallbackListener {
-    private val _repositoryState = MutableLiveData<ResultState>()
-    val repositoryState: LiveData<ResultState> = _repositoryState
+    private val _repositoryResultState = MutableLiveData<ResultState>()
+    val repositoryResultState: LiveData<ResultState> = _repositoryResultState
 
     private val request by lazy { RetrofitClient.buildService(GithubAPI::class.java) }
     private val githubRepository = GithubRepository(request, this)
 
     override fun onSuccess(list: List<GithubRepositoryResponse>) {
-        _repositoryState.postValue(ResultState.Success(mapToGithubRepositoryModelList(list)))
+        _repositoryResultState.postValue(ResultState.Success(mapToGithubRepositoryModelList(list)))
     }
 
     override fun onFailure(throwable: Throwable) {
-        _repositoryState.postValue(ResultState.Error(throwable.message.toString()))
+        _repositoryResultState.postValue(ResultState.Error(throwable.message.toString()))
     }
 
     fun requestDataToGithubAPI(keyword: String) {
-        _repositoryState.postValue(ResultState.Loading)
+        _repositoryResultState.postValue(ResultState.Loading)
         if (keyword.isNotEmpty()) {
             githubRepository.getGithubRepositoryListWithQuery(keyword)
         } else {
