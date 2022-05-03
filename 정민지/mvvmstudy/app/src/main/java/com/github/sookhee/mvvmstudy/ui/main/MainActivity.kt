@@ -48,51 +48,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.requestDataToGithubAPI(EMPTY_STRING)
     }
 
-    private fun setDataToRecyclerView(list: List<GithubRepositoryModel>) {
-        repositoryAdapter.submitList(list)
-    }
-
-    private fun showErrorMessageToast(message: String) {
-        Toast.makeText(this, "error: $message", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun showProgress() {
-        binding.progress.visibility = View.VISIBLE
-    }
-
-    private fun hideProgress() {
-        binding.progress.visibility = View.GONE
-    }
-
     private fun initView() {
-        with(binding) {
-            repositoryRecyclerView.adapter = repositoryAdapter
-
-            searchButton.setOnClickListener {
-                val keyword = binding.searchEditText.text.toString()
-                viewModel.requestDataToGithubAPI(keyword)
-            }
-
-            clearTextButton.setOnClickListener {
-                binding.searchEditText.text = null
-            }
-
-            searchEditText.addTextChangedListener {
-                if (it?.length ?: 0 > 0) binding.clearTextButton.visibility = View.VISIBLE
-                else binding.clearTextButton.visibility = View.GONE
-            }
-
-            searchEditText.setOnEditorActionListener { _, action, _ ->
-                if (action == EditorInfo.IME_ACTION_SEARCH) {
-                    val keyword = binding.searchEditText.text.toString()
-                    viewModel.requestDataToGithubAPI(keyword)
-
-                    return@setOnEditorActionListener true
-                }
-
-                return@setOnEditorActionListener false
-            }
-        }
+        setRepositoryRecyclerView()
+        setSearchEditText()
+        setOnClickListener()
     }
 
     private fun observeData() {
@@ -113,6 +72,57 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun setRepositoryRecyclerView() {
+        binding.repositoryRecyclerView.adapter = repositoryAdapter
+    }
+
+    private fun setSearchEditText() {
+        binding.searchEditText.apply {
+            addTextChangedListener {
+                if (it?.length ?: 0 > 0) binding.clearTextButton.visibility = View.VISIBLE
+                else binding.clearTextButton.visibility = View.GONE
+            }
+
+            setOnEditorActionListener { _, action, _ ->
+                if (action == EditorInfo.IME_ACTION_SEARCH) {
+                    val keyword = binding.searchEditText.text.toString()
+                    viewModel.requestDataToGithubAPI(keyword)
+
+                    return@setOnEditorActionListener true
+                }
+
+                return@setOnEditorActionListener false
+            }
+        }
+    }
+
+    private fun setOnClickListener() {
+        binding.searchButton.setOnClickListener {
+            val keyword = binding.searchEditText.text.toString()
+            viewModel.requestDataToGithubAPI(keyword)
+        }
+
+        binding.clearTextButton.setOnClickListener {
+            binding.searchEditText.text = null
+        }
+    }
+
+    private fun setDataToRecyclerView(list: List<GithubRepositoryModel>) {
+        repositoryAdapter.submitList(list)
+    }
+
+    private fun showErrorMessageToast(message: String) {
+        Toast.makeText(this, "error: $message", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showProgress() {
+        binding.progress.visibility = View.VISIBLE
+    }
+
+    private fun hideProgress() {
+        binding.progress.visibility = View.GONE
     }
 
     companion object {
