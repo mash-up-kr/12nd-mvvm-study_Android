@@ -1,8 +1,9 @@
 package com.example.githubexample.model.remote
 
+import androidx.paging.PagingData
 import com.example.githubexample.entities.GithubResult
-import retrofit2.Response
+import kotlinx.coroutines.flow.Flow
 
 interface RemoteDataSource {
-    suspend fun getRepositoryList(query: String): Response<GithubResult>
+    fun getRepositoryList(query: String): Flow<PagingData<GithubResult.Item>>
 }

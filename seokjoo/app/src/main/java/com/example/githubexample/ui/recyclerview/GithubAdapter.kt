@@ -3,29 +3,21 @@ package com.example.githubexample.ui.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubexample.databinding.RecyclerviewItemBinding
 import com.example.githubexample.entities.GithubResult
 
 class GithubAdapter(
     private val itemClick: (GithubResult.Item) -> Unit
-) : ListAdapter<GithubResult.Item, GithubAdapter.GithubViewHolder>(githubDiffUtil) {
-    init {
-        setHasStableIds(true)
-    }
-
+) : PagingDataAdapter<GithubResult.Item, GithubAdapter.GithubViewHolder>(githubDiffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubViewHolder {
         return GithubViewHolder(parent, itemClick)
     }
 
     override fun onBindViewHolder(holder: GithubViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
-
-    override fun getItemId(position: Int): Long {
-        return getItem(position).id.toLong()
+        getItem(position)?.let { holder.bind(it) }
     }
 
     class GithubViewHolder(private val parent: ViewGroup, private val itemClick: (GithubResult.Item) -> Unit) : RecyclerView.ViewHolder(

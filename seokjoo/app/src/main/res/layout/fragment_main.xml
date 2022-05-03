@@ -10,18 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.SearchView
+        <EditText
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Search.."
             android:imeOptions="actionSearch"
-            app:closeIcon="@drawable/ic_baseline_cancel_24"
-            app:iconifiedByDefault="true"
+            android:inputType="text"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/recylcerview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:queryHint="Search.." />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recylcerview"
