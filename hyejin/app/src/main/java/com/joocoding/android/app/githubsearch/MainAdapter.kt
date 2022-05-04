@@ -8,19 +8,24 @@ import com.bumptech.glide.Glide
 import com.joocoding.android.app.githubsearch.databinding.ItemRepositoryBinding
 import com.joocoding.android.app.githubsearch.model.response.Repository
 
-class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {
-
-    //외부 데이터에 대한 캡슐화가 안되어있다.
-    var datas = mutableListOf<Repository>()
+class MainAdapter(
+    private var datas: List<Repository> = emptyList(), private val clickEvent: (Repository) -> Unit
+) : RecyclerView.Adapter<MainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(
             ItemRepositoryBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
+            clickEvent
         )
+    }
+
+    fun setItem(newItem: List<Repository>) {
+        datas = newItem
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = datas.size
@@ -33,12 +38,16 @@ class MainAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
 }
 
-class MainViewHolder(private val binding: ItemRepositoryBinding) :
+class MainViewHolder(
+    private val binding: ItemRepositoryBinding,
+    private val clickEvent: (Repository) -> Unit
+) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(item: Repository) {
         binding.tvRvName.text = item.name
         binding.tvRvDescription.text = item.language
         Glide.with(itemView).load(item.owner.avatarUrl).into(binding.imgRvPhoto)
+        binding.root.setOnClickListener { clickEvent(item) }
 
     }
 

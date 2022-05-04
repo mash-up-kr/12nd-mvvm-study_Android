@@ -1,72 +1,60 @@
 package com.joocoding.android.app.githubsearch
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.joocoding.android.app.githubsearch.databinding.ActivityMainBinding
-import com.joocoding.android.app.githubsearch.model.response.Repositories
 import com.joocoding.android.app.githubsearch.model.response.Repository
-import com.joocoding.android.app.githubsearch.network.GithubRetrofit
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.joocoding.android.app.githubsearch.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainAdapter: MainAdapter
 
+    private val mainViewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.viewModel = mainViewModel
         initRecycler()
-        getRepository(GithubRetrofit.searchService.searchRepositories())
         initSearchView()
         supportActionBar?.hide()
+
     }
 
     private fun initRecycler() {
-        mainAdapter = MainAdapter()
+        mainAdapter = MainAdapter(clickEvent = { repository: Repository ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra(EXTRA_KEY_REPO, repository)
+            startActivity(intent)
+        }
+        )
+
         binding.recyclerView.adapter = mainAdapter
-
+        binding.viewModel?.repositories?.observe(
+            this,
+            Observer {
+                (binding.recyclerView.adapter as MainAdapter).setItem(it)
+            })
     }
-
-    private fun getRepository(repositoryRequest: Call<Repositories>) {
-        repositoryRequest.enqueue(object : Callback<Repositories> {
-            override fun onFailure(call: Call<Repositories>, t: Throwable) {
-                Log.e(TAG, "Failed to fetch photos", t)
-            }
-
-            override fun onResponse(
-                call: Call<Repositories>,
-                response: Response<Repositories>
-            ) {
-                Log.d(TAG, "Response received")
-                val repositories: Repositories? = response.body()
-                var repository: List<Repository> =
-                    repositories?.repositories?.filterNot {
-                        it.owner.avatarUrl.isBlank()
-                    } ?: emptyList()
-
-                Log.i(TAG, "repositoryResponse= $repository")
-                mainAdapter.datas = repository as MutableList<Repository>
-                mainAdapter.notifyDataSetChanged()
-            }
-
-        })
-    }
-
 
     private fun initSearchView() {
-        var request: Call<Repositories>
         binding.searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                 override fun onQueryTextChange(queryText: String?): Boolean {
                     queryText?.let {
-                        request = GithubRetrofit.searchService.searchRepositories(query = it)
-                        getRepository(request)
+                        Log.i(TAG, "initSearchView, queryText=$queryText")
+                        binding.viewModel?.getRepository(queryText)
+
                     }
                     return true
                 }
@@ -77,11 +65,15 @@ class MainActivity : AppCompatActivity() {
 
             })
         }
+
+
     }
 
     companion object {
         private const val TAG = "MainActivity"
+        private const val EXTRA_KEY_REPO = "extra_key_repo"
     }
 }
+
 
 

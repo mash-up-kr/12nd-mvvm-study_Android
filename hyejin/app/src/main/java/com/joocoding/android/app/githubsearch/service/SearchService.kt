@@ -7,9 +7,10 @@ import retrofit2.http.Query
 
 interface SearchService {
     @GET("search/repositories")
-    fun searchRepositories(
+    fun getRepository(
         @Query("q") query: String = "mash-up",
         @Query("sort") sort: String = "stars",
         @Query("order") order: String = "desc"
     ): Call<Repositories>
+
 }

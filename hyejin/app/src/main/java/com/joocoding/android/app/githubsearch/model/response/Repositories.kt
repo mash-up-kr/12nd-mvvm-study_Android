@@ -1,6 +1,7 @@
 package com.joocoding.android.app.githubsearch.model.response
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 data class Repositories(
@@ -10,4 +11,4 @@ data class Repositories(
     val incompleteResults: Boolean,
     @SerializedName("items")
     val repositories: List<Repository>
-)
+): Serializable
