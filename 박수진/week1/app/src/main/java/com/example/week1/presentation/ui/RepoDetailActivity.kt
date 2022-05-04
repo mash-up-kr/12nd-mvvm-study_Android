@@ -2,6 +2,7 @@ package com.example.week1.presentation.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import com.bumptech.glide.Glide
 import com.example.week1.data.dataclass.GithubRepo
 import com.example.week1.databinding.ActivityRepoDetailBinding
@@ -42,6 +43,16 @@ class RepoDetailActivity : BaseActivity() {
             detailDescription.text = repo.description
             detailLang.text = repo.language
             detailUpdated.text = repo.updatedAt
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
