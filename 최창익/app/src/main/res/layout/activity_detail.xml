@@ -13,13 +13,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_detail"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/_guide_start"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="8dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/_guide_end"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="8dp" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container_repo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toEndOf="@id/_guide_end"
+            app:layout_constraintStart_toStartOf="@id/_guide_start"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_detail">
 
             <ImageView
                 android:id="@+id/iv_profile"
@@ -36,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:textSize="16sp"
-                android:text="@{uiState.repositoryName}"
+                android:text="@{uiState.userName}"
                 app:layout_constraintBottom_toTopOf="@+id/tv_stars"
                 app:layout_constraintStart_toEndOf="@+id/iv_profile"
                 app:layout_constraintTop_toTopOf="parent"
@@ -63,6 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="6dp"
+            android:background="#aaaaaa"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_repo" />
@@ -71,17 +94,17 @@
             android:id="@+id/container_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/_guide_end"
+            app:layout_constraintStart_toStartOf="@id/_guide_start"
             app:layout_constraintTop_toBottomOf="@+id/guideline_repo">
 
             <ImageView
                 android:id="@+id/iv_description"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                imageUrl="@drawable/ic_baseline_description_24"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/mashup" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_description_title"
@@ -115,6 +138,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="6dp"
+            android:background="#aaaaaa"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_description" />
@@ -123,17 +147,17 @@
             android:id="@+id/container_language"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/_guide_end"
+            app:layout_constraintStart_toStartOf="@id/_guide_start"
             app:layout_constraintTop_toBottomOf="@+id/guideline_description">
 
             <ImageView
                 android:id="@+id/iv_language"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                imageUrl="@drawable/ic_baseline_announcement_24"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/mashup" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_language_title"
@@ -167,6 +191,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="6dp"
+            android:background="#aaaaaa"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_language" />
@@ -175,8 +200,8 @@
             android:id="@+id/container_last_updated"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/_guide_end"
+            app:layout_constraintStart_toStartOf="@id/_guide_start"
             app:layout_constraintTop_toBottomOf="@+id/guideline_language">
 
             <ImageView
@@ -185,7 +210,7 @@
                 android:layout_height="48dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/mashup" />
+                imageUrl="@drawable/ic_baseline_alarm_on_24" />
 
             <TextView
                 android:id="@+id/tv_last_updated_title"
@@ -219,6 +244,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="4dp"
+            android:background="#aaaaaa"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"

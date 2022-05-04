@@ -28,8 +28,7 @@ class RepositoryAdapter(val onClickItem: (Repository) -> Unit) :
 
     class RepositoryViewHolder(
         val binding: ItemListBinding
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(repository: Repository) {
             binding.repository = repository
         }
