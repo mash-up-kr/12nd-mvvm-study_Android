@@ -18,7 +18,8 @@ import com.example.myapplication.ui.view.main.MainViewModel
  * @created 2022/04/25
  */
 class SearchFragment :
-    BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate), SearchAdapter.OnItemClick {
+    BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate),
+        (PresenterRepository) -> Unit {
 
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var model: SearchViewModel
@@ -38,10 +39,10 @@ class SearchFragment :
         initUI()
     }
 
-    private fun initUI() {
-        searchAdapter = SearchAdapter(onItemClick = this)
-        binding.rvSearch.adapter = searchAdapter
-        binding.rvSearch.itemAnimator = null
+    private fun initUI() = with(binding) {
+        searchAdapter = SearchAdapter(itemListener = this@SearchFragment)
+        rvSearch.adapter = searchAdapter
+        rvSearch.itemAnimator = null
     }
 
     private fun initObserve() {
@@ -56,8 +57,7 @@ class SearchFragment :
                 searchAdapter.submitList(result.value)
             }
             is Results.Failure -> {
-                if (result.message != null)
-                    showToast(result.message)
+                showToast(result.message ?: "예상치 못한 오류 발생")
             }
             is Results.Loading -> {
                 showLoading()
@@ -79,13 +79,12 @@ class SearchFragment :
         binding.avSearchIndicator.playAnimation()
     }
 
-    override fun onItemClick(repository: PresenterRepository) {
-        val stars = repository.stars ?: 0
+    override fun invoke(repository: PresenterRepository) {
         val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(
             name = repository.name,
             login = repository.owner.login,
             image = repository.owner.image,
-            stars = stars,
+            stars = repository.stars ?: 0,
             description = repository.description,
             language = repository.language,
             lastUpdate = repository.lastUpdated

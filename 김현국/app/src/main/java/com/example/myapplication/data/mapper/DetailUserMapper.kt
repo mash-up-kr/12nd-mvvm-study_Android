@@ -13,11 +13,11 @@ fun detailUserToPresenterModel(
 ): List<PresenterOwner> {
     val list = mutableListOf<PresenterOwner>()
 
-    dataOwnerList.forEach {
+    dataOwnerList.forEach { dataOwner ->
         list.add(
             PresenterOwner(
-                login = it.login,
-                image = it.image
+                login = dataOwner.login,
+                image = dataOwner.image
             )
         )
     }

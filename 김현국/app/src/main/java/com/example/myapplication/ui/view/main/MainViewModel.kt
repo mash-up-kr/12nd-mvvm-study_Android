@@ -9,9 +9,10 @@ import androidx.lifecycle.ViewModel
  * @created 2022/05/02
  */
 class MainViewModel : ViewModel() {
-    private var _query = MutableLiveData<String>()
+    private var _query: MutableLiveData<String> = MutableLiveData<String>()
     val query: LiveData<String>
         get() = _query
+
     fun updateQuery(q: String) {
         _query.value = q
     }

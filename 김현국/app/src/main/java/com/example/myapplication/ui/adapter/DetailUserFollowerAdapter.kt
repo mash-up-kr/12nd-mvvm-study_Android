@@ -53,10 +53,9 @@ class DetailUserFollowerAdapter :
 
     class UserFollowerViewHolder(private val binding: ItemFollowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: PresenterOwner) {
-            Glide.with(binding.ivDetailFollowImage)
-                .load(user.image).into(binding.ivDetailFollowImage)
-            binding.tvDetailFollowName.text = user.login
+        fun bind(user: PresenterOwner) = with(binding) {
+            Glide.with(ivDetailFollowImage).load(user.image).into(ivDetailFollowImage)
+            tvDetailFollowName.text = user.login
         }
     }
 }

@@ -25,18 +25,14 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initUI()
-    }
-
-    private fun initUI() {
         setListener()
     }
 
-    private fun setListener() {
-        binding.svMain.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+    private fun setListener() = with(binding) {
+        svMain.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 model.updateQuery(query)
-                imm.hideSoftInputFromWindow(binding.svMain.windowToken, 0)
+                imm.hideSoftInputFromWindow(svMain.windowToken, 0)
                 return true
             }
 
@@ -47,10 +43,10 @@ class MainActivity :
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_detail -> {
-                    binding.abMain.visibility = View.GONE
+                    abMain.visibility = View.GONE
                 }
                 R.id.navigation_search -> {
-                    binding.abMain.visibility = View.VISIBLE
+                    abMain.visibility = View.VISIBLE
                 }
             }
         }

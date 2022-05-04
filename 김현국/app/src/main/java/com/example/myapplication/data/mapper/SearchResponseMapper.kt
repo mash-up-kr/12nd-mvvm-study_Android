@@ -15,16 +15,16 @@ fun searchRepositoryResponseToPresenterModel(
 ): List<PresenterRepository> {
     val list = mutableListOf<PresenterRepository>()
 
-    response.items.forEach {
+    response.items.forEach { dataRepository ->
         list.add(
             PresenterRepository(
-                id = it.id,
-                name = it.name,
-                language = it.language,
-                owner = ownerToPresenterModel(it.owner),
-                stars = it.stars,
-                description = it.description,
-                lastUpdated = it.lastUpdated
+                id = dataRepository.id,
+                name = dataRepository.name,
+                language = dataRepository.language,
+                owner = ownerToPresenterModel(dataRepository.owner),
+                stars = dataRepository.stars,
+                description = dataRepository.description,
+                lastUpdated = dataRepository.lastUpdated
 
             )
         )

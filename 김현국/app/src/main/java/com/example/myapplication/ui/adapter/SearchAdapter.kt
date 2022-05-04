@@ -14,14 +14,9 @@ import com.example.myapplication.ui.model.PresenterRepository
  * @created 2022/04/25
  */
 class SearchAdapter(
-    onItemClick: OnItemClick
+    private val itemListener: (PresenterRepository) -> Unit
 ) :
     ListAdapter<PresenterRepository, SearchAdapter.RepoViewHolder>(diffUtil) {
-
-    interface OnItemClick {
-        fun onItemClick(repository: PresenterRepository)
-    }
-    var onItemClick: OnItemClick = onItemClick
 
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<PresenterRepository>() {
@@ -58,20 +53,17 @@ class SearchAdapter(
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
-            onItemClick.onItemClick(getItem(position))
+            itemListener.invoke(getItem(position))
         }
     }
 
     class RepoViewHolder(private val binding: ItemSearchBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(repo: PresenterRepository) {
-            binding.tvMainName.text = repo.name
-            if (repo.language != null) {
-                binding.tvMainLanguage.text = repo.language
-            }
-            Glide.with(binding.ivMainImage)
-                .load(repo.owner.image).into(binding.ivMainImage)
+        fun bind(repo: PresenterRepository) = with(binding) {
+            tvMainName.text = repo.name
+            tvMainLanguage.text = repo.language ?: ""
+            Glide.with(ivMainImage).load(repo.owner.image).into(ivMainImage)
         }
     }
 }

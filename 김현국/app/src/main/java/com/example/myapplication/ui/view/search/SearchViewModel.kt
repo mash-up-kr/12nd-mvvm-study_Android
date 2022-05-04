@@ -30,9 +30,7 @@ class SearchViewModel(
                 }
 
                 override fun onError(throwable: Throwable) {
-                    if (throwable.message != null) {
-                        Logger.e(throwable, throwable.message!!)
-                    }
+                    Logger.e(throwable, throwable.message ?: "예상치 못한 오류 메세지")
                     _repoList.value = Results.Failure("오류 발생", null)
                 }
 

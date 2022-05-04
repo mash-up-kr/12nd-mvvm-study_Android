@@ -2,7 +2,6 @@ package com.example.myapplication.ui.view.detail
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -36,34 +35,34 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         initUI()
     }
 
-    private fun initUI() {
+    private fun initUI() = with(binding) {
         detailUserFollowingAdapter = DetailUserFollowingAdapter()
         detailUserFollowerAdapter = DetailUserFollowerAdapter()
 
-        Glide.with(binding.ivDetailImage).load(args.image).into(binding.ivDetailImage)
-        binding.tvDetailRepoName.text = args.name
-        binding.tvDetailStars.text =
+        Glide.with(ivDetailImage).load(args.image).into(ivDetailImage)
+        tvDetailRepoName.text = args.name
+        tvDetailStars.text =
             StringBuilder().append("\u2605").append(args.stars).append(" stars").toString()
-        binding.tvDetailDescriptionSmall.text = args.description
-        binding.tvDetailLanguageSmall.text = args.language
-        binding.tvDetailLastUpdateSmall.text = args.lastUpdate
-        binding.tvDetailUserName.text = args.login
+        tvDetailDescriptionSmall.text = args.description
+        tvDetailLanguageSmall.text = args.language
+        tvDetailLastUpdateSmall.text = args.lastUpdate
+        tvDetailUserName.text = args.login
 
-        binding.rvDetailUserFollower.layoutManager =
-            LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvDetailUserFollower.adapter = detailUserFollowerAdapter
+        rvDetailUserFollower.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        rvDetailUserFollower.adapter = detailUserFollowerAdapter
 
-        binding.rvDetailUserFollowing.layoutManager =
-            LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvDetailUserFollowing.adapter = detailUserFollowingAdapter
+        rvDetailUserFollowing.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        rvDetailUserFollowing.adapter = detailUserFollowingAdapter
 
         model.getUserFollowing(args.login)
         model.getUserFollower(args.login)
     }
 
-    private fun initObserve() {
-        model.userFollowerList.observe(viewLifecycleOwner, userFollowerListObserver)
-        model.userFollowingList.observe(viewLifecycleOwner, userFollowingListObserver)
+    private fun initObserve() = with(model) {
+        userFollowerList.observe(viewLifecycleOwner, userFollowerListObserver)
+        userFollowingList.observe(viewLifecycleOwner, userFollowingListObserver)
     }
 
     private val userFollowerListObserver = Observer<Results<List<PresenterOwner>>> { result ->
@@ -72,7 +71,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 detailUserFollowerAdapter.submitList(result.value)
             }
             is Results.Failure -> {
-                Toast.makeText(this.requireContext(), result.message, Toast.LENGTH_SHORT).show()
+                showToast(result.message ?: "예상치 못한 오류 발생")
             }
             is Results.Loading -> {
             }
@@ -85,8 +84,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 detailUserFollowingAdapter.submitList(result.value)
             }
             is Results.Failure -> {
-                if (result.message != null)
-                    showToast(result.message)
+                showToast(result.message ?: "예상치 못한 오류 발생")
             }
             is Results.Loading -> {
             }

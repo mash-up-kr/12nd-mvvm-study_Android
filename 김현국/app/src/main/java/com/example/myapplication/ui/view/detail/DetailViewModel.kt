@@ -16,8 +16,10 @@ import com.orhanobut.logger.Logger
 class DetailViewModel(
     val detailUserRepository: DetailUserRepository
 ) : ViewModel() {
-    private var _userFollowingList: MutableLiveData<Results<List<PresenterOwner>>> = MutableLiveData()
-    private var _userFollowerList: MutableLiveData<Results<List<PresenterOwner>>> = MutableLiveData()
+    private var _userFollowingList: MutableLiveData<Results<List<PresenterOwner>>> =
+        MutableLiveData()
+    private var _userFollowerList: MutableLiveData<Results<List<PresenterOwner>>> =
+        MutableLiveData()
 
     val userFollowingList: LiveData<Results<List<PresenterOwner>>>
         get() = _userFollowingList
@@ -29,14 +31,11 @@ class DetailViewModel(
             username = username,
             callback = object : BaseResponse<List<PresenterOwner>> {
                 override fun onSuccess(data: List<PresenterOwner>) {
-                    Logger.t("following").d(data)
                     _userFollowingList.value = Results.Success(data)
                 }
 
                 override fun onError(throwable: Throwable) {
-                    if (throwable.message != null) {
-                        Logger.e(throwable, throwable.message!!)
-                    }
+                    Logger.e(throwable, throwable.message ?: "예상치 못한 오류 메세지")
                     _userFollowingList.value = Results.Failure("오류 발생", null)
                 }
 
@@ -46,19 +45,17 @@ class DetailViewModel(
             }
         )
     }
+
     fun getUserFollower(username: String) {
         detailUserRepository.getUserFollower(
             username = username,
             callback = object : BaseResponse<List<PresenterOwner>> {
                 override fun onSuccess(data: List<PresenterOwner>) {
-                    Logger.t("follower").d(data)
                     _userFollowerList.value = Results.Success(data)
                 }
 
                 override fun onError(throwable: Throwable) {
-                    if (throwable.message != null) {
-                        Logger.e(throwable, throwable.message!!)
-                    }
+                    Logger.e(throwable, throwable.message ?: "예상치 못한 오류 메세지")
                     _userFollowerList.value = Results.Failure("오류 발생", null)
                 }
 
