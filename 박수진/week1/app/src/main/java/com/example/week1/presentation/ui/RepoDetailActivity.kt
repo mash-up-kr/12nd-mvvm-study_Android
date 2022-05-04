@@ -10,7 +10,6 @@ import com.example.week1.presentation.BaseActivity
 class RepoDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityRepoDetailBinding
-    private lateinit var repo: GithubRepo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +19,7 @@ class RepoDetailActivity : BaseActivity() {
         initActionBar()
 
         if (intent.hasExtra("repo")) {
-            repo = intent.getSerializableExtra("repo") as GithubRepo
-            bindUI(repo)
+            bindUI(intent.getSerializableExtra("repo") as GithubRepo)
         } else {
             Log.e("Error", "intent has no extra")
             finish()
@@ -34,16 +32,16 @@ class RepoDetailActivity : BaseActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
-    private fun bindUI(it: GithubRepo) {
+    private fun bindUI(repo: GithubRepo) {
         with(binding) {
             Glide.with(root)
-                .load(it.owner.avatarUrl)
+                .load(repo.owner.avatarUrl)
                 .into(detailImg)
-            detailName.text = it.name
-            detailStarCnt.text = it.stargazersCount.toString()
-            detailDescription.text = it.description
-            detailLang.text = it.language
-            detailUpdated.text = it.updatedAt
+            detailName.text = repo.name
+            detailStarCnt.text = repo.stargazersCount.toString()
+            detailDescription.text = repo.description
+            detailLang.text = repo.language
+            detailUpdated.text = repo.updatedAt
         }
     }
 }
