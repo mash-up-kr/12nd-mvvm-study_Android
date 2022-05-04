@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mash_up.mvvmstudy.databinding.ItemListBinding
 import com.mash_up.mvvmstudy.repository.model.Repository
 
-class RepositoryAdapter(val onClickItem: (Repository) -> Unit) :
-    ListAdapter<Repository, RepositoryAdapter.RepositoryViewHolder>(repositoryDiffCallback) {
+class MainAdapter(val onClickItem: (Repository) -> Unit) :
+    ListAdapter<Repository, MainAdapter.RepositoryViewHolder>(repositoryDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder =
         RepositoryViewHolder(
             ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)

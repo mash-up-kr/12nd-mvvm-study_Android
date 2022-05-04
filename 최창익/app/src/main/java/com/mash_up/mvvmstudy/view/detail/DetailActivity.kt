@@ -5,11 +5,11 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.mash_up.mvvmstudy.databinding.ActivityDetailBinding
-import com.mash_up.mvvmstudy.databinding.ActivityMainBinding
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
+    private lateinit var adapter: DetailAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +18,13 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initToolbar()
+        initAdapter()
         observeLiveData()
+    }
+
+    private fun initAdapter() {
+        this.adapter = DetailAdapter()
+        binding.rvDetail.adapter = this.adapter
     }
 
     private fun initToolbar() {
@@ -30,11 +36,12 @@ class DetailActivity : AppCompatActivity() {
         viewModel.uiState.observe(this) { uiModel ->
             binding.uiState = uiModel
             binding.toolbarDetail.title = uiModel.repositoryName
+            this.adapter.submitList(uiModel.feeds)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return false

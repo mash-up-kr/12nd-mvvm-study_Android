@@ -42,11 +42,21 @@ data class Owner(
 
 fun Repository.toDetailUiModel() =
     DetailUiModel(
-        userName = owner.login,
         repositoryName = name,
-        stargazerCount = stargazersCount.toString(),
-        description = description,
-        language = language,
-        lastUpdated = updatedAt,
-        avatarUrl = owner.avatarUrl
+        feeds = listOf(
+            DetailFeed.Profile(
+                avatarUrl = owner.avatarUrl,
+                ownerName = owner.login,
+                stargazerCount = stargazersCount.toString()
+            ),
+            DetailFeed.Description(
+                description = description
+            ),
+            DetailFeed.Language(
+                language = language
+            ),
+            DetailFeed.LastUpdated(
+                lastUpdated = updatedAt
+            )
+        )
     )

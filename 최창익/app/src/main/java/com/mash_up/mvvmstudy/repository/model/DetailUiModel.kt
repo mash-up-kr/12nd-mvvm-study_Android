@@ -1,11 +1,26 @@
 package com.mash_up.mvvmstudy.repository.model
 
+sealed interface DetailFeed {
+    data class Profile(
+        val avatarUrl: String,
+        val ownerName: String,
+        val stargazerCount: String
+    ) : DetailFeed
+
+    data class Description(
+        val description: String
+    ) : DetailFeed
+
+    data class Language(
+        val language: String
+    ) : DetailFeed
+
+    data class LastUpdated(
+        val lastUpdated: String
+    ) : DetailFeed
+}
+
 data class DetailUiModel(
-    val userName: String,
     val repositoryName: String,
-    val stargazerCount: String,
-    val description: String,
-    val language: String,
-    val lastUpdated: String,
-    val avatarUrl: String
+    val feeds: List<DetailFeed>
 )

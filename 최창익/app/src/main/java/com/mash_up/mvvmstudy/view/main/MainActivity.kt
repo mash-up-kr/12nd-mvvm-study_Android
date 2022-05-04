@@ -13,7 +13,7 @@ import com.mash_up.mvvmstudy.view.detail.DetailViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: RepositoryAdapter
+    private lateinit var adapter: MainAdapter
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        this.adapter = RepositoryAdapter { repository ->
+        this.adapter = MainAdapter { repository ->
             val intent = Intent(this, DetailActivity::class.java).apply {
                 putExtra(DetailViewModel.REPOSITORY, repository)
             }
