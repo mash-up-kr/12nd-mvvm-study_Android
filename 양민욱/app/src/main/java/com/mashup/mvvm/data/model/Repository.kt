@@ -1,6 +1,5 @@
 package com.mashup.mvvm.data.model
 
-import com.mashup.mvvm.utils.FORMAT_DATE_YYYY_MM_DD
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Serializer
@@ -20,7 +19,7 @@ data class Repository(
     val language: String?,
     @Serializable(with = RepositoryDateSerializer::class)
     @JsonNames("updated_at") val updatedAt: Date
-)
+) : java.io.Serializable
 
 @Serializer(forClass = Date::class)
 object RepositoryDateSerializer : KSerializer<Date> {

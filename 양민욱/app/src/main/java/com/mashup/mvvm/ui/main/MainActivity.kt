@@ -10,6 +10,7 @@ import com.mashup.mvvm.ServiceLocator
 import com.mashup.mvvm.data.repository.GithubRepository
 import com.mashup.mvvm.databinding.ActivityMainBinding
 import com.mashup.mvvm.extensions.showToast
+import com.mashup.mvvm.ui.detail.DetailActivity
 import com.mashup.mvvm.ui.main.adapter.RepositoryAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +23,13 @@ class MainActivity : AppCompatActivity() {
             LayoutInflater.from(this)
         )
     }
-    private val repositoryAdapter: RepositoryAdapter by lazy { RepositoryAdapter() }
+    private val repositoryAdapter: RepositoryAdapter by lazy {
+        RepositoryAdapter { repository ->
+            repository?.run {
+                startActivity(DetailActivity.newIntent(this@MainActivity, repository))
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
