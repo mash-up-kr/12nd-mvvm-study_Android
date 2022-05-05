@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.mashup.mvvm.R
+import com.mashup.mvvm.data.model.Repository
 import com.mashup.mvvm.data.repository.GithubRepository
 import com.mashup.mvvm.databinding.ActivityDetailBinding
 import com.mashup.mvvm.databinding.ActivityMainBinding
+import com.mashup.mvvm.extensions.loadImage
 import com.mashup.mvvm.ui.main.MainViewModel
+import com.mashup.mvvm.utils.toDateString
 
 class DetailActivity : AppCompatActivity() {
     private val viewModel: DetailViewModel by lazy {
@@ -30,12 +34,38 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
 
+        setUi()
         observeViewModel()
     }
 
-    private fun observeViewModel() {
-        viewModel.repository.observe(this) {
+    private fun setUi() {
+        setUiOfBackButton()
+    }
 
+    private fun setUiOfBackButton() {
+        viewBinding.btnBack.setOnClickListener {
+            finish()
         }
+    }
+
+    private fun observeViewModel() {
+        viewModel.repository.observe(this) { repository ->
+            setUiOfOwner(repository)
+            setUiOfLanguage(repository)
+            setUiOfLastUpdated(repository)
+        }
+    }
+
+    private fun setUiOfOwner(repository: Repository) = with(viewBinding) {
+        imgOwner.loadImage(repository.owner.avatarUrl)
+        tvOwnerName.text = repository.owner.login
+    }
+
+    private fun setUiOfLanguage(repository: Repository) = with(viewBinding) {
+        tvLanguage.text = repository.language ?: getString(R.string.unknown_repository_language)
+    }
+
+    private fun setUiOfLastUpdated(repository: Repository) = with(viewBinding) {
+        tvLastUpdated.text = repository.updatedAt.toDateString()
     }
 }

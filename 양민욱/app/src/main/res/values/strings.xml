@@ -5,4 +5,6 @@
     <string name="title_description">Description</string>
     <string name="title_language">Language</string>
     <string name="title_last_updated">Last Updated</string>
+
+    <string name="unknown_repository_language">알수없음</string>
 </resources>
