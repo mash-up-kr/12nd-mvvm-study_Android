@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.viewModels
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -20,12 +21,7 @@ import com.mashup.mvvm.ui.main.MainViewModel
 import com.mashup.mvvm.utils.toDateString
 
 class DetailActivity : AppCompatActivity() {
-    private val viewModel: DetailViewModel by lazy {
-        ViewModelProvider(
-            this,
-            SavedStateViewModelFactory(application, this, intent.extras)
-        ).get(DetailViewModel::class.java)
-    }
+    private val viewModel: DetailViewModel by viewModels()
 
     private val viewBinding: ActivityDetailBinding by lazy {
         ActivityDetailBinding.inflate(
