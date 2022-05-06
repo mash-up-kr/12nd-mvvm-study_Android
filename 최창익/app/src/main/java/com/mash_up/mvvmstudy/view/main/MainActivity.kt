@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.databinding.DataBindingUtil
+import com.mash_up.mvvmstudy.R
 import com.mash_up.mvvmstudy.databinding.ActivityMainBinding
 import com.mash_up.mvvmstudy.view.detail.DetailActivity
 import com.mash_up.mvvmstudy.view.detail.DetailViewModel
@@ -20,8 +22,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         initRecyclerView()
         initSearchView()
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             if (isLoading) {
                 binding.pbMain.visibility = View.VISIBLE
             } else {
-                binding.pbMain.visibility = View.INVISIBLE
+                binding.pbMain.visibility = View.GONE
             }
         }
 
