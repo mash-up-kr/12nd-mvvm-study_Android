@@ -1,6 +1,5 @@
 package com.github.sookhee.mvvmstudy.ui.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -28,10 +27,7 @@ class MainActivity : AppCompatActivity() {
     private val repositoryAdapter by lazy {
         RepositoryAdapter().apply {
             onItemClick = {
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra(EXTRA_REPOSITORY_KEY, it)
-
-                startActivity(intent)
+                startActivity(DetailActivity.newIntent(this@MainActivity, it))
             }
         }
     }
@@ -61,7 +57,9 @@ class MainActivity : AppCompatActivity() {
                 is ResultState.Success<*> -> {
                     try {
                         hideProgress()
-                        setDataToRecyclerView(it.data as List<GithubRepositoryModel>)
+                        (it.data as? List<GithubRepositoryModel>)?.let {
+                            setDataToRecyclerView(it)
+                        }
                     } catch (e: Exception) {
                         Log.e(TAG, e.message.toString())
                     }
@@ -128,7 +126,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private val TAG = MainActivity::class.simpleName
 
-        const val EXTRA_REPOSITORY_KEY = "EXTRA_REPOSITORY_KEY"
-        const val EMPTY_STRING = ""
+        private const val EMPTY_STRING = ""
     }
 }

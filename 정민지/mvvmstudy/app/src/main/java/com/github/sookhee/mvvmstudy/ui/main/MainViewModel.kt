@@ -26,15 +26,15 @@ class MainViewModel : ViewModel(), OnNetworkCallbackListener {
     private val githubRepository = GithubRepository(request, this)
 
     override fun onSuccess(list: List<GithubRepositoryResponse>) {
-        _repositoryResultState.postValue(ResultState.Success(mapToGithubRepositoryModelList(list)))
+        _repositoryResultState.value = ResultState.Success(mapToGithubRepositoryModelList(list))
     }
 
     override fun onFailure(throwable: Throwable) {
-        _repositoryResultState.postValue(ResultState.Error(throwable.message.toString()))
+        _repositoryResultState.value = ResultState.Error(throwable.message.toString())
     }
 
     fun requestDataToGithubAPI(keyword: String) {
-        _repositoryResultState.postValue(ResultState.Loading)
+        _repositoryResultState.value = ResultState.Loading
         if (keyword.isNotEmpty()) {
             githubRepository.getGithubRepositoryListWithQuery(keyword)
         } else {
@@ -43,20 +43,15 @@ class MainViewModel : ViewModel(), OnNetworkCallbackListener {
     }
 
     private fun mapToGithubRepositoryModelList(response: List<GithubRepositoryResponse>): List<GithubRepositoryModel> {
-        val list = mutableListOf<GithubRepositoryModel>()
-        response.forEach {
-            list.add(
-                GithubRepositoryModel(
-                    id = it.id,
-                    repoName = it.name,
-                    repoLastUpdate = it.lastUpdate ?: "",
-                    language = it.language ?: "",
-                    ownerName = it.owner.name,
-                    profileImage = it.owner.profileImage
-                )
+        return response.map { repository ->
+            GithubRepositoryModel(
+                id = repository.id,
+                repoName = repository.name,
+                repoLastUpdate = repository.lastUpdate ?: "",
+                language = repository.language ?: "",
+                ownerName = repository.owner.name,
+                profileImage = repository.owner.profileImage
             )
         }
-
-        return list
     }
 }
