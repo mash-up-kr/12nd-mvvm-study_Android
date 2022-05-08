@@ -2,6 +2,7 @@ package com.mashup.mvvm.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModel
@@ -14,9 +15,8 @@ import com.mashup.mvvm.ui.detail.DetailActivity
 import com.mashup.mvvm.ui.main.adapter.RepositoryAdapter
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this, MainViewModelFactory(ServiceLocator.injectGithubRepository()))
-            .get(MainViewModel::class.java)
+    private val viewModel: MainViewModel by viewModels {
+        MainViewModelFactory(ServiceLocator.injectGithubRepository())
     }
     private val viewBinding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(
