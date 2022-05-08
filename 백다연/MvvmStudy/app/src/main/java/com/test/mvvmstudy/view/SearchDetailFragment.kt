@@ -2,32 +2,35 @@ package com.test.mvvmstudy.view
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.test.mvvmstudy.R
+import androidx.navigation.fragment.navArgs
 import com.test.mvvmstudy.databinding.FragmentSearchDetailBinding
-import com.test.mvvmstudy.data.ResultDetail
 
 class SearchDetailFragment : Fragment() {
 
-    private lateinit var binding: FragmentSearchDetailBinding
+    private var _binding: FragmentSearchDetailBinding? = null
+    private val binding get() = _binding!!
+
+    private val args : SearchDetailFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSearchDetailBinding.inflate(inflater, container, false)
-
-        setInitData()
+    ): View {
+        _binding = FragmentSearchDetailBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
-    private fun setInitData() {
-        val searchData = arguments?.getSerializable("searchData") as ResultDetail
-        binding.searchData = searchData
-        Glide.with(binding.root).load(searchData.owner.imgUrl).into(binding.profileImg)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.searchData = args.searchData
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
 }

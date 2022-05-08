@@ -17,5 +17,10 @@
         android:id="@+id/searchDetailFragment"
         android:name="com.test.mvvmstudy.view.SearchDetailFragment"
         android:label="fragment_search_detail"
-        tools:layout="@layout/fragment_search_detail" />
+        tools:layout="@layout/fragment_search_detail" >
+        <argument
+            android:name="searchData"
+            app:nullable="true"
+            app:argType="com.test.mvvmstudy.data.SearchResultDetail" />
+    </fragment>
 </navigation>

@@ -1,5 +1,5 @@
 package com.test.mvvmstudy.data
 
-data class Result(
-    val items : List<ResultDetail>
+data class SearchResult(
+    val items : List<SearchResultDetail>
 )

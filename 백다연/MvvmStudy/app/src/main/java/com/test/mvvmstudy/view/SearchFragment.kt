@@ -3,17 +3,20 @@ package com.test.mvvmstudy.view
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.test.mvvmstudy.R
 import com.test.mvvmstudy.adapter.SearchResultAdapter
 import com.test.mvvmstudy.databinding.FragmentSearchBinding
-import com.test.mvvmstudy.data.ResultDetail
 import com.test.mvvmstudy.viewmodel.SearchViewModel
 
 class SearchFragment : Fragment() {
-    private lateinit var binding: FragmentSearchBinding
+
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+
     private val adapter: SearchResultAdapter by lazy {
         SearchResultAdapter()
     }
@@ -22,8 +25,8 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -33,29 +36,25 @@ class SearchFragment : Fragment() {
 
         setHasOptionsMenu(true)
         setRecyclerviewAdapter()
-        adapterClickListener()
+        setAdapterClickListener()
         initObserver()
+
     }
 
     private fun setRecyclerviewAdapter() {
         binding.searchRecyclerview.adapter = adapter
     }
 
-    private fun adapterClickListener() {
-        adapter.itemClick = object : SearchResultAdapter.ItemClick {
-            override fun onClick(view: View, searchData: ResultDetail) {
-                val bundle = Bundle()
-                bundle.putSerializable("searchData", searchData)
-                Navigation.findNavController(view)
-                    .navigate(R.id.action_searchFragment_to_searchDetailFragment, bundle)
-            }
+    private fun setAdapterClickListener() {
+        adapter.clickListener = { item ->
+            val action = SearchFragmentDirections.actionSearchFragmentToSearchDetailFragment(item)
+            findNavController().navigate(action)
         }
     }
 
     private fun initObserver() {
         searchViewModel.isLoading.observe(viewLifecycleOwner) { status ->
-            if (status) binding.progressBar.visibility = View.VISIBLE
-            else binding.progressBar.visibility = View.INVISIBLE
+            binding.progressBar.isVisible = status
         }
         searchViewModel.resultList.observe(viewLifecycleOwner) { list ->
             adapter.submitList(list) {
@@ -83,6 +82,11 @@ class SearchFragment : Fragment() {
             }
         })
         return super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
