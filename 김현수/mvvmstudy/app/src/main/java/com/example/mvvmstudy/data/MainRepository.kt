@@ -24,7 +24,7 @@ class MainRepository {
                     call: Call<Repositories>,
                     response: Response<Repositories>
                 ) {
-                    when (response?.code() ?: 0) {
+                    when (response.code()) {
                         200 -> {
                             val body = response.body() as Repositories
                             repos.addAll(body.repositories)
