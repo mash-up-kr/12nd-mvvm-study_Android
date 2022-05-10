@@ -20,28 +20,7 @@
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
-            android:name="stars"
-            app:argType="integer" />
-        <argument
-            android:name="description"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="lastUpdate"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="login"
-            app:argType="string" />
-        <argument
-            android:name="image"
-            app:argType="string" />
-        <argument
-            android:name="name"
-            app:argType="string" />
-        <argument
-            android:name="language"
-            app:argType="string"
-            app:nullable="true" />
+            android:name="presenterRepository"
+            app:argType="com.example.myapplication.ui.model.PresenterRepository" />
     </fragment>
 </navigation>

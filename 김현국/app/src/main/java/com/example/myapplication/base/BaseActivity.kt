@@ -30,12 +30,13 @@ abstract class BaseActivity<VB : ViewBinding>(
             .methodOffset(0)
             .tag("PRETTY_LOGGER")
             .build()
+
         Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
             override fun isLoggable(priority: Int, tag: String?): Boolean {
                 return BuildConfig.DEBUG
             }
-        }
-        )
+        })
+
         binding = bindingFactory(layoutInflater)
         setContentView(binding.root)
     }
