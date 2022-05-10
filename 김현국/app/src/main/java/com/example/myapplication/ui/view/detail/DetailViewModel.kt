@@ -2,6 +2,7 @@ package com.example.myapplication.ui.view.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.base.BaseResponse
 import com.example.myapplication.data.repository.DetailUserRepository
@@ -14,11 +15,15 @@ import com.orhanobut.logger.Logger
  * @created 2022/05/01
  */
 class DetailViewModel(
-    val detailUserRepository: DetailUserRepository
+    val savedStateHandle: SavedStateHandle,
+    private val detailUserRepository: DetailUserRepository
 ) : ViewModel() {
-    private var _userFollowingList: MutableLiveData<Results<List<PresenterOwner>>> =
+
+    val USER_NAME = "userName"
+
+    private val _userFollowingList: MutableLiveData<Results<List<PresenterOwner>>> =
         MutableLiveData()
-    private var _userFollowerList: MutableLiveData<Results<List<PresenterOwner>>> =
+    private val _userFollowerList: MutableLiveData<Results<List<PresenterOwner>>> =
         MutableLiveData()
 
     val userFollowingList: LiveData<Results<List<PresenterOwner>>>
@@ -27,6 +32,7 @@ class DetailViewModel(
         get() = _userFollowerList
 
     fun getUserFollowing(username: String) {
+        savedStateHandle[USER_NAME] = username
         detailUserRepository.getUserFollowing(
             username = username,
             callback = object : BaseResponse<List<PresenterOwner>> {
@@ -47,6 +53,7 @@ class DetailViewModel(
     }
 
     fun getUserFollower(username: String) {
+        savedStateHandle[USER_NAME] = username
         detailUserRepository.getUserFollower(
             username = username,
             callback = object : BaseResponse<List<PresenterOwner>> {

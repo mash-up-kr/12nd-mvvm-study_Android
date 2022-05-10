@@ -3,6 +3,7 @@ package com.example.myapplication.ui.view.search
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.base.BaseFragment
@@ -19,18 +20,16 @@ import com.example.myapplication.ui.view.main.MainViewModel
  */
 class SearchFragment :
     BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate),
-        (PresenterRepository) -> Unit {
+    (PresenterRepository) -> Unit {
 
     private lateinit var searchAdapter: SearchAdapter
-    private lateinit var model: SearchViewModel
-    private val mainModel by activityViewModels<MainViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val searchRepoRepository = SearchRepoRepository()
-        model = SearchViewModel(searchRepository = searchRepoRepository)
-        model.getRepoListWithQuery("kotlin")
+    private val model: SearchViewModel by viewModels {
+        SearchViewModelFactory(
+            this,
+            SearchRepoRepository()
+        )
     }
+    private val mainModel by activityViewModels<MainViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +42,9 @@ class SearchFragment :
         searchAdapter = SearchAdapter(itemListener = this@SearchFragment)
         rvSearch.adapter = searchAdapter
         rvSearch.itemAnimator = null
+
+        if (!model.savedStateHandle.contains(model.QUERY))
+            model.getRepoListWithQuery("kotlin")
     }
 
     private fun initObserve() {
@@ -57,6 +59,7 @@ class SearchFragment :
                 searchAdapter.submitList(result.value)
             }
             is Results.Failure -> {
+                hideLoading()
                 showToast(result.message ?: "예상치 못한 오류 발생")
             }
             is Results.Loading -> {
@@ -69,26 +72,19 @@ class SearchFragment :
         model.getRepoListWithQuery(it)
     }
 
-    private fun hideLoading() {
-        binding.avSearchIndicator.cancelAnimation()
-        binding.avSearchIndicator.visibility = View.GONE
+    private fun hideLoading() = with(binding) {
+        avSearchIndicator.cancelAnimation()
+        avSearchIndicator.visibility = View.GONE
     }
 
-    private fun showLoading() {
-        binding.avSearchIndicator.visibility = View.VISIBLE
-        binding.avSearchIndicator.playAnimation()
+    private fun showLoading() = with(binding) {
+        avSearchIndicator.visibility = View.VISIBLE
+        avSearchIndicator.playAnimation()
     }
 
     override fun invoke(repository: PresenterRepository) {
-        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(
-            name = repository.name,
-            login = repository.owner.login,
-            image = repository.owner.image,
-            stars = repository.stars ?: 0,
-            description = repository.description,
-            language = repository.language,
-            lastUpdate = repository.lastUpdated
-        )
+        val action =
+            SearchFragmentDirections.actionSearchFragmentToDetailFragment(presenterRepository = repository)
         findNavController().navigate(action)
     }
 }

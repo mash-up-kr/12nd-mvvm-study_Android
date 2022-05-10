@@ -2,6 +2,7 @@ package com.example.myapplication.ui.view.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.base.BaseResponse
 import com.example.myapplication.data.repository.SearchRepoRepository
@@ -14,14 +15,18 @@ import com.orhanobut.logger.Logger
  * @created 2022/05/01
  */
 class SearchViewModel(
+    val savedStateHandle: SavedStateHandle,
     private val searchRepository: SearchRepoRepository
 ) : ViewModel() {
 
-    private var _repoList: MutableLiveData<Results<List<PresenterRepository>>> = MutableLiveData()
+    val QUERY = "query"
+
+    private val _repoList: MutableLiveData<Results<List<PresenterRepository>>> = MutableLiveData()
     val repoList: LiveData<Results<List<PresenterRepository>>>
         get() = _repoList
 
     fun getRepoListWithQuery(q: String) {
+        savedStateHandle[QUERY] = q
         searchRepository.getRepoList(
             q = q,
             object : BaseResponse<List<PresenterRepository>> {
