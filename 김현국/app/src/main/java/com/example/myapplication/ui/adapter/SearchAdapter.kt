@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemSearchBinding
 import com.example.myapplication.ui.model.PresenterRepository
+import com.example.myapplication.util.loadImage
 
 /**
  * @author 김현국
@@ -63,7 +63,7 @@ class SearchAdapter(
         fun bind(repo: PresenterRepository) = with(binding) {
             tvMainName.text = repo.name
             tvMainLanguage.text = repo.language ?: ""
-            Glide.with(ivMainImage).load(repo.owner.image).into(ivMainImage)
+            ivMainImage.loadImage(repo.owner.image)
         }
     }
 }
