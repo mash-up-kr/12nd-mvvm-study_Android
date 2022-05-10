@@ -1,9 +1,13 @@
 package com.example.myapplication.ui.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 /**
  * @author 김현국
  * @created 2022/05/02
  */
+@Parcelize
 data class PresenterRepository(
     val id: Int,
     val name: String,
@@ -12,4 +16,4 @@ data class PresenterRepository(
     val stars: Int?,
     val description: String?,
     val lastUpdated: String?
-)
+) : Parcelable

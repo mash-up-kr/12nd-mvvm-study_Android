@@ -8,18 +8,14 @@ import com.example.myapplication.ui.model.PresenterOwner
  * @created 2022/05/03
  */
 
-fun detailUserToPresenterModel(
+fun mapperDetailUserToPresenterModel(
     dataOwnerList: List<DataOwner>
 ): List<PresenterOwner> {
-    val list = mutableListOf<PresenterOwner>()
 
-    dataOwnerList.forEach { dataOwner ->
-        list.add(
-            PresenterOwner(
-                login = dataOwner.login,
-                image = dataOwner.image
-            )
+    return dataOwnerList.map { dataOwner ->
+        PresenterOwner(
+            login = dataOwner.login,
+            image = dataOwner.image
         )
     }
-    return list
 }

@@ -13,24 +13,21 @@ import com.example.myapplication.ui.model.PresenterRepository
 fun searchRepositoryResponseToPresenterModel(
     response: SearchRepositoryResponse
 ): List<PresenterRepository> {
-    val list = mutableListOf<PresenterRepository>()
 
-    response.items.forEach { dataRepository ->
-        list.add(
-            PresenterRepository(
-                id = dataRepository.id,
-                name = dataRepository.name,
-                language = dataRepository.language,
-                owner = ownerToPresenterModel(dataRepository.owner),
-                stars = dataRepository.stars,
-                description = dataRepository.description,
-                lastUpdated = dataRepository.lastUpdated
+    return response.items.map { dataRepository ->
+        PresenterRepository(
+            id = dataRepository.id,
+            name = dataRepository.name,
+            language = dataRepository.language,
+            owner = ownerToPresenterModel(dataRepository.owner),
+            stars = dataRepository.stars,
+            description = dataRepository.description,
+            lastUpdated = dataRepository.lastUpdated
 
-            )
         )
     }
-    return list
 }
+
 fun ownerToPresenterModel(owner: DataOwner): PresenterOwner {
     return PresenterOwner(
         login = owner.login,

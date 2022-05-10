@@ -1,7 +1,7 @@
 package com.example.myapplication.data.repository
 
 import com.example.myapplication.base.BaseResponse
-import com.example.myapplication.data.mapper.detailUserToPresenterModel
+import com.example.myapplication.data.mapper.mapperDetailUserToPresenterModel
 import com.example.myapplication.data.model.DataOwner
 import com.example.myapplication.data.source.remote.UserRemoteDataSource
 import com.example.myapplication.network.ApiClient
@@ -28,9 +28,10 @@ class DetailUserRepository {
                 call: Call<List<DataOwner>>,
                 response: Response<List<DataOwner>>
             ) {
-                if (response.isSuccessful) {
+                val body = response.body()
+                if (response.isSuccessful && body != null) {
                     callback.onSuccess(
-                        data = detailUserToPresenterModel(response.body()!!)
+                        data = mapperDetailUserToPresenterModel(body)
                     )
                 }
             }
@@ -54,9 +55,10 @@ class DetailUserRepository {
                 call: Call<List<DataOwner>>,
                 response: Response<List<DataOwner>>
             ) {
-                if (response.isSuccessful) {
+                val body = response.body()
+                if (response.isSuccessful && body != null) {
                     callback.onSuccess(
-                        data = detailUserToPresenterModel(response.body()!!)
+                        data = mapperDetailUserToPresenterModel(body)
                     )
                 }
             }

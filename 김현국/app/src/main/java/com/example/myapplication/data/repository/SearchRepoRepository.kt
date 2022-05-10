@@ -29,9 +29,10 @@ class SearchRepoRepository {
                 call: Call<SearchRepositoryResponse>,
                 response: Response<SearchRepositoryResponse>
             ) {
-                if (response.isSuccessful) {
+                val body = response.body()
+                if (response.isSuccessful && body != null) {
                     callback.onSuccess(
-                        data = searchRepositoryResponseToPresenterModel(response.body()!!)
+                        data = searchRepositoryResponseToPresenterModel(body)
                     )
                 }
             }
