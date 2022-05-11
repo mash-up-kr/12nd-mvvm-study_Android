@@ -12,6 +12,7 @@ import com.github.sookhee.mvvmstudy.ResultState
 import com.github.sookhee.mvvmstudy.databinding.ActivityMainBinding
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
 import com.github.sookhee.mvvmstudy.ui.detail.DetailActivity
+import com.github.sookhee.mvvmstudy.ui.showIf
 
 /**
  *  MainActivity.kt
@@ -79,8 +80,7 @@ class MainActivity : AppCompatActivity() {
     private fun setSearchEditText() {
         binding.searchEditText.apply {
             addTextChangedListener {
-                if (it?.length ?: 0 > 0) binding.clearTextButton.visibility = View.VISIBLE
-                else binding.clearTextButton.visibility = View.GONE
+                binding.clearTextButton.showIf(it?.length ?: 0 > 0)
             }
 
             setOnEditorActionListener { _, action, _ ->
