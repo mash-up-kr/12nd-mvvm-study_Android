@@ -80,25 +80,19 @@ class DetailAdapter :
         //TODO: Item에 id 값이 없는 경우 areContentTheSame과 areItemsTheSame이 같아지는 느낌..?
         private val detailFeedDiffCallback = object : DiffUtil.ItemCallback<DetailFeed>() {
             override fun areItemsTheSame(oldItem: DetailFeed, newItem: DetailFeed): Boolean {
-                when {
-                    oldItem is DetailFeed.Profile && newItem is DetailFeed.Profile && oldItem == newItem -> return true
-                    oldItem is DetailFeed.Description && newItem is DetailFeed.Description && oldItem == newItem -> return true
-                    oldItem is DetailFeed.Language && newItem is DetailFeed.Language && oldItem == newItem -> return true
-                    oldItem is DetailFeed.LastUpdated && newItem is DetailFeed.LastUpdated && oldItem == newItem -> return true
+                return if (oldItem.javaClass == newItem.javaClass) {
+                    oldItem == newItem
+                } else {
+                    false
                 }
-
-                return false
             }
 
             override fun areContentsTheSame(oldItem: DetailFeed, newItem: DetailFeed): Boolean {
-                when {
-                    oldItem is DetailFeed.Profile && newItem is DetailFeed.Profile && oldItem == newItem -> return true
-                    oldItem is DetailFeed.Description && newItem is DetailFeed.Description && oldItem == newItem -> return true
-                    oldItem is DetailFeed.Language && newItem is DetailFeed.Language && oldItem == newItem -> return true
-                    oldItem is DetailFeed.LastUpdated && newItem is DetailFeed.LastUpdated && oldItem == newItem -> return true
+                return if (oldItem.javaClass == newItem.javaClass) {
+                    oldItem == newItem
+                } else {
+                    false
                 }
-
-                return false
             }
         }
     }

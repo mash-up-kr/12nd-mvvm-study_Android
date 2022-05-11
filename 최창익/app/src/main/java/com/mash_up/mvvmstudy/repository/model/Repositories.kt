@@ -22,11 +22,11 @@ data class Repository(
     @SerializedName("owner")
     val owner: Owner,
     @SerializedName("language")
-    val language: String,
+    val language: String?,
     @SerializedName("stargazers_count")
     val stargazersCount: Int,
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("updated_at")
     val updatedAt: String,
 ): Serializable

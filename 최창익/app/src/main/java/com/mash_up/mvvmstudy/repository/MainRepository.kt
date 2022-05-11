@@ -17,8 +17,10 @@ class MainRepository {
     ) {
         api.getRepositories(query).enqueue(object : Callback<Repositories> {
             override fun onResponse(call: Call<Repositories>, response: Response<Repositories>) {
-                if (response.isSuccessful && response.body() != null) {
-                    onSuccess(response.body()!!)
+                val resultBody = response.body()
+
+                if (response.isSuccessful && resultBody != null) {
+                    onSuccess(resultBody)
                 } else {
                     onError(
                         "code : ${response.code()}, 다음과 같은 에러가 발생했습니다. ${

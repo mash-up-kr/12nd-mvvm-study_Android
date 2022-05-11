@@ -8,11 +8,11 @@ sealed interface DetailFeed {
     ) : DetailFeed
 
     data class Description(
-        val description: String
+        val description: String?
     ) : DetailFeed
 
     data class Language(
-        val language: String
+        val language: String?
     ) : DetailFeed
 
     data class LastUpdated(

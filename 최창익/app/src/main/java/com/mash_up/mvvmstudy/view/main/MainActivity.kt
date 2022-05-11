@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.mash_up.mvvmstudy.R
 import com.mash_up.mvvmstudy.databinding.ActivityMainBinding
@@ -31,11 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeLiveData() {
         viewModel.isLoading.observe(this) { isLoading ->
-            if (isLoading) {
-                binding.pbMain.visibility = View.VISIBLE
-            } else {
-                binding.pbMain.visibility = View.GONE
-            }
+            binding.pbMain.isVisible = isLoading
         }
 
         viewModel.repositories.observe(this) { repositories ->
