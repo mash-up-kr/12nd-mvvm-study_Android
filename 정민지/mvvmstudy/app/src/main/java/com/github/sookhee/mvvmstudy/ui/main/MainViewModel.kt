@@ -1,5 +1,6 @@
 package com.github.sookhee.mvvmstudy.ui.main
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import com.github.sookhee.mvvmstudy.network.RetrofitClient
 import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryResponse
 import com.github.sookhee.mvvmstudy.repository.GithubRepository
 import com.github.sookhee.mvvmstudy.repository.OnNetworkCallbackListener
+import java.text.SimpleDateFormat
 
 /**
  *  MainViewModel.kt
@@ -42,12 +44,15 @@ class MainViewModel : ViewModel(), OnNetworkCallbackListener {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun mapToGithubRepositoryModelList(response: List<GithubRepositoryResponse>): List<GithubRepositoryModel> {
+        val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss")
+
         return response.map { repository ->
             GithubRepositoryModel(
                 id = repository.id,
                 repoName = repository.name,
-                repoLastUpdate = repository.lastUpdate ?: "",
+                repoLastUpdate = repository.lastUpdate?.let { dateFormat.format(it) } ?: "",
                 language = repository.language ?: "",
                 ownerName = repository.owner.name,
                 profileImage = repository.owner.profileImage
