@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.networkErrorState.observe(this) {
             Toast.makeText(
                 this@MainActivity,
-                "다음과 같은 이유로 문제가 발생했습니다. ${viewModel.networkErrorInfo}",
+                "다음과 같은 이유로 문제가 발생했습니다. ${it}",
                 Toast.LENGTH_SHORT
             ).show()
         }

@@ -17,10 +17,9 @@ class MainViewModel : ViewModel() {
     val repositories: LiveData<List<Repository>>
         get() = _repositories
 
-    private val _networkErrorState: MutableLiveData<Unit> = MutableLiveData()
-    val networkErrorState: LiveData<Unit>
+    private val _networkErrorState: MutableLiveData<String> = MutableLiveData()
+    val networkErrorState: LiveData<String>
         get() = _networkErrorState
-    var networkErrorInfo: String = ""
 
     fun getRepositories(query: String) {
         mainRepository.getRepositories(
@@ -29,8 +28,7 @@ class MainViewModel : ViewModel() {
                 _repositories.value = response.repositories
             },
             onError = { errorInfo ->
-                networkErrorInfo = errorInfo
-                _networkErrorState.value = Unit
+                _networkErrorState.value = errorInfo
             }
         )
     }
