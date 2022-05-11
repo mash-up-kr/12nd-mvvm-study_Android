@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.joocoding.android.app.githubsearch.databinding.ActivityMainBinding
 import com.joocoding.android.app.githubsearch.model.response.Repository
+import com.joocoding.android.app.githubsearch.model.response.toDetail
 import com.joocoding.android.app.githubsearch.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -33,16 +34,17 @@ class MainActivity : AppCompatActivity() {
     private fun initRecycler() {
         mainAdapter = MainAdapter(clickEvent = { repository: Repository ->
             val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra(EXTRA_KEY_REPO, repository)
+            intent.putExtra(DetailActivity.EXTRA_KEY_REPO, repository.toDetail())
             startActivity(intent)
         }
         )
 
         binding.recyclerView.adapter = mainAdapter
-        binding.viewModel?.repositories?.observe(
+
+        mainViewModel.repositories.observe(
             this,
             Observer {
-                (binding.recyclerView.adapter as MainAdapter).setItem(it)
+                (binding.recyclerView.adapter as? MainAdapter)?.setItem(it)
             })
     }
 
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onQueryTextChange(queryText: String?): Boolean {
                     queryText?.let {
                         Log.i(TAG, "initSearchView, queryText=$queryText")
-                        binding.viewModel?.getRepository(queryText)
+                        mainViewModel.getRepository(queryText)
 
                     }
                     return true
@@ -71,7 +73,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
-        private const val EXTRA_KEY_REPO = "extra_key_repo"
     }
 }
 

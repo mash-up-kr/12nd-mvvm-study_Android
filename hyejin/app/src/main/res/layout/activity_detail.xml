@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <data>
+        <variable
+            name="detail"
+            type="com.joocoding.android.app.githubsearch.model.response.Detail" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,16 +12,13 @@
     android:layout_height="match_parent"
     tools:context=".DetailActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-     >
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/detail_linearlayout"
@@ -28,6 +29,7 @@
 
             <ImageView
                 android:id="@+id/detail_img"
+                app:imageUrl="@{detail.detailImage}"
                 android:layout_width="48sp"
                 android:layout_height="48sp"
                 android:layout_gravity="center"
@@ -47,14 +49,14 @@
                     android:id="@+id/detail_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="repository name"
+                    android:text="@{detail.detailName}"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/detail_star_cnt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="score" />
+                    android:text="@{detail.detailStarCnt}" />
 
             </LinearLayout>
         </LinearLayout>
@@ -87,7 +89,8 @@
                 <TextView
                     android:id="@+id/detail_description"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="@{detail.detailDescription}"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -121,7 +124,8 @@
                 <TextView
                     android:id="@+id/detail_lang"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="@{detail.detailLang}"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -153,7 +157,8 @@
                 <TextView
                     android:id="@+id/detail_updated"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="@{detail.detailUpdated}"/>
             </LinearLayout>
         </LinearLayout>
 

@@ -19,9 +19,18 @@ data class Repository(
     @SerializedName("stargazers_count")
     val stargazersCount: Long,
     @SerializedName("language")
-
     val language: String,
     @SerializedName("updated_at")
     val updatedAt: String
 
-): Serializable
+) : Serializable
+
+fun Repository.toDetail() =
+    Detail(
+        detailName = name,
+        detailImage = owner.avatarUrl,
+        detailStarCnt = stargazersCount.toString(),
+        detailDescription = description,
+        detailLang = language,
+        detailUpdated = updatedAt
+    )

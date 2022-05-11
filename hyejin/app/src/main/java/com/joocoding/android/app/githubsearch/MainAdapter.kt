@@ -10,7 +10,7 @@ import com.joocoding.android.app.githubsearch.model.response.Repository
 
 class MainAdapter(
     private var datas: List<Repository> = emptyList(), private val clickEvent: (Repository) -> Unit
-) : RecyclerView.Adapter<MainViewHolder>() {
+) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(
@@ -28,6 +28,7 @@ class MainAdapter(
         notifyDataSetChanged()
     }
 
+
     override fun getItemCount(): Int = datas.size
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
@@ -35,20 +36,32 @@ class MainAdapter(
 
     }
 
+    class MainViewHolder(
+        private val binding: ItemRepositoryBinding,
+        private val clickEvent: (Repository) -> Unit
+    ) : RecyclerView.ViewHolder(
+        binding.root
+    ) {
+        //private val binding: ItemRepositoryBinding = DataBindingUtil.bind(itemView) ?: throw IllegalStateException("fail to bind")
+        private lateinit var item: Repository
 
-}
+        init {
+            itemView.setOnClickListener {
+                clickEvent(item)
+            }
+        }
 
-class MainViewHolder(
-    private val binding: ItemRepositoryBinding,
-    private val clickEvent: (Repository) -> Unit
-) :
-    RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: Repository) {
-        binding.tvRvName.text = item.name
-        binding.tvRvDescription.text = item.language
-        Glide.with(itemView).load(item.owner.avatarUrl).into(binding.imgRvPhoto)
-        binding.root.setOnClickListener { clickEvent(item) }
+        fun bind(item: Repository) {
+            this.item = item
+            binding.tvRvName.text = item.name
+            binding.tvRvDescription.text = item.language
+            Glide.with(itemView).load(item.owner.avatarUrl).into(binding.imgRvPhoto)
+            //binding.root.setOnClickListener { clickEvent(item) }
 
+        }
     }
 
+
 }
+
+
