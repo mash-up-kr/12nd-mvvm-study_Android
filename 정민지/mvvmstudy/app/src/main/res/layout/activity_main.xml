@@ -16,6 +16,7 @@
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:maxLines="1"
+        android:importantForAutofill="no"
         android:paddingVertical="8dp"
         app:layout_constraintBottom_toTopOf="@id/searchDivider"
         app:layout_constraintEnd_toStartOf="@id/clearTextButton"
@@ -31,7 +32,8 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/searchDivider"
         app:layout_constraintEnd_toStartOf="@id/searchButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/searchButton"
@@ -41,7 +43,8 @@
         android:src="@drawable/ic_search"
         app:layout_constraintBottom_toTopOf="@id/searchDivider"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <View
         android:id="@+id/searchDivider"

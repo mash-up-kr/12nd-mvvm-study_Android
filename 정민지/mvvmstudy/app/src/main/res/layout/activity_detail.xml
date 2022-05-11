@@ -22,7 +22,8 @@
         android:src="@drawable/ic_arrow_backward"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="@id/toolbar"
-        app:layout_constraintTop_toTopOf="@id/toolbar" />
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/repositoryName"
@@ -42,7 +43,8 @@
         android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        tools:src="@color/black" />
+        tools:src="@color/black"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/profileNameTitle"
