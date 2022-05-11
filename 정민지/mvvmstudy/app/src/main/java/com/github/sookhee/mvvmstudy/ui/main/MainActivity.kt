@@ -55,12 +55,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.repositoryResultState.observe(this) {
             when (it) {
                 is ResultState.Loading -> showProgress()
-                is ResultState.Success<*> -> {
+                is ResultState.Success -> {
                     try {
                         hideProgress()
-                        (it.data as? List<GithubRepositoryModel>)?.let {
-                            setDataToRecyclerView(it)
-                        }
+                        setDataToRecyclerView(it.data)
                     } catch (e: Exception) {
                         Log.e(TAG, e.message.toString())
                     }

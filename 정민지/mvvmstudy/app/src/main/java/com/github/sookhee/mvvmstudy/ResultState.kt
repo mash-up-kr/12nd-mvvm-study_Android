@@ -7,8 +7,8 @@ package com.github.sookhee.mvvmstudy
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-sealed class ResultState {
-    object Loading: ResultState()
-    data class Success<T>(val data: T) : ResultState()
-    data class Error(val message: String) : ResultState()
+sealed class ResultState<out T> {
+    object Loading : ResultState<Nothing>()
+    data class Success<T>(val data: T) : ResultState<T>()
+    data class Error<T>(val message: String) : ResultState<T>()
 }

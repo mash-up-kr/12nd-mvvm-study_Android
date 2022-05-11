@@ -15,12 +15,12 @@ import com.github.sookhee.mvvmstudy.repository.OnNetworkCallbackListener
  *  MainViewModel.kt
  *
  *  Created by Minji Jeong on 2022/05/02
- *  Copyright © 2022 GwanakMT All rights reserved.
+ *  Copyright © 2022 MashUp All rights reserved.
  */
 
 class MainViewModel : ViewModel(), OnNetworkCallbackListener {
-    private val _repositoryResultState = MutableLiveData<ResultState>()
-    val repositoryResultState: LiveData<ResultState> = _repositoryResultState
+    private val _repositoryResultState = MutableLiveData<ResultState<List<GithubRepositoryModel>>>()
+    val repositoryResultState: LiveData<ResultState<List<GithubRepositoryModel>>> = _repositoryResultState
 
     private val request by lazy { RetrofitClient.buildService(GithubAPI::class.java) }
     private val githubRepository = GithubRepository(request, this)
