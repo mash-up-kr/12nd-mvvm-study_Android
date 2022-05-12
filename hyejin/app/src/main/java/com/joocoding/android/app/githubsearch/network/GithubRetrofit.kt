@@ -1,13 +1,10 @@
 package com.joocoding.android.app.githubsearch.network
 
-import android.app.DownloadManager
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.joocoding.android.app.githubsearch.MainActivity
 import com.joocoding.android.app.githubsearch.model.response.Repositories
 import com.joocoding.android.app.githubsearch.model.response.Repository
-import com.joocoding.android.app.githubsearch.repository.GithubRepository
 import com.joocoding.android.app.githubsearch.service.SearchService
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,7 +16,8 @@ private const val TAG = "GithubRetrofit"
 private const val BASE_URL = "https://api.github.com/"
 
 class GithubRetrofit {
-    private val _repositories: MutableLiveData<List<Repository>> = MutableLiveData<List<Repository>>()
+    private val _repositories: MutableLiveData<List<Repository>> =
+        MutableLiveData<List<Repository>>()
     val repositories: LiveData<List<Repository>>
         get() = _repositories
 

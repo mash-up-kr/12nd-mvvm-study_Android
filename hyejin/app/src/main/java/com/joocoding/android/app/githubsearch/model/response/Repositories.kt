@@ -11,4 +11,4 @@ data class Repositories(
     val incompleteResults: Boolean,
     @SerializedName("items")
     val repositories: List<Repository>
-): Serializable
+) : Serializable
