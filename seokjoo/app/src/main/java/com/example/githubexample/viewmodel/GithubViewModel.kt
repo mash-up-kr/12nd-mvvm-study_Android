@@ -13,61 +13,54 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class GithubViewModel(private val remote: RemoteDataSource, private val savedStateHandle: SavedStateHandle) : ViewModel() {
-    val uiState: StateFlow<UiState>
 
-    val accept: (UiAction) -> Unit
+    private val initialQuery: String = savedStateHandle.get(LAST_SEARCH_QUERY) ?: INITIAL_QUERY
+    private val lastScrolledQuery: String = savedStateHandle.get(LAST_QUERY_SCROLLED) ?: INITIAL_QUERY
+    private val actionFlow = MutableSharedFlow<UiAction>()
 
-    val pagingData: Flow<PagingData<GithubResult.Item>>
+    private val searches = actionFlow
+        .filterIsInstance<UiAction.Search>()
+        .onStart { emit(UiAction.Search(query = initialQuery)) }
 
-    init {
-        val initialQuery: String = savedStateHandle.get(LAST_SEARCH_QUERY) ?: INITIAL_QUERY
-        val lastScrolledQuery: String = savedStateHandle.get(LAST_QUERY_SCROLLED) ?: INITIAL_QUERY
-        val actionFlow = MutableSharedFlow<UiAction>()
-
-        val searches = actionFlow
-            .filterIsInstance<UiAction.Search>()
-            .onStart { emit(UiAction.Search(query = initialQuery)) }
-
-        val scroll = actionFlow
-            .filterIsInstance<UiAction.Scroll>()
-            .distinctUntilChanged()
-            .shareIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000L),
-                replay = 1
-            ).onStart {
-                emit(UiAction.Scroll(currentQuery = lastScrolledQuery))
-            }
-
-        pagingData = searches
-            .flatMapLatest { getRepositoryList(it.query) }
-            .cachedIn(viewModelScope)
-
-        uiState = combine(
-            searches,
-            scroll,
-            ::Pair
-        ).map { (search, scroll) ->
-            UiState(
-                query = search.query,
-                lastQueryScrolled = scroll.currentQuery,
-                hasNotScrolledForCurrentSearch = search.query != scroll.currentQuery
-            )
-        }.stateIn(
+    private val scroll = actionFlow
+        .filterIsInstance<UiAction.Scroll>()
+        .distinctUntilChanged()
+        .shareIn(
             scope = viewModelScope,
-            initialValue = UiState(),
-            started = SharingStarted.WhileSubscribed(5000L)
-        )
+            started = SharingStarted.WhileSubscribed(5000L),
+            replay = 1
+        ).onStart {
+            emit(UiAction.Scroll(currentQuery = lastScrolledQuery))
+        }
+    val pagingData = searches.flatMapLatest {
+        getRepositoryList(it.query)
+    }.cachedIn(viewModelScope)
 
-        accept = { action ->
-            viewModelScope.launch {
-                actionFlow.emit(action)
-            }
+    val uiState = combine(
+        searches,
+        scroll,
+        ::Pair
+    ).map { (search, scroll) ->
+        UiState(
+            query = search.query,
+            lastQueryScrolled = scroll.currentQuery,
+            hasNotScrolledForCurrentSearch = search.query != scroll.currentQuery
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        initialValue = UiState(),
+        started = SharingStarted.WhileSubscribed(5000L)
+    )
+
+    val accept: (UiAction) -> Unit = { action ->
+        viewModelScope.launch {
+            actionFlow.emit(action)
         }
     }
 
-    private fun getRepositoryList(query: String): Flow<PagingData<GithubResult.Item>> = remote.getRepositoryList(query)
-
+    private fun getRepositoryList(query: String): Flow<PagingData<GithubResult.Item>> {
+        return remote.getRepositoryList(query)
+    }
 
     companion object {
         const val INITIAL_QUERY = "mash-up"

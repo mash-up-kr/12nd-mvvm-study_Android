@@ -8,13 +8,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubexample.R
@@ -30,9 +29,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val githubAdapter by lazy { GithubAdapter(::onItemClick) }
-    private val githubViewModel: GithubViewModel by lazy {
-        ViewModelProvider(requireActivity(), GithubViewModelFactory(RemoteDataSourceImpl(), this)).get(GithubViewModel::class.java)
-    }
+    private val githubViewModel: GithubViewModel by viewModels(factoryProducer = { GithubViewModelFactory(RemoteDataSourceImpl(), this) })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

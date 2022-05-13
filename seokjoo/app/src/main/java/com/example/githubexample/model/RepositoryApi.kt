@@ -1,7 +1,6 @@
 package com.example.githubexample.model
 
 import com.example.githubexample.entities.GithubResult
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,5 +10,5 @@ interface RepositoryApi {
         @Query("q") query: String,
         @Query("page") page: Int,
         @Query("per_page") per_page: Int
-    ): Response<GithubResult>
+    ): GithubResult
 }

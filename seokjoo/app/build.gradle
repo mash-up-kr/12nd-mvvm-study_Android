@@ -32,8 +32,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 }
 
@@ -55,7 +55,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 
     // okHttp logging
-    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6"
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7"
 
     // viewmodel
     implementation "androidx.activity:activity-ktx:1.4.0"

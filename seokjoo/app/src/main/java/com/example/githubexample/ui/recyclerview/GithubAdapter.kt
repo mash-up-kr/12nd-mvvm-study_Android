@@ -12,6 +12,10 @@ import com.example.githubexample.entities.GithubResult
 class GithubAdapter(
     private val itemClick: (GithubResult.Item) -> Unit
 ) : PagingDataAdapter<GithubResult.Item, GithubAdapter.GithubViewHolder>(githubDiffUtil) {
+    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
+        super.registerAdapterDataObserver(observer)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubViewHolder {
         return GithubViewHolder(parent, itemClick)
     }
@@ -34,7 +38,7 @@ class GithubAdapter(
 
         fun bind(item: GithubResult.Item) {
             this.item = item
-            binding.apply {
+            binding.run {
                 github = item
                 executePendingBindings()
             }
