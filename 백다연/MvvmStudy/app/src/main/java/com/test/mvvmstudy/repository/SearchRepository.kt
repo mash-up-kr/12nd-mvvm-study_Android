@@ -21,9 +21,8 @@ class SearchRepository {
                 if (response.isSuccessful) {
                     response.body()?.let { onSuccess(it.items) }
                 }
-                onFailure(response.message())
+                else onFailure(response.message())
             }
-
             override fun onFailure(call: Call<SearchResult>, t: Throwable) {
                 Log.d("fail", t.message.toString())
                 onFailure(t.message.toString())
