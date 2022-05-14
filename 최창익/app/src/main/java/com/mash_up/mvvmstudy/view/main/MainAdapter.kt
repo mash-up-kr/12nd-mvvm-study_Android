@@ -12,7 +12,8 @@ class MainAdapter(val onClickItem: (Repository) -> Unit) :
     ListAdapter<Repository, MainAdapter.RepositoryViewHolder>(repositoryDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder =
         RepositoryViewHolder(
-            ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onClickItem
         )
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
@@ -27,9 +28,19 @@ class MainAdapter(val onClickItem: (Repository) -> Unit) :
     }
 
     class RepositoryViewHolder(
-        val binding: ItemListBinding
+        val binding: ItemListBinding,
+        val onClickItem: (Repository) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+        private lateinit var repository: Repository
+
+        init {
+            binding.root.setOnClickListener {
+                onClickItem(repository)
+            }
+        }
+
         fun bind(repository: Repository) {
+            this.repository = repository
             binding.repository = repository
         }
     }
