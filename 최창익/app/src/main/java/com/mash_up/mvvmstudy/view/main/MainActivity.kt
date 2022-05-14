@@ -2,7 +2,6 @@ package com.mash_up.mvvmstudy.view.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -41,10 +40,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.networkErrorState.observe(this) {
+        viewModel.networkErrorState.observe(this) { errorMessage ->
             Toast.makeText(
                 this@MainActivity,
-                "다음과 같은 이유로 문제가 발생했습니다. ${it}",
+                "다음과 같은 이유로 문제가 발생했습니다. $errorMessage",
                 Toast.LENGTH_SHORT
             ).show()
         }

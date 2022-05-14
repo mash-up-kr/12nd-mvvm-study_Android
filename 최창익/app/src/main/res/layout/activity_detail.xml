@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="uiState"
-            type="com.mash_up.mvvmstudy.repository.model.DetailUiModel" />
+            name="viewModel"
+            type="com.mash_up.mvvmstudy.view.detail.DetailViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -36,15 +36,37 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="8dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_detail"
-            android:layout_width="0dp"
+        <include
+            android:id="@+id/item_profile"
+            layout="@layout/item_detail_info"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="@id/_guide_end"
-            app:layout_constraintStart_toStartOf="@id/_guide_start"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_detail"
-            tools:listitem="@layout/item_profile" />
+            bind:uiModel="@{viewModel.detailUiState[0]}" />
+
+        <include
+            android:id="@+id/item_description"
+            layout="@layout/item_detail_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/item_profile"
+            bind:uiModel="@{viewModel.detailUiState[1]}" />
+
+        <include
+            android:id="@+id/item_language"
+            layout="@layout/item_detail_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/item_description"
+            bind:uiModel="@{viewModel.detailUiState[2]}" />
+
+        <include
+            android:id="@+id/item_last_updated"
+            layout="@layout/item_detail_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/item_language"
+            bind:uiModel="@{viewModel.detailUiState[3]}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

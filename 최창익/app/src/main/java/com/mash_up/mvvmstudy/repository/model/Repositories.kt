@@ -1,6 +1,7 @@
 package com.mash_up.mvvmstudy.repository.model
 
 import com.google.gson.annotations.SerializedName
+import com.mash_up.mvvmstudy.R
 import java.io.Serializable
 
 data class Repositories(
@@ -40,23 +41,26 @@ data class Owner(
     val avatarUrl: String
 ): Serializable
 
-fun Repository.toDetailUiModel() =
-    DetailUiModel(
-        repositoryName = name,
-        feeds = listOf(
-            DetailFeed.Profile(
-                avatarUrl = owner.avatarUrl,
-                ownerName = owner.login,
-                stargazerCount = stargazersCount.toString()
-            ),
-            DetailFeed.Description(
-                description = description
-            ),
-            DetailFeed.Language(
-                language = language
-            ),
-            DetailFeed.LastUpdated(
-                lastUpdated = updatedAt
-            )
-        )
+fun Repository.toUiModel() =
+    listOf(
+        DetailUiModel(
+            title = owner.login,
+            content = stargazersCount.toString(),
+            imageUrl = owner.avatarUrl
+        ),
+        DetailUiModel(
+            title = "Description",
+            content = description ?: "",
+            imageUrl = "android.resource://com.mash_up.mvvmstudy/${R.drawable.ic_baseline_description_24}"
+        ),
+        DetailUiModel(
+            title = "Language",
+            content = language ?: "",
+            imageUrl = "android.resource://com.mash_up.mvvmstudy/${R.drawable.ic_baseline_announcement_24}"
+        ),
+        DetailUiModel(
+            title = "Last Updated",
+            content = updatedAt,
+            imageUrl = "android.resource://com.mash_up.mvvmstudy/${R.drawable.ic_baseline_alarm_on_24}"
+        ),
     )
