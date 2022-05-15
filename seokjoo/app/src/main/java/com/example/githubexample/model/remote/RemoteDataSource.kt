@@ -1,7 +1,9 @@
 package com.example.githubexample.model.remote
 
-import com.example.githubexample.ui.MainContract
+import androidx.paging.PagingData
+import com.example.githubexample.entities.GithubResult
+import kotlinx.coroutines.flow.Flow
 
 interface RemoteDataSource {
-    fun getRepositoryList(query: String, modelResult: MainContract.Presenter.ModelResult)
+    fun getRepositoryList(query: String): Flow<PagingData<GithubResult.Item>>
 }
