@@ -1,6 +1,7 @@
 package com.github.sookhee.mvvmstudy.network
 
-import com.github.sookhee.mvvmstudy.BuildConfig
+import androidx.viewbinding.BuildConfig
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -26,9 +27,13 @@ object RetrofitClient {
         .addInterceptor(logging)
         .build()
 
+    private val gson = GsonBuilder()
+        .setDateFormat("yyyy-MMM-dd'T'HH:mm:ssSSZ")
+        .create()
+
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .client(client)
         .build()
 

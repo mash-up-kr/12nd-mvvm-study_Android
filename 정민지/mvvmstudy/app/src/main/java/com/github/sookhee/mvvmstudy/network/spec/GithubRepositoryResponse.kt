@@ -1,6 +1,7 @@
 package com.github.sookhee.mvvmstudy.network.spec
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 /**
  *  GithubRepositoryResponse.kt
@@ -18,4 +19,6 @@ data class GithubRepositoryResponse(
     val language: String?,
     @SerializedName("owner")
     val owner: GithubUserResponse,
+    @SerializedName("updated_at")
+    val lastUpdate: Date?,
 )

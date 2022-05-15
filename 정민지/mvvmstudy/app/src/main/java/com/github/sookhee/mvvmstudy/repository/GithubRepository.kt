@@ -1,24 +1,26 @@
-package com.github.sookhee.mvvmstudy.interactor
+package com.github.sookhee.mvvmstudy.repository
 
 import android.util.Log
 import com.github.sookhee.mvvmstudy.network.GithubAPI
 import com.github.sookhee.mvvmstudy.network.RetrofitClient
 import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryListResponse
 import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryResponse
-import com.github.sookhee.mvvmstudy.ui.main.MainContract
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 /**
- *  MainInteractor.kt
+ *  GithubRepository.kt
  *
  *  Created by Minji Jeong on 2022/04/25
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-class MainInteractor(private val request: GithubAPI) : MainContract.Interactor {
-    override fun getGithubRepositoryList(onNetworkCallbackListener: MainContract.Interactor.OnNetworkCallbackListener) {
+class GithubRepository(
+    private val request: GithubAPI,
+    private val onNetworkCallbackListener: OnNetworkCallbackListener,
+) {
+    fun getGithubRepositoryList() {
         val call = request.getRepository()
 
         call.enqueue(object : Callback<List<GithubRepositoryResponse>> {
@@ -34,7 +36,7 @@ class MainInteractor(private val request: GithubAPI) : MainContract.Interactor {
                         onNetworkCallbackListener.onSuccess(it)
                     }
                 } else {
-                    onNetworkCallbackListener.onFailure(Throwable("${response.code()}"))
+                    onNetworkCallbackListener.onFailure(Throwable(response.message()))
                 }
             }
 
@@ -45,10 +47,7 @@ class MainInteractor(private val request: GithubAPI) : MainContract.Interactor {
         })
     }
 
-    override fun getGithubRepositoryListWithQuery(
-        onNetworkCallbackListener: MainContract.Interactor.OnNetworkCallbackListener,
-        keyword: String
-    ) {
+    fun getGithubRepositoryListWithQuery(keyword: String) {
         val request = RetrofitClient.buildService(GithubAPI::class.java)
         val call = request.getRepositoryListWithQuery(keyword)
 
@@ -64,6 +63,8 @@ class MainInteractor(private val request: GithubAPI) : MainContract.Interactor {
                     response.body()?.items?.let {
                         onNetworkCallbackListener.onSuccess(it)
                     }
+                } else {
+                    onNetworkCallbackListener.onFailure(Throwable(response.message()))
                 }
             }
 
@@ -75,6 +76,6 @@ class MainInteractor(private val request: GithubAPI) : MainContract.Interactor {
     }
 
     companion object {
-        private val TAG = MainInteractor::class.simpleName
+        private val TAG = GithubRepository::class.simpleName
     }
 }
