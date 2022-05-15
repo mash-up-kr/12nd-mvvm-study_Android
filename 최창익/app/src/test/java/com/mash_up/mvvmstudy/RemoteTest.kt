@@ -1,8 +1,9 @@
 package com.mash_up.mvvmstudy
 
-import com.mash_up.mvvmstudy.model.*
-import com.orhanobut.logger.Logger
-import kotlinx.coroutines.runBlocking
+import com.mash_up.mvvmstudy.repository.model.Owner
+import com.mash_up.mvvmstudy.repository.model.Repositories
+import com.mash_up.mvvmstudy.repository.model.Repository
+import com.mash_up.mvvmstudy.repository.remote.GitService
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -11,7 +12,6 @@ import org.junit.Before
 import org.junit.Test
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class RemoteTest {
@@ -69,7 +69,10 @@ class RemoteTest {
                             login = "dtrupenn",
                             avatarUrl = "https://secure.gravatar.com/avatar/e7956084e75f239de85d3a31bc172ace?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png"
                         ),
-                        language = "Assembly"
+                        language = "Assembly",
+                        description = "A C implementation of Tetris using Pennsim through LC4",
+                        stargazersCount = 1,
+                        updatedAt = "2013-01-05T17:58:47Z"
                     )
                 )
             )

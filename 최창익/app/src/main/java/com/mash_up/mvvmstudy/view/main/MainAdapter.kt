@@ -1,4 +1,4 @@
-package com.mash_up.mvvmstudy.view
+package com.mash_up.mvvmstudy.view.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,22 +6,41 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mash_up.mvvmstudy.databinding.ItemListBinding
-import com.mash_up.mvvmstudy.model.Repository
+import com.mash_up.mvvmstudy.repository.model.Repository
 
-class RepositoryAdapter :
-    ListAdapter<Repository, RepositoryAdapter.RepositoryViewHolder>(repositoryDiffCallback) {
+class MainAdapter(val onClickItem: (Repository) -> Unit) :
+    ListAdapter<Repository, MainAdapter.RepositoryViewHolder>(repositoryDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder =
         RepositoryViewHolder(
-            ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            onClickItem
         )
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val currentItem = getItem(position)
+
+        holder.apply {
+            bind(currentItem)
+            binding.root.setOnClickListener {
+                onClickItem(currentItem)
+            }
+        }
     }
 
-    class RepositoryViewHolder(private val binding: ItemListBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class RepositoryViewHolder(
+        val binding: ItemListBinding,
+        val onClickItem: (Repository) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        private lateinit var repository: Repository
+
+        init {
+            binding.root.setOnClickListener {
+                onClickItem(repository)
+            }
+        }
+
         fun bind(repository: Repository) {
+            this.repository = repository
             binding.repository = repository
         }
     }

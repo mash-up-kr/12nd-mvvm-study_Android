@@ -1,5 +1,6 @@
-package com.mash_up.mvvmstudy.model
+package com.mash_up.mvvmstudy.repository.remote
 
+import com.mash_up.mvvmstudy.repository.model.Repositories
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
