@@ -1,12 +1,13 @@
 package com.joocoding.android.app.githubsearch.model.response
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-data class RepositoryResponse(
+data class Repository(
     @SerializedName("name")
     val name: String,
     @SerializedName("owner")
-    val owner: OwnerResponse,
+    val owner: Owner,
     @SerializedName("private")
     val private: Boolean,
     @SerializedName("description")
@@ -18,5 +19,18 @@ data class RepositoryResponse(
     @SerializedName("stargazers_count")
     val stargazersCount: Long,
     @SerializedName("language")
-    val language: String
-)
+    val language: String,
+    @SerializedName("updated_at")
+    val updatedAt: String
+
+) : Serializable
+
+fun Repository.toDetail() =
+    Detail(
+        detailName = name,
+        detailImage = owner.avatarUrl,
+        detailStarCnt = stargazersCount.toString(),
+        detailDescription = description,
+        detailLang = language,
+        detailUpdated = updatedAt
+    )

@@ -6,39 +6,62 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.joocoding.android.app.githubsearch.databinding.ItemRepositoryBinding
-import com.joocoding.android.app.githubsearch.model.response.RepositoryResponse
+import com.joocoding.android.app.githubsearch.model.response.Repository
 
-class MainAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MainAdapter(
+    private var datas: List<Repository> = emptyList(), private val clickEvent: (Repository) -> Unit
+) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
-    var datas = mutableListOf<RepositoryResponse>()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(
             ItemRepositoryBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
+            clickEvent
         )
     }
 
+    fun setItem(newItem: List<Repository>) {
+        datas = newItem
+        notifyDataSetChanged()
+    }
+
+
     override fun getItemCount(): Int = datas.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if(holder is MainViewHolder)
-            holder.bind(datas[position])
+    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
+        holder.bind(datas[position])
 
+    }
+
+    class MainViewHolder(
+        private val binding: ItemRepositoryBinding,
+        private val clickEvent: (Repository) -> Unit
+    ) : RecyclerView.ViewHolder(
+        binding.root
+    ) {
+        //private val binding: ItemRepositoryBinding = DataBindingUtil.bind(itemView) ?: throw IllegalStateException("fail to bind")
+        private lateinit var item: Repository
+
+        init {
+            itemView.setOnClickListener {
+                clickEvent(item)
+            }
+        }
+
+        fun bind(item: Repository) {
+            this.item = item
+            binding.tvRvName.text = item.name
+            binding.tvRvDescription.text = item.language
+            Glide.with(itemView).load(item.owner.avatarUrl).into(binding.imgRvPhoto)
+            //binding.root.setOnClickListener { clickEvent(item) }
+
+        }
     }
 
 
 }
 
-class MainViewHolder(private val binding: ItemRepositoryBinding) : RecyclerView.ViewHolder(binding.root){
-    fun bind(item: RepositoryResponse) {
-        binding.tvRvName.text = item.name
-        binding.tvRvDescription.text = item.language
-        Glide.with(itemView).load(item.owner.avatarUrl).into(binding.imgRvPhoto)
 
-    }
-
-}

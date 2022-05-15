@@ -1,75 +1,62 @@
 package com.joocoding.android.app.githubsearch
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.joocoding.android.app.githubsearch.databinding.ActivityMainBinding
-import com.joocoding.android.app.githubsearch.model.response.RepositoriesResponse
-import com.joocoding.android.app.githubsearch.model.response.RepositoryResponse
-import com.joocoding.android.app.githubsearch.network.GithubRetrofit
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.joocoding.android.app.githubsearch.model.response.Repository
+import com.joocoding.android.app.githubsearch.model.response.toDetail
+import com.joocoding.android.app.githubsearch.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainAdapter: MainAdapter
 
+    private val mainViewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.viewModel = mainViewModel
         initRecycler()
-        getRepository(GithubRetrofit.githubRetrofit.searchRepositories())
         initSearchView()
         supportActionBar?.hide()
+
     }
 
     private fun initRecycler() {
-        mainAdapter = MainAdapter()
+        mainAdapter = MainAdapter(clickEvent = { repository: Repository ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra(DetailActivity.EXTRA_KEY_REPO, repository.toDetail())
+            startActivity(intent)
+        }
+        )
+
         binding.recyclerView.adapter = mainAdapter
 
+        mainViewModel.repositories.observe(
+            this,
+            Observer {
+                (binding.recyclerView.adapter as? MainAdapter)?.setItem(it)
+            })
     }
-
-    private fun getRepository(repositoryRequest: Call<RepositoriesResponse>) {
-        repositoryRequest.enqueue(object : Callback<RepositoriesResponse> {
-            override fun onFailure(call: Call<RepositoriesResponse>, t: Throwable) {
-                Log.e(TAG, "Failed to fetch photos", t)
-            }
-
-            override fun onResponse(
-                call: Call<RepositoriesResponse>,
-                response: Response<RepositoriesResponse>
-            ) {
-                Log.d(TAG, "Response received")
-                val repositoriesResponse: RepositoriesResponse? = response.body()
-                var repositoryResponse: List<RepositoryResponse> =
-                    repositoriesResponse?.repositories
-                        ?: mutableListOf()
-
-                repositoryResponse = repositoryResponse.filterNot {
-                    it.owner.avatarUrl.isBlank()
-                }
-                Log.i(TAG, "repositoryResponse= $repositoryResponse")
-                mainAdapter.datas = repositoryResponse as MutableList<RepositoryResponse>
-                mainAdapter.notifyDataSetChanged()
-            }
-
-        })
-    }
-
 
     private fun initSearchView() {
-        var request: Call<RepositoriesResponse>
         binding.searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                 override fun onQueryTextChange(queryText: String?): Boolean {
                     queryText?.let {
-                        request = GithubRetrofit.githubRetrofit.searchRepositories(query = it)
-                        getRepository(request)
+                        Log.i(TAG, "initSearchView, queryText=$queryText")
+                        mainViewModel.getRepository(queryText)
+
                     }
                     return true
                 }
@@ -80,11 +67,14 @@ class MainActivity : AppCompatActivity() {
 
             })
         }
+
+
     }
 
     companion object {
         private const val TAG = "MainActivity"
     }
 }
+
 
 
