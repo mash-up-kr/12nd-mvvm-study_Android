@@ -8,4 +8,4 @@ data class Owner(
     val id: Int,
     val login: String,
     @JsonNames("avatar_url") val avatarUrl: String,
-)
+) : java.io.Serializable

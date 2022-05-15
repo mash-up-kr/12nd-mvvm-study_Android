@@ -2,30 +2,40 @@ package com.mashup.mvvm.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.mashup.mvvm.ServiceLocator
-import com.mashup.mvvm.data.Response
 import com.mashup.mvvm.data.repository.GithubRepository
 import com.mashup.mvvm.databinding.ActivityMainBinding
 import com.mashup.mvvm.extensions.showToast
+import com.mashup.mvvm.ui.detail.DetailActivity
 import com.mashup.mvvm.ui.main.adapter.RepositoryAdapter
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel: MainViewModel by viewModels {
+        MainViewModelFactory(ServiceLocator.injectGithubRepository())
+    }
     private val viewBinding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(
             LayoutInflater.from(this)
         )
     }
-    private val repositoryAdapter: RepositoryAdapter by lazy { RepositoryAdapter() }
-    private val githubRepository: GithubRepository by lazy {
-        GithubRepository(ServiceLocator.injectGithubApi())
+    private val repositoryAdapter: RepositoryAdapter by lazy {
+        RepositoryAdapter { repository ->
+            repository?.run {
+                startActivity(DetailActivity.newIntent(this@MainActivity, repository))
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
         setUi()
+        observeViewModel()
     }
 
     private fun setUi() {
@@ -42,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUiOfSearchButton() {
         viewBinding.btnSearch.setOnClickListener {
-            fetchGithubRepository(viewBinding.etSearchRepository.text.toString())
+            viewModel.fetchGithubRepository(viewBinding.etSearchRepository.text.toString())
         }
     }
 
@@ -53,28 +63,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchGithubRepository(query: String) {
-        Thread {
-            when (val data = githubRepository.getRepositories(query)) {
-                is Response.Success -> {
-                    viewBinding.rvRepository.post {
-                        repositoryAdapter.submitList(data.data.items)
-                    }
-                }
-                is Response.Error -> {
-                    viewBinding.root.post {
-                        data.message?.let { message ->
-                            showToast(message)
-                        }
-                    }
-                }
-                else -> {
-                }
-            }
-        }.start()
+    private fun observeViewModel() {
+        viewModel.repositories.observe(this) {
+            repositoryAdapter.submitList(it)
+        }
+        viewModel.toastMessage.observe(this) { toastMessageEvent ->
+            toastMessageEvent.getContentIfNotHandled()?.let { showToast(it) }
+        }
     }
+}
 
-    companion object {
-        private val TAG = MainActivity::class.java.simpleName
+@Suppress("UNCHECKED_CAST")
+class MainViewModelFactory(private val githubRepository: GithubRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            MainViewModel(githubRepository = githubRepository) as T
+        } else {
+            throw IllegalArgumentException()
+        }
     }
 }

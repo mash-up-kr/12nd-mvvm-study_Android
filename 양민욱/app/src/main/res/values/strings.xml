@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">mvvm</string>
     <string name="hint_search_repository">저장소 이름을 입력해주세요</string>
+    <string name="title_owner">Owner</string>
+    <string name="title_description">Description</string>
+    <string name="title_language">Language</string>
+    <string name="title_last_updated">Last Updated</string>
+
+    <string name="unknown_repository_language">알수없음</string>
 </resources>
