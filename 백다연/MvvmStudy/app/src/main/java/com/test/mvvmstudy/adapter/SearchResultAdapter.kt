@@ -1,25 +1,35 @@
 package com.test.mvvmstudy.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.test.mvvmstudy.model.ResultDetail
+import com.test.mvvmstudy.data.SearchResultDetail
 import com.test.mvvmstudy.databinding.ItemSearchListBinding
 
 class SearchResultAdapter :
-    ListAdapter<ResultDetail, SearchResultAdapter.SearchViewHolder>(diffUtil) {
+    ListAdapter<SearchResultDetail, SearchResultAdapter.SearchViewHolder>(diffUtil) {
 
-    class SearchViewHolder(private val binding: ItemSearchListBinding) :
+    lateinit var clickListener : (SearchResultDetail)->Unit
+
+    class SearchViewHolder(private val binding: ItemSearchListBinding, private val clickListener : (SearchResultDetail)->Unit) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ResultDetail) {
-            binding.searchData = item
-            Glide.with(binding.root).load(item.owner.imgUrl).into(binding.profileImg)
+        private lateinit var resultItem: SearchResultDetail
+
+        init {
+            itemView.setOnClickListener {
+                clickListener(resultItem)
+            }
         }
 
+        fun bind(item: SearchResultDetail) {
+            resultItem = item
+            binding.searchData = item
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -28,7 +38,7 @@ class SearchResultAdapter :
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), clickListener
         )
     }
 
@@ -37,16 +47,14 @@ class SearchResultAdapter :
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<ResultDetail>() {
-            override fun areItemsTheSame(oldItem: ResultDetail, newItem: ResultDetail): Boolean {
+        private val diffUtil = object : DiffUtil.ItemCallback<SearchResultDetail>() {
+            override fun areItemsTheSame(oldItem: SearchResultDetail, newItem: SearchResultDetail): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: ResultDetail, newItem: ResultDetail): Boolean {
+            override fun areContentsTheSame(oldItem: SearchResultDetail, newItem: SearchResultDetail): Boolean {
                 return oldItem == newItem
             }
-
-
         }
     }
 }

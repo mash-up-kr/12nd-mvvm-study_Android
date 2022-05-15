@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.SearchDetailFragment">
+
+    <data>
+        <variable
+            name="searchData"
+            type="com.test.mvvmstudy.data.SearchResultDetail" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/profile_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:imageUrl="@{searchData.owner.imgUrl}"
+            app:placeholder="@{@drawable/ic_profile_placeholder}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/star_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{@string/star(searchData.starCount.toString())}"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/profile_img"
+            app:layout_constraintStart_toEndOf="@id/profile_img"
+            app:layout_constraintTop_toBottomOf="@id/user_name" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{searchData.name}"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/star_count"
+            app:layout_constraintStart_toEndOf="@id/profile_img"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_img" />
+
+        <include
+            android:id="@+id/include_description"
+            layout="@layout/item_detail_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:content="@{searchData.description}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line"
+            app:title="@{@string/description}" />
+
+        <include
+            android:id="@+id/include_language"
+            layout="@layout/item_detail_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:content="@{searchData.language}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include_description"
+            app:title="@{@string/language}" />
+
+        <include
+            android:id="@+id/include_update"
+            layout="@layout/item_detail_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:content="@{searchData.updateAt}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include_language"
+            app:title="@{@string/last_update}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
