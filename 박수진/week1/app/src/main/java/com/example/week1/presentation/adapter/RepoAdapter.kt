@@ -1,4 +1,4 @@
-package com.example.week1.adapter
+package com.example.week1.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,32 +6,37 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.week1.data.dataclass.GithubRepo
 import com.example.week1.databinding.RepoItemBinding
-import com.example.week1.model.GithubRepo
 
-class GithubRepoAdapter :
-    ListAdapter<GithubRepo, GithubRepoAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
+class RepoAdapter (
+    private val itemClick: (GithubRepo) -> Unit
+) : ListAdapter<GithubRepo, RepoAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
 
     init {
         setHasStableIds(true)
     }
 
-    class RepoViewHolder(private val binding: RepoItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class RepoViewHolder(
+        private val binding: RepoItemBinding,
+        private val itemClick: (GithubRepo) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: GithubRepo) {
             with(binding) {
                 Glide.with(root)
-                    .load(repo.owner.avatar_url)
+                    .load(repo.owner.avatarUrl)
                     .into(repoImg)
                 repoName.text = repo.name
                 repoLang.text = repo.language
+                root.setOnClickListener { itemClick(repo) }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder =
         RepoViewHolder(
-            RepoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            RepoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            itemClick
         )
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {

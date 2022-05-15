@@ -1,5 +1,6 @@
-package com.example.week1.network
+package com.example.week1.data.network
 
+import com.example.week1.data.api.GithubApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

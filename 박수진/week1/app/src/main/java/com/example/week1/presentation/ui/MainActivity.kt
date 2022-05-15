@@ -1,27 +1,28 @@
-package com.example.week1.view
+package com.example.week1.presentation.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.example.week1.adapter.GithubRepoAdapter
-import com.example.week1.base.BaseActivity
+import androidx.lifecycle.ViewModelProviders
+import com.example.week1.data.network.NetworkState
+import com.example.week1.presentation.adapter.RepoAdapter
+import com.example.week1.presentation.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
-import com.example.week1.model.GithubRepoList
-import com.example.week1.network.RetrofitService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.week1.presentation.viewmodel.RepoListViewModel
 
 class MainActivity : BaseActivity() {
 
     private var backWaitTime: Long = 0
     private lateinit var binding: ActivityMainBinding
-    private val githubRepoAdapter: GithubRepoAdapter by lazy {
-        GithubRepoAdapter()
+    private lateinit var viewModel: RepoListViewModel
+    private val repoAdapter: RepoAdapter by lazy {
+        RepoAdapter { repo ->
+            val intent = Intent(this, RepoDetailActivity::class.java)
+            intent.putExtra("repo", repo)
+            startActivity(intent)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +34,17 @@ class MainActivity : BaseActivity() {
         initRecyclerView()
         hideKeyBoard()
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            getGithubRepoList("kotlin")
-            updateQuery()
-        }, 200)
+        viewModel = getViewModel()
+        viewModel.repoList.observe(this) {
+            repoAdapter.submitList(it)
+        }
+
+        viewModel.networkState.observe(this) {
+            if (it == NetworkState.LOADING) onProgress()
+            else offProgress()
+        }
+
+        updateQuery()
     }
 
     private fun initActionBar() {
@@ -45,28 +53,11 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
-        binding.searchRecyclerview.adapter = githubRepoAdapter
+        binding.searchRecyclerview.adapter = repoAdapter
     }
 
-    private fun getGithubRepoList(query: String) {
-        onProgress()
-        RetrofitService.client.getRepoList(query)
-            .enqueue(object : Callback<GithubRepoList> {
-                override fun onResponse(
-                    call: Call<GithubRepoList>,
-                    response: Response<GithubRepoList>
-                ) {
-                    if (response.isSuccessful) {
-                        response.body()?.items.let { githubRepoAdapter.submitList(it) }
-                        offProgress()
-                    }
-                }
-
-                override fun onFailure(call: Call<GithubRepoList>, t: Throwable) {
-                    Log.e("retrofit", t.toString())
-                }
-            })
-    }
+    private fun getViewModel(): RepoListViewModel =
+        ViewModelProviders.of(this).get(RepoListViewModel::class.java)
 
     private fun updateQuery() {
         binding.searchEt.setOnEditorActionListener { _, action, _ ->
@@ -78,7 +69,7 @@ class MainActivity : BaseActivity() {
                 if (query.isEmpty()) {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
-                    getGithubRepoList(query)
+                    viewModel.updateRepoList(query)
                 }
                 handled = true
             }

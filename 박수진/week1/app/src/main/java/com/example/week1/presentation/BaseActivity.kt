@@ -1,4 +1,4 @@
-package com.example.week1.base
+package com.example.week1.presentation
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,6 +10,7 @@ import com.example.week1.R
 import com.example.week1.databinding.DialogProgressBinding
 
 open class BaseActivity : AppCompatActivity() {
+
     private lateinit var progressDialog: AppCompatDialog
 
     fun onProgress() {
