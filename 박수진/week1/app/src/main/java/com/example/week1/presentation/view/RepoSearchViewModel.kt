@@ -21,7 +21,7 @@ class RepoSearchViewModel : ViewModel() {
     val networkState: LiveData<NetworkState>
         get() = _networkState
 
-    fun getRepoList(query: String) {
+    fun setRepoList(query: String) {
         _networkState.postValue(NetworkState.LOADING)
         getRepoSearchUseCase(query, viewModelScope) { repoList ->
             _repoList.value = repoList.items
