@@ -1,4 +1,4 @@
-package com.example.week1.presentation.adapter
+package com.example.week1.presentation.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.week1.data.dataclass.GithubRepo
+import com.example.week1.data.model.GithubRepo
 import com.example.week1.databinding.RepoItemBinding
 
-class RepoAdapter (
+class RepoSearchAdapter (
     private val itemClick: (GithubRepo) -> Unit
-) : ListAdapter<GithubRepo, RepoAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
+) : ListAdapter<GithubRepo, RepoSearchAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
 
     init {
         setHasStableIds(true)

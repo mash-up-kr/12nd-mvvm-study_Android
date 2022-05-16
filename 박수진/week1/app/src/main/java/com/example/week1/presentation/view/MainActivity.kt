@@ -1,4 +1,4 @@
-package com.example.week1.presentation.ui
+package com.example.week1.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,19 +6,18 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import com.example.week1.data.network.NetworkState
-import com.example.week1.presentation.adapter.RepoAdapter
-import com.example.week1.presentation.BaseActivity
+import com.example.week1.data.model.NetworkState
+import com.example.week1.presentation.base.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
-import com.example.week1.presentation.viewmodel.RepoListViewModel
 
 class MainActivity : BaseActivity() {
 
     private var backWaitTime: Long = 0
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: RepoListViewModel
-    private val repoAdapter: RepoAdapter by lazy {
-        RepoAdapter { repo ->
+    private lateinit var viewModel: RepoSearchViewModel
+
+    private val repoAdapter: RepoSearchAdapter by lazy {
+        RepoSearchAdapter { repo ->
             val intent = Intent(this, RepoDetailActivity::class.java)
             intent.putExtra("repo", repo)
             startActivity(intent)
@@ -35,8 +34,8 @@ class MainActivity : BaseActivity() {
         hideKeyBoard()
 
         viewModel = getViewModel()
-        viewModel.repoList.observe(this) {
-            repoAdapter.submitList(it)
+        viewModel.repoList.observe(this) { repoList ->
+            repoAdapter.submitList(repoList)
         }
 
         viewModel.networkState.observe(this) {
@@ -56,8 +55,8 @@ class MainActivity : BaseActivity() {
         binding.searchRecyclerview.adapter = repoAdapter
     }
 
-    private fun getViewModel(): RepoListViewModel =
-        ViewModelProviders.of(this).get(RepoListViewModel::class.java)
+    private fun getViewModel(): RepoSearchViewModel =
+        ViewModelProviders.of(this)[RepoSearchViewModel::class.java]
 
     private fun updateQuery() {
         binding.searchEt.setOnEditorActionListener { _, action, _ ->
@@ -69,7 +68,7 @@ class MainActivity : BaseActivity() {
                 if (query.isEmpty()) {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
-                    viewModel.updateRepoList(query)
+                    viewModel.getRepoList(query)
                 }
                 handled = true
             }

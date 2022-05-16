@@ -1,4 +1,4 @@
-package com.example.week1.data.dataclass
+package com.example.week1.data.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

@@ -1,4 +1,4 @@
-package com.example.week1.presentation
+package com.example.week1.presentation.base
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable

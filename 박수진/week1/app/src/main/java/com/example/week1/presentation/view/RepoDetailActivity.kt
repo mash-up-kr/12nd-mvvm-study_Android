@@ -1,12 +1,12 @@
-package com.example.week1.presentation.ui
+package com.example.week1.presentation.view
 
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import com.bumptech.glide.Glide
-import com.example.week1.data.dataclass.GithubRepo
+import com.example.week1.data.model.GithubRepo
 import com.example.week1.databinding.ActivityRepoDetailBinding
-import com.example.week1.presentation.BaseActivity
+import com.example.week1.presentation.base.BaseActivity
 
 class RepoDetailActivity : BaseActivity() {
 
