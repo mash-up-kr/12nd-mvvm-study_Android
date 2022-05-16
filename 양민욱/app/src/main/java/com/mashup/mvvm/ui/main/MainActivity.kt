@@ -2,22 +2,21 @@ package com.mashup.mvvm.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.mashup.mvvm.ServiceLocator
+import com.mashup.mvvm.base.BaseActivity
 import com.mashup.mvvm.data.repository.GithubRepository
 import com.mashup.mvvm.databinding.ActivityMainBinding
 import com.mashup.mvvm.extensions.showToast
 import com.mashup.mvvm.ui.detail.DetailActivity
 import com.mashup.mvvm.ui.main.adapter.RepositoryAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
-    private val viewModel: MainViewModel by viewModels {
-        MainViewModelFactory(ServiceLocator.injectGithubRepository())
-    }
+class MainActivity : BaseActivity<MainViewModel>() {
     private val viewBinding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(
             LayoutInflater.from(this)
@@ -64,17 +63,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.repositories.observe(this) {
-            repositoryAdapter.submitList(it)
+        lifecycleScope.launch {
+            viewModel.repositories.collectLatest { repositories ->
+                repositoryAdapter.submitList(repositories)
+            }
         }
-        viewModel.toastMessage.observe(this) { toastMessageEvent ->
-            toastMessageEvent.getContentIfNotHandled()?.let { showToast(it) }
+        lifecycleScope.launch {
+            viewModel.toastMessage.collectLatest { toast ->
+                showToast(toast)
+            }
         }
+    }
+
+    override fun injectViewModel(): MainViewModel {
+        return ViewModelProvider(
+            viewModelStore,
+            MainViewModelFactory(ServiceLocator.injectGithubRepository())
+        ).get(MainViewModel::class.java)
     }
 }
 
 @Suppress("UNCHECKED_CAST")
-class MainViewModelFactory(private val githubRepository: GithubRepository) : ViewModelProvider.Factory {
+class MainViewModelFactory(private val githubRepository: GithubRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             MainViewModel(githubRepository = githubRepository) as T

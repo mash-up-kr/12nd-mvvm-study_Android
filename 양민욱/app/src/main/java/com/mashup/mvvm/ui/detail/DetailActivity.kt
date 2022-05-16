@@ -2,27 +2,19 @@ package com.mashup.mvvm.ui.detail
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.activity.viewModels
 import androidx.lifecycle.SavedStateViewModelFactory
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.mashup.mvvm.R
+import com.mashup.mvvm.base.BaseActivity
 import com.mashup.mvvm.constants.KEY_REPOSITORY
 import com.mashup.mvvm.data.model.Repository
-import com.mashup.mvvm.data.repository.GithubRepository
 import com.mashup.mvvm.databinding.ActivityDetailBinding
-import com.mashup.mvvm.databinding.ActivityMainBinding
 import com.mashup.mvvm.extensions.loadImage
-import com.mashup.mvvm.ui.main.MainViewModel
 import com.mashup.mvvm.utils.toDateString
 
-class DetailActivity : AppCompatActivity() {
-    private val viewModel: DetailViewModel by viewModels()
-
+class DetailActivity : BaseActivity<DetailViewModel>() {
     private val viewBinding: ActivityDetailBinding by lazy {
         ActivityDetailBinding.inflate(
             LayoutInflater.from(this)
@@ -79,5 +71,12 @@ class DetailActivity : AppCompatActivity() {
                 putExtra(KEY_REPOSITORY, repository)
             }
         }
+    }
+
+    override fun injectViewModel(): DetailViewModel {
+        return ViewModelProvider(
+            this,
+            SavedStateViewModelFactory(application, this, intent.extras)
+        ).get(DetailViewModel::class.java)
     }
 }
