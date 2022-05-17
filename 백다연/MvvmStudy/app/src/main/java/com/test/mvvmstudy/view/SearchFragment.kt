@@ -63,21 +63,25 @@ class SearchFragment : Fragment() {
             searchViewModel.resultStateFlow.collect { result ->
                 when (result) {
                     is NetworkResult.Loading -> {
-                        binding.progressBar.isVisible = true
+                        showProgressbar(true)
                     }
                     is NetworkResult.SuccessDataResult -> {
-                        binding.progressBar.isVisible = false
+                        showProgressbar(false)
                         adapter.submitList(result.data.items)
                     }
                     is NetworkResult.ErrorDataResult -> {
-                        binding.progressBar.isVisible = false
+                        showProgressbar(false)
                         Log.d("error", result.exception.toString())
                         Toast.makeText(context, "error 발생", Toast.LENGTH_LONG).show()
                     }
-                    else -> binding.progressBar.isVisible = false
+                    else -> showProgressbar(false)
                 }
             }
         }
+    }
+
+    private fun showProgressbar(status : Boolean) {
+        binding.progressBar.isVisible = status
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
