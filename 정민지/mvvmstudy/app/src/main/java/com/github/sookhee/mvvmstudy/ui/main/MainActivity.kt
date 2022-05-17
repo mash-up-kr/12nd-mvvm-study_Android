@@ -8,11 +8,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.github.sookhee.mvvmstudy.ResultState
 import com.github.sookhee.mvvmstudy.databinding.ActivityMainBinding
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
 import com.github.sookhee.mvvmstudy.ui.detail.DetailActivity
 import com.github.sookhee.mvvmstudy.ui.showIf
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  *  MainActivity.kt
@@ -52,20 +55,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.repositoryResultState.observe(this) {
-            when (it) {
-                is ResultState.Loading -> showProgress()
-                is ResultState.Success -> {
-                    try {
-                        hideProgress()
-                        setDataToRecyclerView(it.data)
-                    } catch (e: Exception) {
-                        Log.e(TAG, e.message.toString())
+        lifecycleScope.launchWhenStarted {
+            launch {
+                viewModel.repositoryResultState.collect { result ->
+                    when (result) {
+                        is ResultState.Loading -> showProgress()
+                        is ResultState.Success -> {
+                            try {
+                                hideProgress()
+                                setDataToRecyclerView(result.data)
+                            } catch (e: Exception) {
+                                Log.e(TAG, e.message.toString())
+                            }
+                        }
+                        is ResultState.Error -> {
+                            hideProgress()
+                            showErrorMessageToast(result.message)
+                        }
                     }
-                }
-                is ResultState.Error -> {
-                    hideProgress()
-                    showErrorMessageToast(it.message)
                 }
             }
         }

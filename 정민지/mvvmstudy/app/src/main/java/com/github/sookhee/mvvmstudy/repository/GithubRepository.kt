@@ -1,13 +1,10 @@
 package com.github.sookhee.mvvmstudy.repository
 
 import android.util.Log
+import com.github.sookhee.mvvmstudy.ResultState
+import com.github.sookhee.mvvmstudy.network.mapper.ResponseMapper
+import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
 import com.github.sookhee.mvvmstudy.network.GithubAPI
-import com.github.sookhee.mvvmstudy.network.RetrofitClient
-import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryListResponse
-import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  *  GithubRepository.kt
@@ -17,62 +14,32 @@ import retrofit2.Response
  */
 
 class GithubRepository(
-    private val request: GithubAPI,
-    private val onNetworkCallbackListener: OnNetworkCallbackListener,
+    private val request: GithubAPI
 ) {
-    fun getGithubRepositoryList() {
-        val call = request.getRepository()
+    suspend fun getGithubRepositoryList(): ResultState<List<GithubRepositoryModel>> {
+        return try {
+            val response = request.getRepository()
+            Log.d(TAG, "onResponse: $response")
 
-        call.enqueue(object : Callback<List<GithubRepositoryResponse>> {
-            override fun onResponse(
-                call: Call<List<GithubRepositoryResponse>>,
-                response: Response<List<GithubRepositoryResponse>>
-            ) {
-                Log.d(TAG, "onResponse: $response")
+            ResultState.Success(ResponseMapper.mapToGithubRepositoryModelList(response))
+        } catch (e: Exception) {
+            Log.d(TAG, "onFailure: ${e.message}}")
 
-                if (response.isSuccessful) {
-                    Log.d(TAG, "onResponse: ${response.body()}")
-                    response.body()?.let {
-                        onNetworkCallbackListener.onSuccess(it)
-                    }
-                } else {
-                    onNetworkCallbackListener.onFailure(Throwable(response.message()))
-                }
-            }
-
-            override fun onFailure(call: Call<List<GithubRepositoryResponse>>, t: Throwable) {
-                Log.d(TAG, "onFailure: ${t.message}")
-                onNetworkCallbackListener.onFailure(t)
-            }
-        })
+            ResultState.Error("${e.message}")
+        }
     }
 
-    fun getGithubRepositoryListWithQuery(keyword: String) {
-        val request = RetrofitClient.buildService(GithubAPI::class.java)
-        val call = request.getRepositoryListWithQuery(keyword)
+    suspend fun getGithubRepositoryListWithQuery(keyword: String): ResultState<List<GithubRepositoryModel>> {
+        return try {
+            val response = request.getRepositoryListWithQuery(keyword)
+            Log.d(TAG, "onResponse: $response")
 
-        call.enqueue(object : Callback<GithubRepositoryListResponse> {
-            override fun onResponse(
-                call: Call<GithubRepositoryListResponse>,
-                response: Response<GithubRepositoryListResponse>
-            ) {
-                Log.d(TAG, "onResponse: $response")
+            ResultState.Success(ResponseMapper.mapToGithubRepositoryModelList(response.items))
+        } catch (e: Exception) {
+            Log.d(TAG, "onFailure: ${e.message}}")
 
-                if (response.isSuccessful) {
-                    Log.d(TAG, "onResponse: ${response.body()?.items}")
-                    response.body()?.items?.let {
-                        onNetworkCallbackListener.onSuccess(it)
-                    }
-                } else {
-                    onNetworkCallbackListener.onFailure(Throwable(response.message()))
-                }
-            }
-
-            override fun onFailure(call: Call<GithubRepositoryListResponse>, t: Throwable) {
-                Log.d(TAG, "onFailure: ${t.message}")
-                onNetworkCallbackListener.onFailure(t)
-            }
-        })
+            ResultState.Error("${e.message}")
+        }
     }
 
     companion object {

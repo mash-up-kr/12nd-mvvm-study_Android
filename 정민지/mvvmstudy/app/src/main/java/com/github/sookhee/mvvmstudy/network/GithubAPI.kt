@@ -2,7 +2,6 @@ package com.github.sookhee.mvvmstudy.network
 
 import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryListResponse
 import com.github.sookhee.mvvmstudy.network.spec.GithubRepositoryResponse
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -15,10 +14,10 @@ import retrofit2.http.Query
 
 interface GithubAPI {
     @GET("/repositories")
-    fun getRepository(): Call<List<GithubRepositoryResponse>>
+    suspend fun getRepository(): List<GithubRepositoryResponse>
 
     @GET("/search/repositories")
-    fun getRepositoryListWithQuery(
+    suspend fun getRepositoryListWithQuery(
         @Query("q") keyword: String,
-    ): Call<GithubRepositoryListResponse>
+    ): GithubRepositoryListResponse
 }
