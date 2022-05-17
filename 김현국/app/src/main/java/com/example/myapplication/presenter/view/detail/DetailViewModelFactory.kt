@@ -13,8 +13,8 @@ import com.example.myapplication.domain.usecase.GetUserFollowingUseCase
  */
 class DetailViewModelFactory(
     savedStateRegistryOwner: SavedStateRegistryOwner,
-    private val userFollowerUseCase: GetUserFollowerUseCase,
-    private val userFollowingUseCase: GetUserFollowingUseCase
+    private val getUserFollowerUseCase: GetUserFollowerUseCase,
+    private val getUserFollowingUseCase: GetUserFollowingUseCase
 ) : AbstractSavedStateViewModelFactory(
     savedStateRegistryOwner, null
 ) {
@@ -25,7 +25,7 @@ class DetailViewModelFactory(
     ): T {
         if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return DetailViewModel(handle, userFollowerUseCase, userFollowingUseCase) as T
+            return DetailViewModel(handle, getUserFollowerUseCase, getUserFollowingUseCase) as T
         }
         throw IllegalArgumentException("Unable to construct viewmodel")
     }
