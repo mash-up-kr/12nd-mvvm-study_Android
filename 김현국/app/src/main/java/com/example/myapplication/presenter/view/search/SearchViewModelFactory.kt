@@ -13,10 +13,12 @@ import com.example.myapplication.domain.usecase.GetRepositoryListWithQueryUseCas
 class SearchViewModelFactory(
     savedStateRegistryOwner: SavedStateRegistryOwner,
     private val getRepositoryListWithQueryUseCase: GetRepositoryListWithQueryUseCase
-) : AbstractSavedStateViewModelFactory(
-    savedStateRegistryOwner,
-    null
-) {
+) :
+    AbstractSavedStateViewModelFactory(
+        savedStateRegistryOwner,
+        null
+    ) {
+
     override fun <T : ViewModel?> create(
         key: String,
         modelClass: Class<T>,

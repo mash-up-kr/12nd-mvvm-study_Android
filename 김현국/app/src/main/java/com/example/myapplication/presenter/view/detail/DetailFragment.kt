@@ -9,11 +9,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.base.BaseFragment
 import com.example.myapplication.databinding.FragmentDetailBinding
-import com.example.myapplication.servicelocator.RepositoryServiceLocator
-import com.example.myapplication.servicelocator.UseCaseServiceLocator
 import com.example.myapplication.presenter.UiState
 import com.example.myapplication.presenter.adapter.DetailUserFollowerAdapter
 import com.example.myapplication.presenter.adapter.DetailUserFollowingAdapter
+import com.example.myapplication.servicelocator.RepositoryServiceLocator
+import com.example.myapplication.servicelocator.UseCaseServiceLocator
 import com.example.myapplication.util.loadImage
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

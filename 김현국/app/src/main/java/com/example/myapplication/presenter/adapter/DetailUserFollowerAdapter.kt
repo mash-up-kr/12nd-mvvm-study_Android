@@ -7,14 +7,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemFollowBinding
 import com.example.myapplication.presenter.model.PresenterOwner
-import com.example.myapplication.util.loadImage
 
 /**
  * @author 김현국
  * @created 2022/05/03
  */
 class DetailUserFollowerAdapter :
-    ListAdapter<PresenterOwner, DetailUserFollowerAdapter.UserFollowerViewHolder>(diffUtil) {
+    ListAdapter<PresenterOwner, DetailUserFollowerAdapter.UserFollowerViewHolder>(
+        diffUtil
+    ) {
+
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<PresenterOwner>() {
             override fun areItemsTheSame(

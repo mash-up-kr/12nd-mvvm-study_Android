@@ -20,8 +20,9 @@ import kotlinx.coroutines.launch
  */
 class DetailViewModel(
     val savedStateHandle: SavedStateHandle,
-    private val getUserFollowingUseCase: GetUserFollowingUseCase,
-    private val getUserFollowerUseCase: GetUserFollowerUseCase
+    private val getUserFollowerUseCase: GetUserFollowerUseCase,
+    private val getUserFollowingUseCase: GetUserFollowingUseCase
+
 ) : ViewModel() {
     val USER_NAME = "userName"
 
