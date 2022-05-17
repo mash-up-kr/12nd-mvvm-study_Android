@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="github"
+            type="com.example.githubexample.entities.GithubResult.Item" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            bindImage="@{github.owner.avatarUrl}"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@id/tv_repository_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_repository_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{github.name}"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="selfoss" />
+
+        <TextView
+            android:id="@+id/tv_stars"
+            bindStars="@{github.stargazersCount}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/tv_repository_name"
+            app:layout_constraintStart_toStartOf="@id/tv_repository_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_repository_name"
+            tools:text="2107 stars" />
+
+        <View
+            android:id="@+id/simple_line_one"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/tv_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Description"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/simple_line_one" />
+
+        <TextView
+            android:id="@+id/tv_description_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{github.description}"
+            app:layout_constraintEnd_toEndOf="@id/tv_description"
+            app:layout_constraintStart_toStartOf="@id/tv_description"
+            app:layout_constraintTop_toBottomOf="@id/tv_description"
+            tools:text="love sick girl~" />
+
+        <View
+            android:id="@+id/simple_line_two"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description_text" />
+
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Language"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/simple_line_two" />
+
+        <TextView
+            android:id="@+id/tv_language_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{github.language}"
+            app:layout_constraintEnd_toEndOf="@id/tv_language"
+            app:layout_constraintStart_toStartOf="@id/tv_language"
+            app:layout_constraintTop_toBottomOf="@id/tv_language"
+            tools:text="loco ~" />
+
+        <View
+            android:id="@+id/simple_line_three"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_language_text" />
+
+        <TextView
+            android:id="@+id/tv_last_updated"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Last Updated"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/simple_line_three" />
+
+        <TextView
+            android:id="@+id/tv_last_updated_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="@{github.updatedAt}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_last_updated"
+            app:layout_constraintStart_toStartOf="@id/tv_last_updated"
+            app:layout_constraintTop_toBottomOf="@id/tv_last_updated"
+            tools:text="비타민 D ~" />
+
+        <View
+            android:id="@+id/simple_line_four"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_last_updated_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Week1</string>
+
+    <string name="repo_name">repo name</string>
+    <string name="repo_lang">repo lang</string>
+
+    <string name="repo_detail_description">Description</string>
+    <string name="repo_detail_lang">Language</string>
+    <string name="repo_detail_updated">Last Updated</string>
+</resources>

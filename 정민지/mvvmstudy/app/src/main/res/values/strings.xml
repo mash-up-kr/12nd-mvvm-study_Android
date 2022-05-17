@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MashUp MVVM Study</string>
+    <string name="search_hint">Search…</string>
+
+    <string name="detail_title_name">Name</string>
+    <string name="detail_title_last_update">Last Update</string>
+    <string name="detail_title_language">Language</string>
+</resources>
