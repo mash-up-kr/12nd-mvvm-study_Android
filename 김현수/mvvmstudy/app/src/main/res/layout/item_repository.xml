@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
-            name="repository"
+            name="githubRepository"
             type="com.example.mvvmstudy.data.Repository" />
     </data>
 
@@ -23,7 +22,7 @@
             android:id="@+id/repo_img"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:imageUrl="@{repository.owner.avatarUrl}"
+            app:imageUrl="@{githubRepository.owner.avatarUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
@@ -34,23 +33,25 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:singleLine="true"
-            android:text="@{repository.name}"
+            android:text="@{githubRepository.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@id/repo_language"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/repo_img"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="저장소 이름" />
 
         <TextView
             android:id="@+id/repo_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="@{repository.language}"
+            android:text="@{githubRepository.language}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/repo_img"
-            app:layout_constraintTop_toBottomOf="@id/repo_repo" />
+            app:layout_constraintTop_toBottomOf="@id/repo_repo"
+            tools:text="랭귀지" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

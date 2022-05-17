@@ -1,4 +1,4 @@
-package com.example.mvvmstudy.View
+package com.example.mvvmstudy.view
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.mvvmstudy.R
-import com.example.mvvmstudy.ViewModel.DetailViewModel
+import com.example.mvvmstudy.viewmodel.DetailViewModel
 import com.example.mvvmstudy.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
@@ -41,7 +41,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun observing() {
-        viewModel.ui.observe(this) {
+        viewModel.detail.observe(this) {
             binding.detail = it
             setTitle(it.userName)
         }
