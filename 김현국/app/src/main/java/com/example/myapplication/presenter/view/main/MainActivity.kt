@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.view.main
+package com.example.myapplication.presenter.view.main
 
 import android.os.Bundle
 import android.view.View
@@ -24,7 +24,6 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setListener()
     }
 

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.adapter
+package com.example.myapplication.presenter.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,18 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemFollowBinding
-import com.example.myapplication.ui.model.PresenterOwner
+import com.example.myapplication.presenter.model.PresenterOwner
 import com.example.myapplication.util.loadImage
 
 /**
  * @author 김현국
  * @created 2022/05/03
  */
-class DetailUserFollowerAdapter :
-    ListAdapter<PresenterOwner, DetailUserFollowerAdapter.UserFollowerViewHolder>(
-        diffUtil
-    ) {
-
+class DetailUserFollowingAdapter :
+    ListAdapter<PresenterOwner, DetailUserFollowingAdapter.UserFollowingViewHolder>(diffUtil) {
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<PresenterOwner>() {
             override fun areItemsTheSame(
@@ -39,8 +36,8 @@ class DetailUserFollowerAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): UserFollowerViewHolder {
-        return UserFollowerViewHolder(
+    ): UserFollowingViewHolder {
+        return UserFollowingViewHolder(
             ItemFollowBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent, false
@@ -48,11 +45,11 @@ class DetailUserFollowerAdapter :
         )
     }
 
-    override fun onBindViewHolder(holder: UserFollowerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UserFollowingViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class UserFollowerViewHolder(private val binding: ItemFollowBinding) :
+    class UserFollowingViewHolder(private val binding: ItemFollowBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: PresenterOwner) = with(binding) {
             ivDetailFollowImage.loadImage(user.image)

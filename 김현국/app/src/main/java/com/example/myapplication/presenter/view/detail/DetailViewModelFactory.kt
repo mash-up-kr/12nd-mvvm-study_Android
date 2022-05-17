@@ -1,10 +1,11 @@
-package com.example.myapplication.ui.view.detail
+package com.example.myapplication.presenter.view.detail
 
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.example.myapplication.data.repository.DetailUserRepository
+import com.example.myapplication.domain.usecase.GetUserFollowerUseCase
+import com.example.myapplication.domain.usecase.GetUserFollowingUseCase
 
 /**
  * @author 김현국
@@ -12,7 +13,8 @@ import com.example.myapplication.data.repository.DetailUserRepository
  */
 class DetailViewModelFactory(
     savedStateRegistryOwner: SavedStateRegistryOwner,
-    private val detailUserRepository: DetailUserRepository
+    private val getUserFollowerUseCase: GetUserFollowerUseCase,
+    private val getUserFollowingUseCase: GetUserFollowingUseCase
 ) : AbstractSavedStateViewModelFactory(
     savedStateRegistryOwner, null
 ) {
@@ -23,7 +25,7 @@ class DetailViewModelFactory(
     ): T {
         if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return DetailViewModel(handle, detailUserRepository) as T
+            return DetailViewModel(handle, getUserFollowingUseCase, getUserFollowerUseCase) as T
         }
         throw IllegalArgumentException("Unable to construct viewmodel")
     }

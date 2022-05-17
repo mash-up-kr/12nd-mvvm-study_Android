@@ -1,10 +1,10 @@
-package com.example.myapplication.ui.view.search
+package com.example.myapplication.presenter.view.search
 
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.example.myapplication.data.repository.SearchRepoRepository
+import com.example.myapplication.domain.usecase.GetRepositoryListWithQueryUseCase
 
 /**
  * @author 김현국
@@ -12,13 +12,11 @@ import com.example.myapplication.data.repository.SearchRepoRepository
  */
 class SearchViewModelFactory(
     savedStateRegistryOwner: SavedStateRegistryOwner,
-    private val searchRepository: SearchRepoRepository
-) :
-    AbstractSavedStateViewModelFactory(
-        savedStateRegistryOwner,
-        null
-    ) {
-
+    private val getRepositoryListWithQueryUseCase: GetRepositoryListWithQueryUseCase
+) : AbstractSavedStateViewModelFactory(
+    savedStateRegistryOwner,
+    null
+) {
     override fun <T : ViewModel?> create(
         key: String,
         modelClass: Class<T>,
@@ -26,7 +24,7 @@ class SearchViewModelFactory(
     ): T {
         if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SearchViewModel(handle, searchRepository) as T
+            return SearchViewModel(handle, getRepositoryListWithQueryUseCase) as T
         }
         throw IllegalArgumentException("Unable to construct viewmodel")
     }

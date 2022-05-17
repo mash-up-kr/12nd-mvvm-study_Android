@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.model
+package com.example.myapplication.presenter.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

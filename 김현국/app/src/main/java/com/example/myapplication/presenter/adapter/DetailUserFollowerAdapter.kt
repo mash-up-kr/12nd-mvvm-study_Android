@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.adapter
+package com.example.myapplication.presenter.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,15 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemFollowBinding
-import com.example.myapplication.ui.model.PresenterOwner
+import com.example.myapplication.presenter.model.PresenterOwner
 import com.example.myapplication.util.loadImage
 
 /**
  * @author 김현국
  * @created 2022/05/03
  */
-class DetailUserFollowingAdapter :
-    ListAdapter<PresenterOwner, DetailUserFollowingAdapter.UserFollowingViewHolder>(diffUtil) {
+class DetailUserFollowerAdapter :
+    ListAdapter<PresenterOwner, DetailUserFollowerAdapter.UserFollowerViewHolder>(diffUtil) {
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<PresenterOwner>() {
             override fun areItemsTheSame(
@@ -36,8 +36,8 @@ class DetailUserFollowingAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): UserFollowingViewHolder {
-        return UserFollowingViewHolder(
+    ): UserFollowerViewHolder {
+        return UserFollowerViewHolder(
             ItemFollowBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent, false
@@ -45,11 +45,11 @@ class DetailUserFollowingAdapter :
         )
     }
 
-    override fun onBindViewHolder(holder: UserFollowingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UserFollowerViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class UserFollowingViewHolder(private val binding: ItemFollowBinding) :
+    class UserFollowerViewHolder(private val binding: ItemFollowBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: PresenterOwner) = with(binding) {
             ivDetailFollowImage.loadImage(user.image)

@@ -1,14 +1,15 @@
-package com.example.myapplication.ui
+package com.example.myapplication.domain
 
 /**
  * @author 김현국
  * @created 2022/05/03
  */
 sealed class Results<out T> {
-    data class Success<out R>(val value: R) : Results<R>()
+
+    data class Success<R : Any>(val value: R) : Results<R>()
+
     data class Failure(
-        val message: String?,
-        val throwable: Throwable?
+        val message: String
     ) : Results<Nothing>()
 
     object Loading : Results<Nothing>()

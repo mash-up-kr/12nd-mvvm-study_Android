@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.myapplication.ui.view.search.SearchFragment"
+        android:name="com.example.myapplication.presenter.view.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -16,11 +16,11 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_detail"
-        android:name="com.example.myapplication.ui.view.detail.DetailFragment"
+        android:name="com.example.myapplication.presenter.view.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
             android:name="presenterRepository"
-            app:argType="com.example.myapplication.ui.model.PresenterRepository" />
+            app:argType="com.example.myapplication.presenter.model.PresenterRepository" />
     </fragment>
 </navigation>

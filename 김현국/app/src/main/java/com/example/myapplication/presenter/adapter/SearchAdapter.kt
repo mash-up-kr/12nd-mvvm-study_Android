@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.adapter
+package com.example.myapplication.presenter.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemSearchBinding
-import com.example.myapplication.ui.model.PresenterRepository
+import com.example.myapplication.presenter.model.PresenterRepository
 import com.example.myapplication.util.loadImage
 
 /**
@@ -17,7 +17,6 @@ class SearchAdapter(
     private val itemListener: (PresenterRepository) -> Unit
 ) :
     ListAdapter<PresenterRepository, SearchAdapter.RepoViewHolder>(diffUtil) {
-
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<PresenterRepository>() {
             override fun areItemsTheSame(
