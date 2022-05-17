@@ -6,6 +6,8 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
+import com.example.week1.R
 import com.example.week1.data.model.NetworkState
 import com.example.week1.presentation.base.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
@@ -20,8 +22,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         initActionBar()
         initAdapter()

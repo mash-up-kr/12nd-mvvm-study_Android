@@ -3,7 +3,9 @@ package com.example.week1.presentation.view
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
+import com.example.week1.R
 import com.example.week1.data.model.GithubRepo
 import com.example.week1.databinding.ActivityRepoDetailBinding
 import com.example.week1.presentation.base.BaseActivity
@@ -14,13 +16,12 @@ class RepoDetailActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRepoDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_detail)
 
         initActionBar()
 
         if (intent.hasExtra("repo")) {
-            bindUI(intent.getSerializableExtra("repo") as GithubRepo)
+            binding.repo = intent.getSerializableExtra("repo") as GithubRepo
         } else {
             Log.e("Error", "intent has no extra")
             finish()
@@ -31,19 +32,6 @@ class RepoDetailActivity : BaseActivity() {
         setSupportActionBar(binding.detailBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-    }
-
-    private fun bindUI(repo: GithubRepo) {
-        with(binding) {
-            Glide.with(root)
-                .load(repo.owner.avatarUrl)
-                .into(detailImg)
-            detailName.text = repo.name
-            detailStarCnt.text = repo.stargazersCount.toString()
-            detailDescription.text = repo.description
-            detailLang.text = repo.language
-            detailUpdated.text = repo.updatedAt
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
