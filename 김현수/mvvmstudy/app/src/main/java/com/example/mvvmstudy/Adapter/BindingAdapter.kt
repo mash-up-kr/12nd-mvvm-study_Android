@@ -1,10 +1,9 @@
-package com.example.mvvmstudy.Adapter
+package com.example.mvvmstudy.adapter
 
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.mvvmstudy.R
 
@@ -17,7 +16,6 @@ fun loadImage(
         .load(url)
         .placeholder(ContextCompat.getDrawable(imageView.context, R.drawable.ic_baseline_storage))
         .error(ContextCompat.getDrawable(imageView.context, R.drawable.ic_baseline_storage))
-        .diskCacheStrategy(DiskCacheStrategy.NONE)
         .apply(RequestOptions.fitCenterTransform())
         .into(imageView)
 }
