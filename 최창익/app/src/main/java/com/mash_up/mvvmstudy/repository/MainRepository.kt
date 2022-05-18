@@ -11,7 +11,7 @@ import java.io.IOException
 class MainRepository {
     private val api: GitService = ClientFactory.createService(GitService::class.java)
 
-    suspend fun getRepositoriesCoroutine(
+    suspend fun getRepositories(
         query: String
     ): Result<Repositories?> {
         val response = api.getRepositories(query)

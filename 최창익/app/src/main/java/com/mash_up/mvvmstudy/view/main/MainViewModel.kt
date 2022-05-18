@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mash_up.mvvmstudy.repository.model.Repository
 import com.mash_up.mvvmstudy.repository.MainRepository
-import com.mash_up.mvvmstudy.repository.model.Repositories
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -24,8 +23,8 @@ class MainViewModel : ViewModel() {
     val networkErrorState: LiveData<String>
         get() = _networkErrorState
 
-    fun getRepositoriesCoroutine(query: String) = viewModelScope.launch {
-        runCatching { mainRepository.getRepositoriesCoroutine(query) }
+    fun getRepositories(query: String) = viewModelScope.launch {
+        runCatching { mainRepository.getRepositories(query) }
             .onSuccess { successResult ->
                 val repositories = successResult.getOrNull()?.repositories ?: listOf()
                 _repositories.value = repositories
