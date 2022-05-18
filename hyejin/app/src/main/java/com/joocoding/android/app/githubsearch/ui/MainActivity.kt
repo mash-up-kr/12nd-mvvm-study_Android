@@ -7,11 +7,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.joocoding.android.app.githubsearch.R
 import com.joocoding.android.app.githubsearch.databinding.ActivityMainBinding
 import com.joocoding.android.app.githubsearch.model.data.toDetail
 import com.joocoding.android.app.githubsearch.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -38,11 +39,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun observeViewModel() {
-        mainViewModel.repositories.observe(
-            this,
-            Observer {
-                (binding.recyclerView.adapter as? MainAdapter)?.setItem(it)
-            })
+        lifecycleScope.launchWhenCreated {
+            mainViewModel.repositories.collectLatest { githubList ->
+                (binding.recyclerView.adapter as? MainAdapter)?.setItem(githubList)
+
+            }
+        }
 
         mainViewModel.toastMessage.observe(this) { toastMessageEvent ->
             toastMessageEvent.getContentIfNotHandled()

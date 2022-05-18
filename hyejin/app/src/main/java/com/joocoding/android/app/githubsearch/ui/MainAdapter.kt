@@ -42,7 +42,7 @@ class MainAdapter(
     ) : RecyclerView.ViewHolder(
         binding.root
     ) {
-        //private val binding: ItemRepositoryBinding = DataBindingUtil.bind(itemView) ?: throw IllegalStateException("fail to bind")
+
         private lateinit var item: Repository
 
         init {
