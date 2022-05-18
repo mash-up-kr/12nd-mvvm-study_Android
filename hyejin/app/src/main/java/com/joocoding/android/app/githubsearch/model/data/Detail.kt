@@ -1,4 +1,4 @@
-package com.joocoding.android.app.githubsearch.model.response
+package com.joocoding.android.app.githubsearch.model.data
 
 import java.io.Serializable
 
