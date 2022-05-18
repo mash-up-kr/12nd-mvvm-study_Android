@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query.isNullOrEmpty()) return false
 
-                viewModel.getRepositories(query)
+                viewModel.getRepositoriesCoroutine(query)
 
                 return true
             }

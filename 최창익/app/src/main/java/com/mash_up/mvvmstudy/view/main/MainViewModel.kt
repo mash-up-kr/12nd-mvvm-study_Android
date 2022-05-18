@@ -3,8 +3,11 @@ package com.mash_up.mvvmstudy.view.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mash_up.mvvmstudy.repository.model.Repository
 import com.mash_up.mvvmstudy.repository.MainRepository
+import com.mash_up.mvvmstudy.repository.model.Repositories
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     private val mainRepository = MainRepository()
@@ -21,15 +24,14 @@ class MainViewModel : ViewModel() {
     val networkErrorState: LiveData<String>
         get() = _networkErrorState
 
-    fun getRepositories(query: String) {
-        mainRepository.getRepositories(
-            query = query,
-            onSuccess = { response ->
-                _repositories.value = response.repositories
-            },
-            onError = { errorInfo ->
-                _networkErrorState.value = errorInfo
+    fun getRepositoriesCoroutine(query: String) = viewModelScope.launch {
+        runCatching { mainRepository.getRepositoriesCoroutine(query) }
+            .onSuccess { successResult ->
+                val repositories = successResult.getOrNull()?.repositories ?: listOf()
+                _repositories.value = repositories
             }
-        )
+            .onFailure { exception ->
+                _networkErrorState.value = exception.toString()
+            }
     }
 }

@@ -6,34 +6,26 @@ import com.mash_up.mvvmstudy.repository.remote.GitService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 
 class MainRepository {
     private val api: GitService = ClientFactory.createService(GitService::class.java)
 
-    fun getRepositories(
-        query: String,
-        onSuccess: (Repositories) -> Unit,
-        onError: (String) -> Unit
-    ) {
-        api.getRepositories(query).enqueue(object : Callback<Repositories> {
-            override fun onResponse(call: Call<Repositories>, response: Response<Repositories>) {
-                val resultBody = response.body()
+    suspend fun getRepositoriesCoroutine(
+        query: String
+    ): Result<Repositories?> {
+        val response = api.getRepositories(query)
 
-                if (response.isSuccessful && resultBody != null) {
-                    onSuccess(resultBody)
-                } else {
-                    onError(
-                        "code : ${response.code()}, 다음과 같은 에러가 발생했습니다. ${
-                            response.errorBody().toString()
-                        }"
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<Repositories>, t: Throwable) {
-                onError("$t")
-            }
-
-        })
+        return if (response.isSuccessful) {
+            Result.success(response.body())
+        } else {
+            Result.failure(
+                IOException(
+                    "code : ${response.code()}, 다음과 같은 에러가 발생했습니다. ${
+                        response.errorBody().toString()
+                    }"
+                )
+            )
+        }
     }
 }
