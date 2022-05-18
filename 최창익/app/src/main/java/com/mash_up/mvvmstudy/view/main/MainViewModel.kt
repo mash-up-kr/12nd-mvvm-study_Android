@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mash_up.mvvmstudy.repository.model.Repository
 import com.mash_up.mvvmstudy.repository.MainRepository
+import com.mash_up.mvvmstudy.repository.model.Repository
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class MainViewModel : ViewModel() {
     private val mainRepository = MainRepository()
@@ -30,7 +32,16 @@ class MainViewModel : ViewModel() {
                 _repositories.value = repositories
             }
             .onFailure { exception ->
-                _networkErrorState.value = exception.toString()
+                when(exception) {
+                    is IOException -> {
+                        _networkErrorState.value = exception.toString()
+                    }
+
+                    else -> {
+                        Logger.e("unknown error : $exception")
+                    }
+                }
+
             }
     }
 }
