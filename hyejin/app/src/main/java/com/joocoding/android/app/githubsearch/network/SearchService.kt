@@ -1,6 +1,6 @@
-package com.joocoding.android.app.githubsearch.service
+package com.joocoding.android.app.githubsearch.network
 
-import com.joocoding.android.app.githubsearch.model.response.Repositories
+import com.joocoding.android.app.githubsearch.data.dto.RepositoriesDto
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -11,6 +11,6 @@ interface SearchService {
         @Query("q") query: String = "mash-up",
         @Query("sort") sort: String = "stars",
         @Query("order") order: String = "desc"
-    ): Call<Repositories>
+    ): Call<RepositoriesDto>
 
 }

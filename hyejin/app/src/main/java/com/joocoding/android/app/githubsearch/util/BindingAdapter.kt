@@ -14,8 +14,3 @@ fun loadImage(
         .load(url)
         .into(imageView)
 }
-
-/*
-*     Glide.with(root)
-                .load(repository.owner.avatarUrl)
-                .into(detailImg)*/

@@ -58,6 +58,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // LiveData - 데이터의 변경 사항을 알 수 있음
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    // saveStateHandleViewModel
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0'
+    // viewModels() 사용하여 생성
+    implementation 'androidx.activity:activity-ktx:1.1.0'
+    // okhttp3
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
 
 
 }
