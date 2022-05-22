@@ -1,14 +1,15 @@
 package com.github.sookhee.mvvmstudy.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.sookhee.mvvmstudy.ResultState
 import com.github.sookhee.mvvmstudy.databinding.ActivityMainBinding
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
@@ -55,18 +56,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        lifecycleScope.launchWhenStarted {
-            launch {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.repositoryResultState.collect { result ->
                     when (result) {
                         is ResultState.Loading -> showProgress()
                         is ResultState.Success -> {
-                            try {
-                                hideProgress()
-                                setDataToRecyclerView(result.data)
-                            } catch (e: Exception) {
-                                Log.e(TAG, e.message.toString())
-                            }
+                            hideProgress()
+                            setDataToRecyclerView(result.data)
                         }
                         is ResultState.Error -> {
                             hideProgress()

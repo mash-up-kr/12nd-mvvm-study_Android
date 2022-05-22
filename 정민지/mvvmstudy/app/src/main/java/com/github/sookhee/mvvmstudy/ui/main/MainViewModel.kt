@@ -19,8 +19,10 @@ import kotlinx.coroutines.launch
  */
 
 class MainViewModel : ViewModel() {
-    private val _repositoryResultState = MutableStateFlow<ResultState<List<GithubRepositoryModel>>>(ResultState.Loading)
-    val repositoryResultState: StateFlow<ResultState<List<GithubRepositoryModel>>> = _repositoryResultState
+    private val _repositoryResultState =
+        MutableStateFlow<ResultState<List<GithubRepositoryModel>>>(ResultState.Success(emptyList()))
+    val repositoryResultState: StateFlow<ResultState<List<GithubRepositoryModel>>> =
+        _repositoryResultState
 
     private val request by lazy { RetrofitClient.buildService(GithubAPI::class.java) }
     private val githubRepository = GithubRepository(request)
