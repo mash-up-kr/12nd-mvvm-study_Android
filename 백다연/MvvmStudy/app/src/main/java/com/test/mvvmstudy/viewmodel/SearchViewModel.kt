@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.mvvmstudy.data.NetworkResult
 import com.test.mvvmstudy.repository.SearchRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
@@ -23,9 +20,9 @@ class SearchViewModel : ViewModel() {
         viewModelScope.launch {
             _resultStateFlow.value = NetworkResult.Loading
             repository.searchRepository(query)
-                .catch { e ->
-                    _resultStateFlow.value = NetworkResult.ErrorDataResult(exception = e)
-                }.collect { result ->
+                .catch { exception ->
+                    _resultStateFlow.value = NetworkResult.ErrorDataResult(exception = exception)
+                }.collectLatest { result ->
                     _resultStateFlow.value = NetworkResult.SuccessDataResult(data = result)
                 }
         }

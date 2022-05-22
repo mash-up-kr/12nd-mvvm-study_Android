@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 
 class SearchRepository {
 
-    suspend fun searchRepository(query: String): Flow<SearchResult> = flow {
+    fun searchRepository(query: String): Flow<SearchResult> = flow {
         emit(Retrofit.githubApi.getSearchList(query))
     }
 }
