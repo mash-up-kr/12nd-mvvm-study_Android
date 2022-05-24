@@ -17,34 +17,34 @@
         android:layout_height="match_parent">
 
         <View
-            android:id="@+id/view4"
+            android:id="@+id/dividerFour"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="110dp"
             android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
+            app:layout_constraintTop_toBottomOf="@id/dividerThree" />
 
         <View
-            android:id="@+id/view3"
+            android:id="@+id/dividerThree"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="110dp"
             android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
+            app:layout_constraintTop_toBottomOf="@id/dividerTwo" />
 
         <View
-            android:id="@+id/view2"
+            android:id="@+id/dividerTwo"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="110dp"
             android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
+            app:layout_constraintTop_toBottomOf="@id/dividerOne" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -80,37 +80,37 @@
             android:layout_marginEnd="10dp"
             android:text="@{detail.stargazerCount}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintBottom_toBottomOf="@id/imageView5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView5"
-            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+            app:layout_constraintStart_toEndOf="@id/imageView5"
+            app:layout_constraintTop_toTopOf="@id/imageView5" />
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/ic_baseline_info"
-            app:layout_constraintBottom_toTopOf="@+id/view2"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
+            app:layout_constraintBottom_toTopOf="@id/dividerTwo"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintTop_toBottomOf="@id/dividerOne" />
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/ic_baseline_language"
-            app:layout_constraintBottom_toTopOf="@+id/view3"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
+            app:layout_constraintBottom_toTopOf="@id/dividerThree"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintTop_toBottomOf="@id/dividerTwo" />
 
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/ic_baseline_update"
-            app:layout_constraintBottom_toTopOf="@+id/view4"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
+            app:layout_constraintBottom_toTopOf="@+id/dividerFour"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/dividerThree" />
 
         <TextView
             android:id="@+id/textView3"
@@ -121,22 +121,23 @@
             android:text="Description"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/detail_description"
+            app:layout_constraintBottom_toTopOf="@id/detail_description"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
+            app:layout_constraintStart_toEndOf="@id/imageView2"
+            app:layout_constraintTop_toBottomOf="@id/dividerOne" />
 
         <TextView
             android:id="@+id/detail_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:maxLines="2"
             android:text="@{detail.description}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintBottom_toTopOf="@+id/view2"
-            app:layout_constraintEnd_toEndOf="@+id/textView3"
+            app:layout_constraintBottom_toTopOf="@+id/dividerTwo"
+            app:layout_constraintEnd_toEndOf="@id/textView3"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintStart_toStartOf="@id/textView3"
+            app:layout_constraintTop_toBottomOf="@id/textView3" />
 
         <TextView
             android:id="@+id/textView5"
@@ -149,8 +150,8 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/detail_language"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
+            app:layout_constraintStart_toEndOf="@id/imageView3"
+            app:layout_constraintTop_toBottomOf="@id/dividerTwo" />
 
         <TextView
             android:id="@+id/detail_language"
@@ -158,10 +159,10 @@
             android:layout_height="wrap_content"
             android:text="@{detail.repositoryName}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintBottom_toTopOf="@+id/view3"
-            app:layout_constraintEnd_toEndOf="@+id/textView5"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintBottom_toTopOf="@+id/dividerThree"
+            app:layout_constraintEnd_toEndOf="@id/textView5"
+            app:layout_constraintStart_toStartOf="@id/textView5"
+            app:layout_constraintTop_toBottomOf="@id/textView5" />
 
         <TextView
             android:id="@+id/textView7"
@@ -172,10 +173,11 @@
             android:text="Last Updated"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/detail_update"
+            app:layout_constraintBottom_toTopOf="@id/detail_update"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/imageView4"
+            app:layout_constraintTop_toBottomOf="@id/dividerThree" />
 
         <TextView
             android:id="@+id/detail_update"
@@ -183,29 +185,30 @@
             android:layout_height="wrap_content"
             android:text="@{detail.lastUpdated}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintBottom_toTopOf="@+id/view4"
-            app:layout_constraintEnd_toEndOf="@+id/textView7"
-            app:layout_constraintStart_toStartOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintBottom_toTopOf="@id/dividerFour"
+            app:layout_constraintEnd_toEndOf="@id/textView7"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/textView7"
+            app:layout_constraintTop_toBottomOf="@id/textView7" />
 
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/view"
-            app:layout_constraintStart_toStartOf="@+id/detail_name"
-            app:layout_constraintTop_toBottomOf="@+id/detail_name"
+            app:layout_constraintBottom_toTopOf="@id/dividerOne"
+            app:layout_constraintStart_toStartOf="@id/detail_name"
+            app:layout_constraintTop_toBottomOf="@id/detail_name"
             app:srcCompat="@drawable/ic_baseline_star" />
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/dividerOne"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="20dp"
             android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@id/imageView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
