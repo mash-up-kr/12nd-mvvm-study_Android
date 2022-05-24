@@ -1,49 +1,34 @@
-package com.example.week1.presentation.ui
+package com.example.week1.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProviders
-import com.example.week1.data.network.NetworkState
-import com.example.week1.presentation.adapter.RepoAdapter
-import com.example.week1.presentation.BaseActivity
+import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
+import com.example.week1.R
+import com.example.week1.data.model.NetworkState
+import com.example.week1.presentation.base.BaseActivity
 import com.example.week1.databinding.ActivityMainBinding
-import com.example.week1.presentation.viewmodel.RepoListViewModel
 
 class MainActivity : BaseActivity() {
 
     private var backWaitTime: Long = 0
+    private val viewModel: RepoSearchViewModel by viewModels()
+
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: RepoListViewModel
-    private val repoAdapter: RepoAdapter by lazy {
-        RepoAdapter { repo ->
-            val intent = Intent(this, RepoDetailActivity::class.java)
-            intent.putExtra("repo", repo)
-            startActivity(intent)
-        }
-    }
+    private lateinit var repoAdapter: RepoSearchAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         initActionBar()
-        initRecyclerView()
+        initAdapter()
         hideKeyBoard()
 
-        viewModel = getViewModel()
-        viewModel.repoList.observe(this) {
-            repoAdapter.submitList(it)
-        }
-
-        viewModel.networkState.observe(this) {
-            if (it == NetworkState.LOADING) onProgress()
-            else offProgress()
-        }
-
+        observeLiveData()
         updateQuery()
     }
 
@@ -52,12 +37,25 @@ class MainActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun initRecyclerView() {
+    private fun initAdapter() {
+        repoAdapter = RepoSearchAdapter { repo ->
+            val intent = Intent(this, RepoDetailActivity::class.java)
+            intent.putExtra("repo", repo)
+            startActivity(intent)
+        }
         binding.searchRecyclerview.adapter = repoAdapter
     }
 
-    private fun getViewModel(): RepoListViewModel =
-        ViewModelProviders.of(this).get(RepoListViewModel::class.java)
+    private fun observeLiveData() {
+        viewModel.repoList.observe(this) { repoList ->
+            repoAdapter.submitList(repoList)
+        }
+
+        viewModel.networkState.observe(this) {
+            if (it == NetworkState.LOADING) onProgress()
+            else offProgress()
+        }
+    }
 
     private fun updateQuery() {
         binding.searchEt.setOnEditorActionListener { _, action, _ ->
@@ -69,7 +67,7 @@ class MainActivity : BaseActivity() {
                 if (query.isEmpty()) {
                     Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
-                    viewModel.updateRepoList(query)
+                    viewModel.setRepoList(query)
                 }
                 handled = true
             }
