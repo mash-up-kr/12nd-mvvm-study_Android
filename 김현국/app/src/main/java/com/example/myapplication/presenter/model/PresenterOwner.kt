@@ -1,7 +1,7 @@
 package com.example.myapplication.presenter.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * @author 김현국

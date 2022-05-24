@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemSearchBinding
 import com.example.myapplication.presenter.model.PresenterRepository
+import com.example.myapplication.util.loadImage
 
 /**
  * @author 김현국

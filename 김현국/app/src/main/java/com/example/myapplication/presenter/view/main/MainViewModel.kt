@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
  * @created 2022/05/02
  */
 class MainViewModel : ViewModel() {
-    private var _query = MutableStateFlow("")
+    private val _query = MutableStateFlow("")
     val query = _query.asStateFlow()
 
     fun updateQuery(q: String) {
