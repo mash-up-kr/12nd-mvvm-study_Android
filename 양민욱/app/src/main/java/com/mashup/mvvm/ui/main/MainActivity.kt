@@ -3,20 +3,20 @@ package com.mashup.mvvm.ui.main
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.mashup.mvvm.ServiceLocator
 import com.mashup.mvvm.base.BaseActivity
-import com.mashup.mvvm.data.repository.GithubRepository
 import com.mashup.mvvm.databinding.ActivityMainBinding
+import com.mashup.mvvm.extensions.getViewModel
 import com.mashup.mvvm.extensions.showToast
 import com.mashup.mvvm.ui.detail.DetailActivity
 import com.mashup.mvvm.ui.main.adapter.RepositoryAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<MainViewModel>() {
+
     private val viewBinding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(
             LayoutInflater.from(this)
@@ -75,22 +75,5 @@ class MainActivity : BaseActivity<MainViewModel>() {
         }
     }
 
-    override fun injectViewModel(): MainViewModel {
-        return ViewModelProvider(
-            viewModelStore,
-            MainViewModelFactory(ServiceLocator.injectGithubRepository())
-        ).get(MainViewModel::class.java)
-    }
-}
-
-@Suppress("UNCHECKED_CAST")
-class MainViewModelFactory(private val githubRepository: GithubRepository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            MainViewModel(githubRepository = githubRepository) as T
-        } else {
-            throw IllegalArgumentException()
-        }
-    }
+    override fun injectViewModel(): MainViewModel = getViewModel(MainViewModel::class.java)
 }

@@ -1,4 +1,4 @@
-package com.mashup.mvvm.dto
+package com.mashup.mvvm.data.dto
 
 import com.mashup.mvvm.data.model.Repository
 import kotlinx.serialization.Serializable
