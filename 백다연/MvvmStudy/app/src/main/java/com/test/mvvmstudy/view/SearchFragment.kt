@@ -1,16 +1,22 @@
 package com.test.mvvmstudy.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.test.mvvmstudy.R
 import com.test.mvvmstudy.adapter.SearchResultAdapter
+import com.test.mvvmstudy.data.NetworkResult
 import com.test.mvvmstudy.databinding.FragmentSearchBinding
 import com.test.mvvmstudy.viewmodel.SearchViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
@@ -53,14 +59,29 @@ class SearchFragment : Fragment() {
     }
 
     private fun initObserver() {
-        searchViewModel.isLoading.observe(viewLifecycleOwner) { status ->
-            binding.progressBar.isVisible = status
-        }
-        searchViewModel.resultList.observe(viewLifecycleOwner) { list ->
-            adapter.submitList(list) {
-                searchViewModel.isLoading.value = false
+        lifecycleScope.launch {
+            searchViewModel.resultStateFlow.collect { result ->
+                when (result) {
+                    is NetworkResult.Loading -> {
+                        showProgressbar(true)
+                    }
+                    is NetworkResult.SuccessDataResult -> {
+                        showProgressbar(false)
+                        adapter.submitList(result.data.items)
+                    }
+                    is NetworkResult.ErrorDataResult -> {
+                        showProgressbar(false)
+                        Log.d("error", result.exception.toString())
+                        Toast.makeText(context, "error 발생", Toast.LENGTH_LONG).show()
+                    }
+                    else -> showProgressbar(false)
+                }
             }
         }
+    }
+
+    private fun showProgressbar(status : Boolean) {
+        binding.progressBar.isVisible = status
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -71,7 +92,6 @@ class SearchFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
-                    searchViewModel.isLoading.value = true
                     searchViewModel.getSearchData(query)
                 }
                 return false
