@@ -4,6 +4,7 @@ import com.mash_up.mvvmstudy.repository.model.Owner
 import com.mash_up.mvvmstudy.repository.model.Repositories
 import com.mash_up.mvvmstudy.repository.model.Repository
 import com.mash_up.mvvmstudy.repository.remote.GitService
+import kotlinx.coroutines.test.runTest
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -51,10 +52,10 @@ class RemoteTest {
     }
 
     @Test
-    fun getRepositories_isCorrect() {
+    fun getRepositories_isCorrect() = runTest {
         mockWebServer.enqueueResponse("response.json", 200)
 
-        val actual = service.getRepositories("test").execute().body()
+        val actual = service.getRepositories("test").body()
         val expected =
             Repositories(
                 totalCount = 40,
