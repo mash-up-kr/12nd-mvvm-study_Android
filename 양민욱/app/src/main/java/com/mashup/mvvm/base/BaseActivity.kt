@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-abstract class BaseActivity<out V : BaseViewModel> : AppCompatActivity() {
-    protected val viewModel: V by lazy { injectViewModel() }
+abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
+    protected val viewModel: VM by lazy { injectViewModel() }
 
-    abstract fun injectViewModel(): V
+    abstract fun injectViewModel(): VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
