@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="viewModel"
+            name="vm"
             type="com.joocoding.android.app.githubsearch.viewmodel.MainViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -10,7 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".ui.MainActivity">
 
 
         <androidx.appcompat.widget.Toolbar

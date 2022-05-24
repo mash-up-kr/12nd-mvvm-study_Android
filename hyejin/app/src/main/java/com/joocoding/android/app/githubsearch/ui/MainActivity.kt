@@ -1,51 +1,55 @@
-package com.joocoding.android.app.githubsearch
+package com.joocoding.android.app.githubsearch.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.joocoding.android.app.githubsearch.R
 import com.joocoding.android.app.githubsearch.databinding.ActivityMainBinding
-import com.joocoding.android.app.githubsearch.model.response.Repository
-import com.joocoding.android.app.githubsearch.model.response.toDetail
+import com.joocoding.android.app.githubsearch.model.data.toDetail
 import com.joocoding.android.app.githubsearch.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mainAdapter: MainAdapter
+    private val mainViewModel: MainViewModel by viewModels()
+    private val mainAdapter: MainAdapter by lazy {
+        MainAdapter(clickEvent = { repository ->
+            repository.run {
+                startActivity(DetailActivity.newIntent(this@MainActivity, repository.toDetail()))
+            }
+        })
 
-    private val mainViewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.viewModel = mainViewModel
-        initRecycler()
+        binding.vm = mainViewModel
+        binding.recyclerView.adapter = mainAdapter
         initSearchView()
+        observeViewModel()
         supportActionBar?.hide()
 
     }
 
-    private fun initRecycler() {
-        mainAdapter = MainAdapter(clickEvent = { repository: Repository ->
-            val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.EXTRA_KEY_REPO, repository.toDetail())
-            startActivity(intent)
+
+    private fun observeViewModel() {
+        lifecycleScope.launchWhenCreated {
+            mainViewModel.repositories.collectLatest { githubList ->
+                (binding.recyclerView.adapter as? MainAdapter)?.setItem(githubList)
+
+            }
         }
-        )
 
-        binding.recyclerView.adapter = mainAdapter
-
-        mainViewModel.repositories.observe(
-            this,
-            Observer {
-                (binding.recyclerView.adapter as? MainAdapter)?.setItem(it)
-            })
+        mainViewModel.toastMessage.observe(this) { toastMessageEvent ->
+            toastMessageEvent.getContentIfNotHandled()
+                ?.let { Toast.makeText(this, it, Toast.LENGTH_LONG).show() }
+        }
     }
 
     private fun initSearchView() {
@@ -75,6 +79,4 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 }
-
-
 

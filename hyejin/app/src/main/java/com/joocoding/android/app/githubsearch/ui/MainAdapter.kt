@@ -1,4 +1,4 @@
-package com.joocoding.android.app.githubsearch
+package com.joocoding.android.app.githubsearch.ui
 
 
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.joocoding.android.app.githubsearch.databinding.ItemRepositoryBinding
-import com.joocoding.android.app.githubsearch.model.response.Repository
+import com.joocoding.android.app.githubsearch.model.data.Repository
 
 class MainAdapter(
     private var datas: List<Repository> = emptyList(), private val clickEvent: (Repository) -> Unit
@@ -42,7 +42,7 @@ class MainAdapter(
     ) : RecyclerView.ViewHolder(
         binding.root
     ) {
-        //private val binding: ItemRepositoryBinding = DataBindingUtil.bind(itemView) ?: throw IllegalStateException("fail to bind")
+
         private lateinit var item: Repository
 
         init {

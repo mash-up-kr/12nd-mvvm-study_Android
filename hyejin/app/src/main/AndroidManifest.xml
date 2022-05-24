@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubSearch" >
         <activity
-            android:name=".DetailActivity"
+            android:name=".ui.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
