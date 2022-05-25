@@ -3,8 +3,12 @@ package com.mash_up.mvvmstudy.view.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mash_up.mvvmstudy.repository.model.Repository
+import androidx.lifecycle.viewModelScope
 import com.mash_up.mvvmstudy.repository.MainRepository
+import com.mash_up.mvvmstudy.repository.model.Repository
+import com.orhanobut.logger.Logger
+import kotlinx.coroutines.launch
+import java.io.IOException
 
 class MainViewModel : ViewModel() {
     private val mainRepository = MainRepository()
@@ -21,15 +25,23 @@ class MainViewModel : ViewModel() {
     val networkErrorState: LiveData<String>
         get() = _networkErrorState
 
-    fun getRepositories(query: String) {
-        mainRepository.getRepositories(
-            query = query,
-            onSuccess = { response ->
-                _repositories.value = response.repositories
-            },
-            onError = { errorInfo ->
-                _networkErrorState.value = errorInfo
+    fun getRepositories(query: String) = viewModelScope.launch {
+        runCatching { mainRepository.getRepositories(query) }
+            .onSuccess { successResult ->
+                val repositories = successResult.getOrNull()?.repositories ?: listOf()
+                _repositories.value = repositories
             }
-        )
+            .onFailure { exception ->
+                when(exception) {
+                    is IOException -> {
+                        _networkErrorState.value = exception.toString()
+                    }
+
+                    else -> {
+                        Logger.e("unknown error : $exception")
+                    }
+                }
+
+            }
     }
 }

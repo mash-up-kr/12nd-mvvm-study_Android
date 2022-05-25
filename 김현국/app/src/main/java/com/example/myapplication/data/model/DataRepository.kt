@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName
  * @created 2022/04/22
  */
 data class DataRepository(
-
     @SerializedName("id")
     val id: Int,
 

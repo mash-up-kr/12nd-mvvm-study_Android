@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName
  * @created 2022/04/25
  */
 data class DataOwner(
-
     @SerializedName("login")
     val login: String,
 

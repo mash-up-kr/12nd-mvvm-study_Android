@@ -1,4 +1,4 @@
-package com.example.mvvmstudy.Network
+package com.example.mvvmstudy.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClass {
     var retrofitService: IGithubService
-    val BASE_URL = "https://api.github.com/"
+    const val BASE_URL = "https://api.github.com/"
 
     init {
         val interceptor = HttpLoggingInterceptor()
@@ -18,7 +18,6 @@ object RetrofitClass {
             .writeTimeout(20, TimeUnit.SECONDS)
             .build()
 
-
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -26,6 +25,5 @@ object RetrofitClass {
             .build()
 
         retrofitService = retrofit.create(IGithubService::class.java)
-
     }
 }

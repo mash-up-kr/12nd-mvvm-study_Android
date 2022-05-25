@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".ui.view.detail.DetailFragment">
+    tools:context=".presenter.view.detail.DetailFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/ab_detail"
