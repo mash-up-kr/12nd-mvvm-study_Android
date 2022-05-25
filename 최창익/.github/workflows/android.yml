@@ -19,8 +19,8 @@ jobs:
         cache: gradle
 
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x ./gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Print Hello World
+    - name: 헬로월드 찍어보기
       run: echo "Hello World"
