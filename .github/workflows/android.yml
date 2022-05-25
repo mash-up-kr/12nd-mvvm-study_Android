@@ -8,6 +8,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./최창익
 
     steps:
     - uses: actions/checkout@v2
@@ -20,7 +22,10 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew
+      working-directory: ${{ env.working-directory }}
     - name: Build with Gradle
       run: ./gradlew build
+      working-directory: ${{ env.working-directory }}
     - name: 헬로월드 찍어보기
       run: echo "Hello World"
+      working-directory: ${{ env.working-directory }}
