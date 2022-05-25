@@ -5,7 +5,9 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.test.mvvmstudy.databinding.FragmentSearchDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchDetailFragment : Fragment() {
 
     private var _binding: FragmentSearchDetailBinding? = null

@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -65,5 +66,8 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.4.1'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+
+    implementation "com.google.dagger:hilt-android:2.38.1"
+    kapt "com.google.dagger:hilt-android-compiler:2.38.1"
 
 }
