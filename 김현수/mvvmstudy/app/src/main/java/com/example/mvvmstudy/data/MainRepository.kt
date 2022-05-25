@@ -1,13 +1,15 @@
 package com.example.mvvmstudy.data
 
-import com.example.mvvmstudy.network.RetrofitClass
+import com.example.mvvmstudy.network.IGithubService
+import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Inject
 
-
-class MainRepository {
-
-    // Retrofit 내부에서 디스패처를 IO로 바꿔줌
+@ViewModelScoped
+class MainRepository @Inject constructor(
+    private val githubService: IGithubService
+) {
     suspend fun searchRepositories(query: String) =
-        RetrofitClass.retrofitService
-            .searchRepositories(query,50)
+        githubService.searchRepositories(query, 50)
 }
+
 
