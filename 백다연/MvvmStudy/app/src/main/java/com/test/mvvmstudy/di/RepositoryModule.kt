@@ -1,5 +1,6 @@
 package com.test.mvvmstudy.di
 
+import com.test.mvvmstudy.api.GithubApi
 import com.test.mvvmstudy.repository.SearchRepository
 import com.test.mvvmstudy.repository.SearchRepositoryImpl
 import dagger.Module
@@ -14,7 +15,7 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideHomeRepository(): SearchRepository {
-        return SearchRepositoryImpl()
+    fun provideSearchRepository(githubApi: GithubApi): SearchRepository {
+        return SearchRepositoryImpl(githubApi)
     }
 }
