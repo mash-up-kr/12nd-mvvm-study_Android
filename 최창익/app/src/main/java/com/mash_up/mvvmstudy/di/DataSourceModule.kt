@@ -1,6 +1,5 @@
 package com.mash_up.mvvmstudy.di
 
-import com.mash_up.mvvmstudy.repository.MainRepository
 import com.mash_up.mvvmstudy.repository.remote.MainRemoteDataSource
 import dagger.Module
 import dagger.Provides
@@ -10,11 +9,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RepositoryModule {
+class DataSourceModule {
     @Singleton
     @Provides
-    fun provideMainRepository(
-        mainRemoteDataSource: MainRemoteDataSource
-    ) : MainRepository =
-        MainRepository(mainRemoteDataSource)
+    fun provideMainRemoteDataSource() : MainRemoteDataSource =
+        MainRemoteDataSource()
 }
