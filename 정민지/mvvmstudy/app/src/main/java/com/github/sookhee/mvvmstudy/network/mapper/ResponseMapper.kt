@@ -23,8 +23,8 @@ object ResponseMapper {
                 repoName = repository.name,
                 repoLastUpdate = repository.lastUpdate?.let { dateFormat.format(it) } ?: "",
                 language = repository.language ?: "",
-                ownerName = repository.owner.name ?: "",
-                profileImage = repository.owner.profileImage ?: ""
+                ownerName = repository.owner.name,
+                profileImage = repository.owner.profileImage
             )
         }
     }
