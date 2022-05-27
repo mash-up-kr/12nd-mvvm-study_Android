@@ -12,8 +12,10 @@ import com.joocoding.android.app.githubsearch.R
 import com.joocoding.android.app.githubsearch.databinding.ActivityMainBinding
 import com.joocoding.android.app.githubsearch.model.data.toDetail
 import com.joocoding.android.app.githubsearch.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()

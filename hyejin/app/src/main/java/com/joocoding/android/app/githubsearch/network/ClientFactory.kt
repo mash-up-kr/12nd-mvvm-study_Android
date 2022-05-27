@@ -1,17 +1,24 @@
 package com.joocoding.android.app.githubsearch.network
 
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-private const val BASE_URL = "https://api.github.com/"
 
+@Module
+@InstallIn(SingletonComponent::class)
 object ClientFactory {
+    private const val BASE_URL = "https://api.github.com/"
     private val okHttpClient by lazy { createOkHttpClient() }
     private val retrofit by lazy { createRetrofit() }
 
-    private fun createOkHttpClient(): OkHttpClient =
+    @Provides
+    fun createOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder().apply {
             connectTimeout(8, TimeUnit.SECONDS)
             writeTimeout(8, TimeUnit.SECONDS)
@@ -25,15 +32,17 @@ object ClientFactory {
             }
         }.build()
 
-    private fun createRetrofit(): Retrofit =
+    @Provides
+    fun createRetrofit(): Retrofit =
         Retrofit.Builder().apply {
             baseUrl(BASE_URL)
             addConverterFactory(GsonConverterFactory.create())
             client(okHttpClient)
         }.build()
 
-    fun <T> createService(service: Class<T>): T {
-        return retrofit.create(service)
+    @Provides
+    fun createService(): SearchService {
+        return retrofit.create(SearchService::class.java)
     }
 
 }

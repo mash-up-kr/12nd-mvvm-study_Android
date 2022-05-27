@@ -1,11 +1,12 @@
 package com.joocoding.android.app.githubsearch.model
 
 import com.joocoding.android.app.githubsearch.data.dto.RepositoriesDto
-import com.joocoding.android.app.githubsearch.network.ClientFactory
 import com.joocoding.android.app.githubsearch.network.SearchService
+import javax.inject.Inject
 
-class GithubRepository {
-    private val githubApi: SearchService = ClientFactory.createService(SearchService::class.java)
+class GithubRepository @Inject constructor(
+    private val githubApi: SearchService
+) {
 
     suspend fun getRepositories(query: String): Response<RepositoriesDto> {
         val response = githubApi.getRepository(query)

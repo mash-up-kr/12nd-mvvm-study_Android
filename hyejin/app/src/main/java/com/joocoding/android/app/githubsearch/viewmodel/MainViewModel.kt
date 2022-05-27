@@ -9,15 +9,16 @@ import com.joocoding.android.app.githubsearch.model.Event
 import com.joocoding.android.app.githubsearch.model.GithubRepository
 import com.joocoding.android.app.githubsearch.model.Response
 import com.joocoding.android.app.githubsearch.model.data.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class MainViewModel : ViewModel() {
-
-    private val githubRepository = GithubRepository()
+@HiltViewModel
+class MainViewModel @Inject constructor(private val githubRepository: GithubRepository) :
+    ViewModel() {
 
     private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
     val repositories: StateFlow<List<Repository>> = _repositories.asStateFlow()
@@ -46,8 +47,6 @@ class MainViewModel : ViewModel() {
             }.onFailure { e ->
                 Log.e("getRepository", e.toString())
             }
-
-
         }
     }
 }
