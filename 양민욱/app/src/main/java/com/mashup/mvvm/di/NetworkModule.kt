@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -21,6 +22,7 @@ object NetworkModule {
     private const val GITHUB_HOST_URL = "https://api.github.com"
     private const val TIME_OUT_DURATION_SECOND = 10L
 
+    @Singleton
     @Provides
     fun provideJson(): Json {
         return Json {
@@ -28,6 +30,7 @@ object NetworkModule {
         }
     }
 
+    @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
@@ -42,6 +45,7 @@ object NetworkModule {
         return okHttpClientBuilder.build()
     }
 
+    @Singleton
     @Provides
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
@@ -57,6 +61,7 @@ object NetworkModule {
             .build()
     }
 
+    @Singleton
     @Provides
     fun provideGithubApi(retrofit: Retrofit): GithubApi {
         return retrofit.create(GithubApi::class.java)
