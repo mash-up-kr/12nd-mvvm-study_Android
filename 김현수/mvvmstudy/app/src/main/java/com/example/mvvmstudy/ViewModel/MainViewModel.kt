@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private var mainRepository: MainRepository
+    private val mainRepository: MainRepository
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData(false)
