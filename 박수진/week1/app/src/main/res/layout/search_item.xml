@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/repo_img"
-            android:layout_width="42sp"
-            android:layout_height="42sp" />
+            android:layout_width="42dp"
+            android:layout_height="42dp" />
 
     </LinearLayout>
 

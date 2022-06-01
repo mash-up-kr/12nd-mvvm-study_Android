@@ -7,18 +7,18 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.week1.data.model.GithubRepo
-import com.example.week1.databinding.RepoItemBinding
+import com.example.week1.databinding.SearchItemBinding
 
-class RepoSearchAdapter (
+class SearchAdapter (
     private val itemClick: (GithubRepo) -> Unit
-) : ListAdapter<GithubRepo, RepoSearchAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
+) : ListAdapter<GithubRepo, SearchAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
 
     init {
         setHasStableIds(true)
     }
 
     class RepoViewHolder(
-        private val binding: RepoItemBinding,
+        private val binding: SearchItemBinding,
         private val itemClick: (GithubRepo) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: GithubRepo) {
@@ -35,7 +35,7 @@ class RepoSearchAdapter (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder =
         RepoViewHolder(
-            RepoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            SearchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             itemClick
         )
 

@@ -16,8 +16,8 @@
         android:padding="8dp">
 
         <ImageView
-            android:layout_width="28sp"
-            android:layout_height="28sp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:src="@{img}"
             app:tint="@color/underline"
             android:layout_gravity="center" />

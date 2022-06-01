@@ -7,24 +7,24 @@ import androidx.lifecycle.viewModelScope
 import com.example.week1.data.model.GithubRepo
 import com.example.week1.data.model.NetworkState
 import com.example.week1.data.repository.RepoSearchRepositoryImpl
-import com.example.week1.domain.usecase.GetRepoSearchUseCase
+import com.example.week1.domain.usecase.GetSearchListUseCase
 
-class RepoSearchViewModel : ViewModel() {
+class SearchViewModel : ViewModel() {
 
-    private val getRepoSearchUseCase = GetRepoSearchUseCase(RepoSearchRepositoryImpl())
+    private val getSearchListUseCase = GetSearchListUseCase(RepoSearchRepositoryImpl())
 
-    private val _repoList = MutableLiveData<List<GithubRepo>>()
-    val repoList: LiveData<List<GithubRepo>>
-        get() = _repoList
+    private val _searchList = MutableLiveData<List<GithubRepo>>()
+    val searchList: LiveData<List<GithubRepo>>
+        get() = _searchList
 
     private val _networkState = MutableLiveData<NetworkState>()
     val networkState: LiveData<NetworkState>
         get() = _networkState
 
     fun setRepoList(query: String) {
-        _networkState.postValue(NetworkState.LOADING)
-        getRepoSearchUseCase(query, viewModelScope) { repoList ->
-            _repoList.value = repoList.items
+        _networkState.value = NetworkState.LOADING
+        getSearchListUseCase(query, viewModelScope) { searchList ->
+            _searchList.value = searchList.items
             _networkState.value = NetworkState.LOADED
         }
     }

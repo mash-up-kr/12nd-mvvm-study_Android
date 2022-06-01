@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.view.MainActivity">
+        tools:context=".presentation.view.SearchActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/detail_bar"
@@ -46,8 +46,8 @@
 
                 <ImageView
                     android:id="@+id/detail_img"
-                    android:layout_width="48sp"
-                    android:layout_height="48sp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
@@ -77,8 +77,8 @@
                         android:layout_marginTop="2dp">
 
                         <ImageView
-                            android:layout_width="12sp"
-                            android:layout_height="12sp"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
                             android:src="@drawable/ic_detail_star"
                             app:tint="@color/colorPrimary"
                             android:layout_gravity="center" />
@@ -94,17 +94,17 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <include layout="@layout/layout_repo_detail_content"
+            <include layout="@layout/layout_detail_content"
                 bind:img="@{@drawable/ic_detail_description}"
                 bind:title="@{@string/repo_detail_description}"
                 bind:content="@{repo.description}"/>
 
-            <include layout="@layout/layout_repo_detail_content"
+            <include layout="@layout/layout_detail_content"
                 bind:img="@{@drawable/ic_detail_lang}"
                 bind:title="@{@string/repo_detail_lang}"
                 bind:content="@{repo.language}"/>
 
-            <include layout="@layout/layout_repo_detail_content"
+            <include layout="@layout/layout_detail_content"
                 bind:img="@{@drawable/ic_detail_updated}"
                 bind:title="@{@string/repo_detail_updated}"
                 bind:content="@{repo.updatedAt}"/>

@@ -4,19 +4,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
-import com.bumptech.glide.Glide
 import com.example.week1.R
 import com.example.week1.data.model.GithubRepo
-import com.example.week1.databinding.ActivityRepoDetailBinding
+import com.example.week1.databinding.ActivityDetailBinding
 import com.example.week1.presentation.base.BaseActivity
 
-class RepoDetailActivity : BaseActivity() {
+class DetailActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityRepoDetailBinding
+    private lateinit var binding: ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
 
         initActionBar()
 

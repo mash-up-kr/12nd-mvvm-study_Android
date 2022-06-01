@@ -1,13 +1,13 @@
 package com.example.week1.data.repository
 
 import com.example.week1.data.model.GithubRepoList
-import com.example.week1.data.datasource.RepoSearchRemoteSourceImpl
-import com.example.week1.domain.repository.RepoSearchRepository
+import com.example.week1.data.datasource.SearchRemoteSourceImpl
+import com.example.week1.domain.repository.SearchRepository
 
-class RepoSearchRepositoryImpl : RepoSearchRepository {
+class RepoSearchRepositoryImpl : SearchRepository {
 
-    private val repoSearchRemoteSourceImpl = RepoSearchRemoteSourceImpl()
+    private val searchRemoteSourceImpl = SearchRemoteSourceImpl()
 
-    override suspend fun getRepoList(query: String): GithubRepoList =
-        repoSearchRemoteSourceImpl.getRepoList(query)
+    override suspend fun getSearchList(query: String): GithubRepoList =
+        searchRemoteSourceImpl.getSearchList(query)
 }

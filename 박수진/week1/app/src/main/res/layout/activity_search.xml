@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.view.MainActivity">
+        tools:context=".presentation.view.SearchActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/search_bar"
@@ -22,21 +22,24 @@
                 android:id="@+id/search_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="@string/search"
                 android:autofillHints="@string/search"
+                android:background="@null"
                 android:freezesText="false"
+                android:hint="@string/search"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
+                android:minHeight="48dp"
                 android:textColor="@color/white"
-                android:textColorHint="?android:attr/textColorHintInverse" />
+                android:textColorHint="?android:attr/textColorHintInverse"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="16dp" />
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            tools:listitem="@layout/repo_item"
+            tools:listitem="@layout/search_item"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
