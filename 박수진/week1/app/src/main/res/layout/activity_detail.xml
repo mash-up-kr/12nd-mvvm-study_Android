@@ -51,7 +51,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
-                    app:bindImage="@{repo.owner.avatarUrl}"/>
+                    app:imageUrl="@{repo.owner.avatarUrl}"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
