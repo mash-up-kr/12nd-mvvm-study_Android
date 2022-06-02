@@ -11,7 +11,9 @@ import com.example.week1.R
 import com.example.week1.data.model.NetworkState
 import com.example.week1.presentation.base.BaseActivity
 import com.example.week1.databinding.ActivitySearchBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchActivity : BaseActivity() {
 
     private var backWaitTime: Long = 0
