@@ -15,9 +15,11 @@ import com.test.mvvmstudy.adapter.SearchResultAdapter
 import com.test.mvvmstudy.data.NetworkResult
 import com.test.mvvmstudy.databinding.FragmentSearchBinding
 import com.test.mvvmstudy.viewmodel.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
