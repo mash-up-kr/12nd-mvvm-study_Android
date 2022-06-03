@@ -11,7 +11,10 @@ import com.joocoding.android.app.githubsearch.constant.KEY_REPOSITORY
 import com.joocoding.android.app.githubsearch.databinding.ActivityDetailBinding
 import com.joocoding.android.app.githubsearch.model.data.Detail
 import com.joocoding.android.app.githubsearch.viewmodel.DetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
