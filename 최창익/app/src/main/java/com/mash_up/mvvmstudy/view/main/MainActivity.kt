@@ -12,7 +12,9 @@ import com.mash_up.mvvmstudy.R
 import com.mash_up.mvvmstudy.databinding.ActivityMainBinding
 import com.mash_up.mvvmstudy.view.detail.DetailActivity
 import com.mash_up.mvvmstudy.view.detail.DetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MainAdapter

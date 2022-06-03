@@ -7,12 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.mash_up.mvvmstudy.repository.MainRepository
 import com.mash_up.mvvmstudy.repository.model.Repository
 import com.orhanobut.logger.Logger
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
-    private val mainRepository = MainRepository()
-
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val mainRepository: MainRepository
+): ViewModel() {
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: LiveData<Boolean>
         get() = _isLoading
