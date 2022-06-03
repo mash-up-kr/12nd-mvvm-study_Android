@@ -9,12 +9,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.mvvmstudy.R
-import com.example.mvvmstudy.adapter.MainAdapter
+import com.example.mvvmstudy.view.adapter.MainAdapter
 import com.example.mvvmstudy.data.toDetail
 import com.example.mvvmstudy.databinding.ActivityMainBinding
 import com.example.mvvmstudy.viewmodel.MainViewModel
-import kotlinx.coroutines.flow.collectLatest
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -77,8 +79,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun subscribeToObservables() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.githubList.collectLatest() { githubList ->
+        lifecycleScope.launch {
+            viewModel.githubList.collect() { githubList ->
                 adapter.submitList(githubList.toList())
             }
         }
@@ -88,10 +90,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLoading(loading: Boolean) {
-        if (loading) {
-            dialog.show()
-        } else {
-            dialog.dismiss()
-        }
+        if (loading) dialog.show() else dialog.dismiss()
     }
 }

@@ -43,7 +43,7 @@
                 android:textSize="20sp"
                 app:autoSizeTextType="none"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/progressBar"
+                app:layout_constraintStart_toEndOf="@id/progressBar"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
