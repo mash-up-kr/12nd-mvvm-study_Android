@@ -5,23 +5,24 @@ import com.example.myapplication.data.source.remote.RepositoryRemoteDataSource
 import com.example.myapplication.domain.Results
 import com.example.myapplication.domain.model.DomainRepository
 import com.example.myapplication.domain.repository.SearchRepoRepository
-import com.example.myapplication.network.ApiClient
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
 /**
  * @author 김현국
  * @created 2022/05/01
  */
-class SearchRepoRepositoryImpl : SearchRepoRepository {
+class SearchRepoRepositoryImpl @Inject constructor(
+    private val remote: RepositoryRemoteDataSource
+) : SearchRepoRepository {
     override fun getRepoList(q: String): Flow<Results<List<DomainRepository>>> {
         return flow {
             emit(Results.Loading)
-            val service: RepositoryRemoteDataSource =
-                ApiClient.buildApi(RepositoryRemoteDataSource::class.java)
-            val response = service.getRepositories(q = q)
+            val response = remote.getRepositories(q = q)
             val body = response.body()
             if (response.isSuccessful && body != null) {
                 emit(Results.Success(mapperSearchResponseToDomainModel(response = body)))

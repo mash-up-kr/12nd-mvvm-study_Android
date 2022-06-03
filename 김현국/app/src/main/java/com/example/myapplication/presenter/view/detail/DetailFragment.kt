@@ -3,7 +3,9 @@ package com.example.myapplication.presenter.view.detail
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,25 +14,16 @@ import com.example.myapplication.databinding.FragmentDetailBinding
 import com.example.myapplication.presenter.UiState
 import com.example.myapplication.presenter.adapter.DetailUserFollowerAdapter
 import com.example.myapplication.presenter.adapter.DetailUserFollowingAdapter
-import com.example.myapplication.servicelocator.RepositoryServiceLocator
-import com.example.myapplication.servicelocator.UseCaseServiceLocator
 import com.example.myapplication.util.loadImage
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
     private val args by navArgs<DetailFragmentArgs>()
-    private val repo by lazy { args.presenterRepository }
-    private val detailUserFollowingAdapter: DetailUserFollowingAdapter by lazy { DetailUserFollowingAdapter() }
-    private val detailUserFollowerAdapter: DetailUserFollowerAdapter by lazy { DetailUserFollowerAdapter() }
-    private val detailUserRepository by lazy { RepositoryServiceLocator.provideDetailUserRepository() }
-    private val model: DetailViewModel by viewModels {
-        DetailViewModelFactory(
-            this,
-            UseCaseServiceLocator.provideGetUserFollowerUseCase(detailUserRepository = detailUserRepository),
-            UseCaseServiceLocator.provideGetUserFollowingUseCase(detailUserRepository = detailUserRepository)
-        )
-    }
+    private val model: DetailViewModel by viewModels()
+    private val detailUserFollowingAdapter by lazy { DetailUserFollowingAdapter() }
+    private val detailUserFollowerAdapter by lazy { DetailUserFollowerAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,51 +41,55 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvDetailUserFollowing.adapter = detailUserFollowingAdapter
 
-        ivDetailImage.loadImage(repo.owner.image)
-        tvDetailRepoName.text = repo.name
-        tvDetailStars.text =
-            StringBuilder().append("\u2605").append(repo.stars).append(" stars").toString()
-        tvDetailDescriptionSmall.text = repo.description
-        tvDetailLanguageSmall.text = repo.language
-        tvDetailLastUpdateSmall.text = repo.lastUpdated
-        tvDetailUserName.text = repo.owner.login
+        with(args.presenterRepository) {
+            ivDetailImage.loadImage(owner.image)
+            tvDetailRepoName.text = name
+            tvDetailStars.text =
+                StringBuilder().append("\u2605").append(stars).append(" stars").toString()
+            tvDetailDescriptionSmall.text = description
+            tvDetailLanguageSmall.text = language
+            tvDetailLastUpdateSmall.text = lastUpdated
+            tvDetailUserName.text = owner.login
 
-        with(model) {
-            if (!savedStateHandle.contains(USER_NAME)) {
-                getUserFollowing(repo.owner.login)
-                getUserFollower(repo.owner.login)
-            }
+            model.getUserFollow(owner.login)
         }
     }
 
     private fun initObserve() = with(viewLifecycleOwner.lifecycleScope) {
-        launch {
-            with(model) {
-                userFollowingList.collect { state ->
-                    when (state) {
-                        is UiState.Success -> {
-                            detailUserFollowingAdapter.submitList(state.data)
-                        }
-                        is UiState.Loading -> {
-                        }
-                        is UiState.Error -> {
-                            showToast(state.error)
+        with(model) {
+            launch {
+                viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+                    userFollowingList.collect { state ->
+                        when (state) {
+                            is UiState.Success -> {
+                                detailUserFollowingAdapter.submitList(state.data)
+                            }
+                            is UiState.Loading -> {
+                            }
+                            is UiState.Error -> {
+                                showToast(state.error)
+                            }
+                            is UiState.Empty -> {
+                            }
                         }
                     }
                 }
             }
-        }
-        launch {
-            with(model) {
-                userFollowerList.collect { state ->
-                    when (state) {
-                        is UiState.Success -> {
-                            detailUserFollowerAdapter.submitList(state.data)
-                        }
-                        is UiState.Loading -> {
-                        }
-                        is UiState.Error -> {
-                            showToast(state.error)
+
+            launch {
+                viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+                    userFollowerList.collect { state ->
+                        when (state) {
+                            is UiState.Success -> {
+                                detailUserFollowerAdapter.submitList(state.data)
+                            }
+                            is UiState.Loading -> {
+                            }
+                            is UiState.Error -> {
+                                showToast(state.error)
+                            }
+                            is UiState.Empty -> {
+                            }
                         }
                     }
                 }

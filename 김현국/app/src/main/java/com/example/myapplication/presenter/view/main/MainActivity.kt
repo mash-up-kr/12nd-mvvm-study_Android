@@ -9,11 +9,13 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.myapplication.R
 import com.example.myapplication.base.BaseActivity
 import com.example.myapplication.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * @author 김현국
  * @created 2022/04/22
  */
+@AndroidEntryPoint
 class MainActivity :
     BaseActivity<ActivityMainBinding>({ ActivityMainBinding.inflate(it) }
     ) {

@@ -1,6 +1,5 @@
-package com.example.myapplication.network
+package com.example.myapplication.util
 
-import com.example.myapplication.util.addHeader
 import okhttp3.Interceptor
 import okhttp3.Response
 

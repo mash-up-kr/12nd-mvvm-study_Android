@@ -9,31 +9,36 @@ import com.example.myapplication.domain.usecase.GetUserFollowingUseCase
 import com.example.myapplication.presenter.UiState
 import com.example.myapplication.presenter.mapper.mapperDomainDetailUserToPresenterModel
 import com.example.myapplication.presenter.model.PresenterOwner
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * @author 김현국
  * @created 2022/05/01
  */
-class DetailViewModel(
-    val savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class DetailViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val getUserFollowerUseCase: GetUserFollowerUseCase,
     private val getUserFollowingUseCase: GetUserFollowingUseCase
-
 ) : ViewModel() {
-    val USER_NAME = "userName"
+
+    companion object {
+        val USER_NAME = "userName"
+    }
 
     private val _userFollowingList =
-        MutableStateFlow<UiState<List<PresenterOwner>>>(UiState.Loading)
-    private val _userFollowerList = MutableStateFlow<UiState<List<PresenterOwner>>>(UiState.Loading)
+        MutableStateFlow<UiState<List<PresenterOwner>>>(UiState.Empty)
+    private val _userFollowerList = MutableStateFlow<UiState<List<PresenterOwner>>>(UiState.Empty)
 
     val userFollowingList = _userFollowingList.asStateFlow()
     val userFollowerList = _userFollowerList.asStateFlow()
 
-    fun getUserFollowing(username: String) {
+    private fun getUserFollowing(username: String) {
         savedStateHandle[USER_NAME] = username
         viewModelScope.launch {
             getUserFollowingUseCase(username = username).collect { result ->
@@ -53,7 +58,7 @@ class DetailViewModel(
         }
     }
 
-    fun getUserFollower(username: String) {
+    private fun getUserFollower(username: String) {
         savedStateHandle[USER_NAME] = username
         viewModelScope.launch {
             getUserFollowerUseCase(username = username).collect { result ->
@@ -70,6 +75,13 @@ class DetailViewModel(
                     }
                 }
             }
+        }
+    }
+
+    fun getUserFollow(username: String) {
+        if (!savedStateHandle.contains(USER_NAME)) {
+            getUserFollowing(username = username)
+            getUserFollower(username = username)
         }
     }
 }

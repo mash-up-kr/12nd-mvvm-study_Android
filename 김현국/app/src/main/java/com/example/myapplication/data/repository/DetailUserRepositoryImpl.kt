@@ -5,22 +5,24 @@ import com.example.myapplication.data.source.remote.UserRemoteDataSource
 import com.example.myapplication.domain.Results
 import com.example.myapplication.domain.model.DomainOwner
 import com.example.myapplication.domain.repository.DetailUserRepository
-import com.example.myapplication.network.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * @author 김현국
  * @created 2022/05/12
  */
-class DetailUserRepositoryImpl : DetailUserRepository {
+class DetailUserRepositoryImpl @Inject constructor(
+    private val remote: UserRemoteDataSource
+) : DetailUserRepository {
     override fun getUserFollowing(username: String): Flow<Results<List<DomainOwner>>> {
         return flow {
             emit(Results.Loading)
-            val service: UserRemoteDataSource = ApiClient.buildApi(UserRemoteDataSource::class.java)
-            val response = service.getUserFollowing(username = username)
+            val response = remote.getUserFollowing(username = username)
             val body = response.body()
             if (response.isSuccessful && body != null) {
                 emit(Results.Success(mapperDetailUserToDomainModel(dataOwnerList = body)))
@@ -33,8 +35,7 @@ class DetailUserRepositoryImpl : DetailUserRepository {
     override fun getUserFollower(username: String): Flow<Results<List<DomainOwner>>> {
         return flow {
             emit(Results.Loading)
-            val service: UserRemoteDataSource = ApiClient.buildApi(UserRemoteDataSource::class.java)
-            val response = service.getUserFollowers(username = username)
+            val response = remote.getUserFollowers(username = username)
             val body = response.body()
             if (response.isSuccessful && body != null) {
                 emit(Results.Success(mapperDetailUserToDomainModel(dataOwnerList = body)))
