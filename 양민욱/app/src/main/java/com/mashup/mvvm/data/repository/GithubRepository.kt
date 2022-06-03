@@ -1,10 +1,11 @@
 package com.mashup.mvvm.data.repository
 
 import com.mashup.mvvm.data.Response
-import com.mashup.mvvm.dto.RepositoriesDto
 import com.mashup.mvvm.network.GithubApi
+import com.mashup.mvvm.data.dto.RepositoriesDto
+import javax.inject.Inject
 
-class GithubRepository(
+class GithubRepository @Inject constructor(
     private val githubApi: GithubApi
 ) {
     suspend fun getRepositories(query: String): Response<RepositoriesDto> {

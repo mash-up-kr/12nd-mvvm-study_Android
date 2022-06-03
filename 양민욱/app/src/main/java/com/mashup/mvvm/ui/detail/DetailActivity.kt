@@ -11,10 +11,14 @@ import com.mashup.mvvm.base.BaseActivity
 import com.mashup.mvvm.constants.KEY_REPOSITORY
 import com.mashup.mvvm.data.model.Repository
 import com.mashup.mvvm.databinding.ActivityDetailBinding
+import com.mashup.mvvm.extensions.getViewModel
 import com.mashup.mvvm.extensions.loadImage
 import com.mashup.mvvm.utils.toDateString
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailActivity : BaseActivity<DetailViewModel>() {
+
     private val viewBinding: ActivityDetailBinding by lazy {
         ActivityDetailBinding.inflate(
             LayoutInflater.from(this)
@@ -73,10 +77,5 @@ class DetailActivity : BaseActivity<DetailViewModel>() {
         }
     }
 
-    override fun injectViewModel(): DetailViewModel {
-        return ViewModelProvider(
-            this,
-            SavedStateViewModelFactory(application, this, intent.extras)
-        ).get(DetailViewModel::class.java)
-    }
+    override fun injectViewModel(): DetailViewModel = getViewModel(DetailViewModel::class.java)
 }

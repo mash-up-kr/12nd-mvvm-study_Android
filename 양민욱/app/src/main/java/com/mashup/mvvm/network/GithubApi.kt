@@ -1,7 +1,7 @@
 package com.mashup.mvvm.network
 
-import com.mashup.mvvm.dto.RepositoriesDto
 import retrofit2.Response
+import com.mashup.mvvm.data.dto.RepositoriesDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

@@ -7,8 +7,11 @@ import com.mashup.mvvm.data.repository.GithubRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val githubRepository: GithubRepository
 ) : BaseViewModel() {
     private val _repositories = MutableStateFlow<List<Repository>>(emptyList())
