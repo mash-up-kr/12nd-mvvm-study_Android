@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sookhee.mvvmstudy.ResultState
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
-import com.github.sookhee.mvvmstudy.network.GithubAPI
-import com.github.sookhee.mvvmstudy.network.RetrofitClient
 import com.github.sookhee.mvvmstudy.repository.GithubRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  *  MainViewModel.kt
@@ -18,14 +18,14 @@ import kotlinx.coroutines.launch
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val githubRepository: GithubRepository
+) : ViewModel() {
     private val _repositoryResultState =
         MutableStateFlow<ResultState<List<GithubRepositoryModel>>>(ResultState.Success(emptyList()))
     val repositoryResultState: StateFlow<ResultState<List<GithubRepositoryModel>>> =
         _repositoryResultState
-
-    private val request by lazy { RetrofitClient.buildService(GithubAPI::class.java) }
-    private val githubRepository = GithubRepository(request)
 
     fun requestDataToGithubAPI(keyword: String) {
         _repositoryResultState.value = ResultState.Loading

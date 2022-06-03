@@ -5,6 +5,7 @@ import com.github.sookhee.mvvmstudy.ResultState
 import com.github.sookhee.mvvmstudy.network.mapper.ResponseMapper
 import com.github.sookhee.mvvmstudy.model.GithubRepositoryModel
 import com.github.sookhee.mvvmstudy.network.GithubAPI
+import javax.inject.Inject
 
 /**
  *  GithubRepository.kt
@@ -13,12 +14,10 @@ import com.github.sookhee.mvvmstudy.network.GithubAPI
  *  Copyright © 2022 MashUp All rights reserved.
  */
 
-class GithubRepository(
-    private val request: GithubAPI
-) {
+class GithubRepository @Inject constructor(private val githubApi: GithubAPI) {
     suspend fun getGithubRepositoryList(): ResultState<List<GithubRepositoryModel>> {
         return try {
-            val response = request.getRepository()
+            val response = githubApi.getRepository()
             Log.d(TAG, "onResponse: $response")
 
             ResultState.Success(ResponseMapper.mapToGithubRepositoryModelList(response))
@@ -31,7 +30,7 @@ class GithubRepository(
 
     suspend fun getGithubRepositoryListWithQuery(keyword: String): ResultState<List<GithubRepositoryModel>> {
         return try {
-            val response = request.getRepositoryListWithQuery(keyword)
+            val response = githubApi.getRepositoryListWithQuery(keyword)
             Log.d(TAG, "onResponse: $response")
 
             ResultState.Success(ResponseMapper.mapToGithubRepositoryModelList(response.items))
