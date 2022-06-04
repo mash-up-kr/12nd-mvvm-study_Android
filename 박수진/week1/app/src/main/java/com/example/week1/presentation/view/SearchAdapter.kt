@@ -5,42 +5,42 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.week1.data.model.GithubRepo
 import com.example.week1.databinding.SearchItemBinding
 
 class SearchAdapter (
     private val itemClick: (GithubRepo) -> Unit
-) : ListAdapter<GithubRepo, SearchAdapter.RepoViewHolder>(GithubRepoDiffUtil) {
+) : ListAdapter<GithubRepo, SearchAdapter.SearchViewHolder>(GithubRepoDiffUtil) {
 
     init {
         setHasStableIds(true)
     }
 
-    class RepoViewHolder(
+    class SearchViewHolder(
         private val binding: SearchItemBinding,
         private val itemClick: (GithubRepo) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        private lateinit var repo: GithubRepo
+
+        init {
+            itemView.setOnClickListener { itemClick(repo) }
+        }
+
         fun bind(repo: GithubRepo) {
-            with(binding) {
-                Glide.with(root)
-                    .load(repo.owner.avatarUrl)
-                    .into(repoImg)
-                repoName.text = repo.name
-                repoLang.text = repo.language
-                root.setOnClickListener { itemClick(repo) }
-            }
+            this.repo = repo
+            binding.repo = repo
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder =
-        RepoViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder =
+        SearchViewHolder(
             SearchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             itemClick
         )
 
-    override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+        getItem(position)?.let { holder.bind(it) }
     }
 
     override fun getItemId(position: Int): Long = getItem(position).id
