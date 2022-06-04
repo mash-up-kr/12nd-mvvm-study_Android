@@ -1,4 +1,4 @@
-package com.example.week1.presentation.view
+package com.example.week1.presentation.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package com.example.week1.presentation.view
+package com.example.week1.presentation.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,8 @@ import com.example.week1.R
 import com.example.week1.data.model.NetworkState
 import com.example.week1.presentation.base.BaseActivity
 import com.example.week1.databinding.ActivitySearchBinding
+import com.example.week1.presentation.detail.DetailActivity
+import com.example.week1.presentation.detail.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,7 +44,7 @@ class SearchActivity : BaseActivity() {
     private fun initAdapter() {
         searchAdapter = SearchAdapter { repo ->
             val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("repo", repo)
+            intent.putExtra(DetailViewModel.REPO_DETAIL, repo)
             startActivity(intent)
         }
         binding.searchRecyclerview.adapter = searchAdapter

@@ -1,4 +1,4 @@
-package com.example.week1.presentation.view
+package com.example.week1.presentation.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

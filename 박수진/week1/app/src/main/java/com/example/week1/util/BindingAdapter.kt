@@ -1,4 +1,4 @@
-package com.example.week1.presentation.view
+package com.example.week1.util
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
