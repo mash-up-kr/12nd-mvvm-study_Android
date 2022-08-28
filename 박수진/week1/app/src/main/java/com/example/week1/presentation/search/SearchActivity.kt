@@ -1,4 +1,4 @@
-package com.example.week1.presentation.view
+package com.example.week1.presentation.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,19 +10,23 @@ import androidx.databinding.DataBindingUtil
 import com.example.week1.R
 import com.example.week1.data.model.NetworkState
 import com.example.week1.presentation.base.BaseActivity
-import com.example.week1.databinding.ActivityMainBinding
+import com.example.week1.databinding.ActivitySearchBinding
+import com.example.week1.presentation.detail.DetailActivity
+import com.example.week1.presentation.detail.DetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : BaseActivity() {
+@AndroidEntryPoint
+class SearchActivity : BaseActivity() {
 
     private var backWaitTime: Long = 0
-    private val viewModel: RepoSearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var repoAdapter: RepoSearchAdapter
+    private lateinit var binding: ActivitySearchBinding
+    private lateinit var searchAdapter: SearchAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
 
         initActionBar()
         initAdapter()
@@ -38,22 +42,23 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initAdapter() {
-        repoAdapter = RepoSearchAdapter { repo ->
-            val intent = Intent(this, RepoDetailActivity::class.java)
-            intent.putExtra("repo", repo)
+        searchAdapter = SearchAdapter { repo ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra(DetailViewModel.REPO_DETAIL, repo)
             startActivity(intent)
         }
-        binding.searchRecyclerview.adapter = repoAdapter
+        binding.searchRecyclerview.adapter = searchAdapter
     }
 
     private fun observeLiveData() {
-        viewModel.repoList.observe(this) { repoList ->
-            repoAdapter.submitList(repoList)
-        }
-
-        viewModel.networkState.observe(this) {
-            if (it == NetworkState.LOADING) onProgress()
-            else offProgress()
+        viewModel.run {
+            searchList.observe(this@SearchActivity) { searchList ->
+                searchAdapter.submitList(searchList)
+            }
+            networkState.observe(this@SearchActivity) {
+                if (it == NetworkState.LOADING) onProgress()
+                else offProgress()
+            }
         }
     }
 
@@ -65,7 +70,7 @@ class MainActivity : BaseActivity() {
 
                 val query = binding.searchEt.text.toString()
                 if (query.isEmpty()) {
-                    Toast.makeText(this@MainActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@SearchActivity, "검색어를 입력해 주세요.", Toast.LENGTH_LONG).show()
                 } else {
                     viewModel.setRepoList(query)
                 }
@@ -84,7 +89,7 @@ class MainActivity : BaseActivity() {
     override fun onBackPressed() {
         if (System.currentTimeMillis() - backWaitTime >= 2000 ) {
             backWaitTime = System.currentTimeMillis()
-            Toast.makeText(this@MainActivity, "뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@SearchActivity, "뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show()
         } else {
             finish()
         }

@@ -1,31 +1,26 @@
-package com.example.week1.presentation.view
+package com.example.week1.presentation.detail
 
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import com.bumptech.glide.Glide
 import com.example.week1.R
 import com.example.week1.data.model.GithubRepo
-import com.example.week1.databinding.ActivityRepoDetailBinding
+import com.example.week1.databinding.ActivityDetailBinding
 import com.example.week1.presentation.base.BaseActivity
 
-class RepoDetailActivity : BaseActivity() {
+class DetailActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityRepoDetailBinding
+    private lateinit var binding: ActivityDetailBinding
+    private val viewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
+        binding.viewModel = viewModel
 
         initActionBar()
-
-        if (intent.hasExtra("repo")) {
-            binding.repo = intent.getSerializableExtra("repo") as GithubRepo
-        } else {
-            Log.e("Error", "intent has no extra")
-            finish()
-        }
     }
 
     private fun initActionBar() {

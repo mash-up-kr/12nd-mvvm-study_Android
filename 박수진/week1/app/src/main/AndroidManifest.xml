@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".GithubApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".presentation.view.RepoDetailActivity"
+            android:name=".presentation.detail.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.view.MainActivity"
+            android:name=".presentation.search.SearchActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,14 +6,14 @@
 
     <data>
         <variable
-            name="repo"
-            type="com.example.week1.data.model.GithubRepo" />
+            name="viewModel"
+            type="com.example.week1.presentation.detail.DetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.view.MainActivity">
+        tools:context=".presentation.search.SearchActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/detail_bar"
@@ -46,12 +46,12 @@
 
                 <ImageView
                     android:id="@+id/detail_img"
-                    android:layout_width="48sp"
-                    android:layout_height="48sp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
-                    app:bindImage="@{repo.owner.avatarUrl}"/>
+                    imageUrl="@{viewModel.repo.owner.avatarUrl}"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                         android:id="@+id/detail_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{repo.name}"
+                        android:text="@{viewModel.repo.name}"
                         android:textStyle="bold"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
@@ -77,8 +77,8 @@
                         android:layout_marginTop="2dp">
 
                         <ImageView
-                            android:layout_width="12sp"
-                            android:layout_height="12sp"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
                             android:src="@drawable/ic_detail_star"
                             app:tint="@color/colorPrimary"
                             android:layout_gravity="center" />
@@ -87,27 +87,27 @@
                             android:id="@+id/detail_star_cnt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{String.valueOf(repo.stargazersCount)}"
+                            android:text="@{String.valueOf(viewModel.repo.stargazersCount)}"
                             android:layout_marginStart="2dp"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <include layout="@layout/layout_repo_detail_content"
+            <include layout="@layout/layout_detail_content"
                 bind:img="@{@drawable/ic_detail_description}"
                 bind:title="@{@string/repo_detail_description}"
-                bind:content="@{repo.description}"/>
+                bind:content="@{viewModel.repo.description}"/>
 
-            <include layout="@layout/layout_repo_detail_content"
+            <include layout="@layout/layout_detail_content"
                 bind:img="@{@drawable/ic_detail_lang}"
                 bind:title="@{@string/repo_detail_lang}"
-                bind:content="@{repo.language}"/>
+                bind:content="@{viewModel.repo.language}"/>
 
-            <include layout="@layout/layout_repo_detail_content"
+            <include layout="@layout/layout_detail_content"
                 bind:img="@{@drawable/ic_detail_updated}"
                 bind:title="@{@string/repo_detail_updated}"
-                bind:content="@{repo.updatedAt}"/>
+                bind:content="@{viewModel.repo.updatedAt}"/>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
